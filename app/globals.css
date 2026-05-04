@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+
+  /* ── Backgrounds ─────────────────────────────── */
+  --bg-void: #050507;
+  --bg-midnight: #0a0a0e;
+  --bg-card: rgba(22, 22, 30, 0.55);
+
+  /* ── Accents (Kafka palette) ─────────────────── */
+  --accent-purple: #8a2be2;
+  --accent-magenta: #c71585;
+  --accent-pink: #e07b97;
+
+  /* ── Text ───────────────────────────────────── */
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #6b6b6b;
+
+  /* ── Borders ────────────────────────────────── */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(138, 43, 226, 0.4);
+
+  /* ── Status ─────────────────────────────────── */
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --info: #60a5fa;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--accent-magenta);
+    color: var(--text-primary);
+  }
+
+  /* Force dark color-scheme on form controls (kills white inputs in OS dark mode quirks) */
+  input, textarea, select, button {
+    color-scheme: dark;
+  }
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--text-primary);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-midnight) inset;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
+  /* Visible focus ring for keyboard nav */
+  :focus-visible {
+    outline: 2px solid var(--accent-pink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-void);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(138, 43, 226, 0.3);
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 43, 226, 0.5);
+  }
+}
+
+@layer components {
+  /* Glassmorphic card */
+  .card-glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+  }
+
+  /* Soft glow on hover */
+  .glow-hover {
+    transition: border-color 200ms ease-out, box-shadow 200ms ease-out, transform 200ms ease-out;
+  }
+  .glow-hover:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 0 24px rgba(138, 43, 226, 0.15);
+  }
+
+  /* Neon text */
+  .neon-text {
+    color: var(--accent-pink);
+    text-shadow: 0 0 8px rgba(224, 123, 151, 0.4);
+  }
+
+  /* Scanline overlay (terminal feel) */
+  .scanline-bg {
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    );
+  }
+
+  /* Grain overlay (subtle film noise) */
+  .grain-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Glitch (paused by default; CSS triggers via parent state) */
+  .glitch-on-hover {
+    animation: glitch 0.3s infinite;
+    animation-play-state: paused;
+  }
+  .glitch-on-hover:hover {
+    animation-play-state: running;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Status dot pulses */
+  .dot-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Force hardware accel for animated elements */
+  .gpu {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+}
+
+/* ── Shooting stars ─────────────────────────────── */
+@keyframes shoot {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(215deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-900px, 900px, 0) rotate(215deg);
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes nebulaDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(40px, -30px, 0) scale(1.1); }
+}
+
+.shooting-star {
+  position: absolute;
+  top: var(--star-top, 10%);
+  left: var(--star-left, 90%);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 4px #ffffff,
+    0 0 10px rgba(224, 123, 151, 0.7),
+    0 0 18px rgba(199, 21, 133, 0.4);
+  animation: shoot var(--star-duration, 6s) linear var(--star-delay, 0s) infinite;
+  pointer-events: none;
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 90px;
+  height: 1px;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0.9),
+    rgba(224, 123, 151, 0.6),
+    transparent
+  );
+  transform: translateY(-50%);
+}
+
+.twinkle-star {
+  position: absolute;
+  width: 1.5px;
+  height: 1.5px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: twinkle var(--twinkle-duration, 3s) ease-in-out var(--twinkle-delay, 0s) infinite;
+}
+
+.nebula-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: nebulaDrift var(--nebula-duration, 24s) ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Click spark ─────────────────────────────────── */
+@keyframes sparkRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkRay {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--ray-rot)) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--ray-rot)) translateY(-22px);
+    opacity: 0;
+  }
+}
+
+.click-spark {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.click-spark__ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-pink);
+  box-shadow: 0 0 12px rgba(224, 123, 151, 0.5);
+  animation: sparkRing 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.click-spark__ray {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.5px;
+  height: 8px;
+  background: var(--accent-pink);
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(224, 123, 151, 0.8);
+  animation: sparkRay 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Reduced-motion: disable all decorative animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

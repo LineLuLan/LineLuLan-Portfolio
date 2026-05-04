@@ -19,11 +19,11 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Line — Data Scientist & AI Engineer',
-    template: '%s · linelulan.dev',
+    default: 'Line · linelulan.dev',
+    template: '%s · Line',
   },
   description:
-    'I work at the intersection of ML, LLMs, and algorithmic reasoning. Co-founder at 100B Studio, dengue shock prediction researcher, GDGoC Vice Lead.',
+    'Trần Nam Anh (Line) — Data Scientist & AI Engineer. Working at the intersection of ML, LLMs, and algorithmic reasoning. Co-founder at 100B Studio, dengue research, GDGoC Vice Lead.',
   keywords: [
     'data science',
     'machine learning',

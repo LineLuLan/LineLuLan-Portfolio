@@ -8,7 +8,7 @@
 
 ```bash
 npm install
-cp .env.local.example .env.local        # then fill WEB3FORMS_ACCESS_KEY
+cp .env.local.example .env.local        # then fill NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
 npm run dev                              # → http://localhost:3000
 ```
 
@@ -92,7 +92,7 @@ npm run start
 
 1. Push to GitHub `main`.
 2. In Vercel: import repo → auto-detects Next.js.
-3. **Add env var:** `WEB3FORMS_ACCESS_KEY` (get from https://web3forms.com).
+3. **Add env var:** `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` (get from https://web3forms.com — Web3Forms free plan requires client-side calls, so the key is exposed to the browser by design).
 4. (Optional) `NEXT_PUBLIC_SITE_URL=https://linelulan.dev`.
 5. Connect domain `linelulan.dev` (Vercel → Domains).
 6. Enable Vercel Analytics in project settings.
@@ -109,7 +109,7 @@ These will be rejected in code review. They violate the architecture rules in `P
 - ❌ Animation without `useReducedMotion` guard. → import `useReducedMotion` from `lib/hooks`.
 - ❌ `any` type. → define proper type in `types/index.ts`.
 - ❌ New folders like `common/`, `shared/`, `utils/`. → group by feature in `components/<section>/` or put utility in `lib/`.
-- ❌ Calling Web3Forms directly from client. → POST to `/api/contact` so the access key stays server-side.
+- ❌ Server-side proxy for Web3Forms on free plan. Web3Forms free tier blocks server-to-server requests; call directly from `ContactForm.tsx` using `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` (the key is public by design).
 - ❌ New top-level pages without entry in PLANNING.md Section D. → discuss scope before adding routes.
 
 ---
@@ -121,7 +121,7 @@ These will be rejected in code review. They violate the architecture rules in `P
 | Build fails on type error | `types/index.ts` — content shape probably drifted |
 | Animation not running | `lib/hooks/useReducedMotion.ts` — user might have reduced motion on |
 | Mode toggle doesn't persist | `app/providers.tsx` localStorage key `portfolio-mode` |
-| Contact form returns error | `app/api/contact/route.ts` — env var `WEB3FORMS_ACCESS_KEY` set? |
+| Contact form returns error | `components/contact/ContactForm.tsx` — env var `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` set? Restart dev server after changing `.env.local`. |
 | OG image broken | `app/opengraph-image.tsx` runtime — Edge or Node? |
 | CV 404 | filename in `public/cv/` matches `lib/constants.ts:CV_PATH`? |
 | Font flicker | `app/layout.tsx` — `next/font` variable should be on `<html>` |

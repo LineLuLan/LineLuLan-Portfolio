@@ -16,7 +16,7 @@ npm install
 
 # 2. Copy env example and fill in values
 cp .env.local.example .env.local
-# → set WEB3FORMS_ACCESS_KEY (free at https://web3forms.com)
+# → set NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY (free at https://web3forms.com)
 
 # 3. Run dev server
 npm run dev
@@ -69,7 +69,7 @@ public/               # static assets (avatar, CV, OG image)
 
 1. Push to GitHub.
 2. Import in Vercel → auto-detects Next.js.
-3. Add env var `WEB3FORMS_ACCESS_KEY` in Vercel project settings.
+3. Add env var `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in Vercel project settings.
 4. Connect custom domain `linelulan.dev`.
 5. Enable Vercel Analytics (free).
 

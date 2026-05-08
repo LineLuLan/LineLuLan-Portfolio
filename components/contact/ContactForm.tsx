@@ -21,28 +21,60 @@ export function ContactForm() {
       setStatus('sent');
       return;
     }
-    const payload = {
-      from: String(formData.get('from') ?? ''),
-      subject: String(formData.get('subject') ?? ''),
-      message: String(formData.get('message') ?? ''),
-    };
+
+    const from = String(formData.get('from') ?? '').trim();
+    const subject = String(formData.get('subject') ?? '').trim();
+    const message = String(formData.get('message') ?? '').trim();
+
+    if (!from || !subject || !message) {
+      setStatus('error');
+      setErrorMsg('Missing fields.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from)) {
+      setStatus('error');
+      setErrorMsg('Invalid email.');
+      return;
+    }
+    if (message.length > 5000) {
+      setStatus('error');
+      setErrorMsg('Message too long.');
+      return;
+    }
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setStatus('error');
+      setErrorMsg('Form not configured.');
+      return;
+    }
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `[linelulan.dev] ${subject}`,
+          from_name: from,
+          replyto: from,
+          message,
+          botcheck: '',
+        }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? `Request failed (${res.status})`);
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        message?: string;
+      };
+      if (!res.ok || !data.success) {
+        throw new Error(data.message ?? `Request failed (${res.status})`);
       }
       setStatus('sent');
       trackEvent('contact_form_submit', { ok: true });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'unknown error';
+      const errMsg = err instanceof Error ? err.message : 'unknown error';
       setStatus('error');
-      setErrorMsg(message);
+      setErrorMsg(errMsg);
       trackEvent('contact_form_submit', { ok: false });
     }
   }

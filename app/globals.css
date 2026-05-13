@@ -179,14 +179,6 @@
     }
   }
 
-  /* Boot splash grid background — cyber tech vibe */
-  .boot-grid {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 64px 64px;
-    background-position: center center;
-  }
 }
 
 @layer utilities {

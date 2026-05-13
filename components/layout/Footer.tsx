@@ -10,8 +10,8 @@ export function Footer() {
           <p className="font-mono text-[11px] text-text-secondary">
             <span className="text-success">●</span> connection ready · response in &lt; 24h
           </p>
-          <p className="mt-1 font-mono text-[11px] text-text-tertiary">
-            © {new Date().getFullYear()} line · built with caffeine and curiosity
+          <p className="mt-1 font-mono text-[11px] text-text-tertiary" suppressHydrationWarning>
+            © {new Date().getFullYear()} Trần Nam Anh (Line) · built with intention
           </p>
         </div>
         <div className="flex items-center gap-1">

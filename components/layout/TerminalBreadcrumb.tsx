@@ -2,18 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { SECTIONS, type SectionId } from '@/lib/constants';
+import { SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 
-const ORDER: SectionId[] = ['hero', 'skills', 'projects', 'dabm', 'chronicles', 'contact'];
-
 export function TerminalBreadcrumb() {
-  const [active, setActive] = useState<SectionId>('hero');
+  const [active, setActive] = useState<SectionId>('whoami');
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
-    ORDER.forEach((id) => {
+    SECTION_ORDER.forEach((id) => {
       const el = document.getElementById(SECTIONS[id].id);
       if (!el) return;
       const obs = new IntersectionObserver(
@@ -46,7 +44,7 @@ export function TerminalBreadcrumb() {
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3 md:px-6">
         {/* Brand */}
         <Link
-          href="#hero"
+          href={`#${SECTIONS.whoami.id}`}
           aria-label="Back to top"
           className="group flex items-center gap-2.5"
         >
@@ -65,14 +63,14 @@ export function TerminalBreadcrumb() {
         {/* Desktop nav */}
         <nav aria-label="Sections" className="hidden md:block">
           <ul className="flex items-center gap-0.5 font-mono text-[11px]">
-            {ORDER.map((id, i) => {
+            {SECTION_ORDER.map((id, i) => {
               const isActive = active === id;
               return (
                 <li key={id} className="relative">
                   <Link
                     href={`#${SECTIONS[id].id}`}
                     className={cn(
-                      'flex items-center gap-1.5 rounded-md px-2.5 py-1.5 transition-colors',
+                      'flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors',
                       isActive
                         ? 'text-accent-pink'
                         : 'text-text-secondary hover:bg-card hover:text-text-primary',
@@ -86,7 +84,7 @@ export function TerminalBreadcrumb() {
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span>{id}</span>
+                    <span>{SECTIONS[id].label}</span>
                   </Link>
                   {isActive && (
                     <span
@@ -111,9 +109,9 @@ export function TerminalBreadcrumb() {
           }}
           className="rounded-md border border-border-subtle bg-midnight px-2.5 py-1.5 font-mono text-[11px] text-text-primary md:hidden"
         >
-          {ORDER.map((id, i) => (
+          {SECTION_ORDER.map((id, i) => (
             <option key={id} value={id}>
-              {String(i + 1).padStart(2, '0')} · {id}
+              {String(i + 1).padStart(2, '0')} · {SECTIONS[id].label}
             </option>
           ))}
         </select>

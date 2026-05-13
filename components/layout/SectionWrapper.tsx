@@ -17,10 +17,18 @@ type Props = {
   ariaLabel?: string;
   className?: string;
   width?: Width;
+  withTopRule?: boolean;
   children: React.ReactNode;
 };
 
-export function SectionWrapper({ id, ariaLabel, className, width = 'md', children }: Props) {
+export function SectionWrapper({
+  id,
+  ariaLabel,
+  className,
+  width = 'md',
+  withTopRule = false,
+  children,
+}: Props) {
   const reduce = useReducedMotion();
   return (
     <motion.section
@@ -31,12 +39,15 @@ export function SectionWrapper({ id, ariaLabel, className, width = 'md', childre
       transition={{ duration: 0.5, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-80px' }}
       className={cn(
-        'relative scroll-mt-20 px-5 py-14 md:px-6 md:py-20',
+        'relative scroll-mt-20 px-5 py-16 md:px-6 md:py-24',
         'mx-auto',
         widthClass[width],
         className,
       )}
     >
+      {withTopRule && (
+        <hr aria-hidden className="section-rule absolute inset-x-5 top-0 md:inset-x-6" />
+      )}
       {children}
     </motion.section>
   );

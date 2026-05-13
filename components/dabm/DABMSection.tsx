@@ -19,8 +19,8 @@ export function DABMSection() {
   const selected = eligible.find((p) => p.slug === slug) ?? eligible[0];
 
   return (
-    <SectionWrapper id="dabm" ariaLabel="DABM Framework" width="md">
-      <SectionHeader index="04 / 06" path="~/lib/dabm" caption="framework" />
+    <SectionWrapper id="framework" ariaLabel="DABM Framework" width="lg" withTopRule>
+      <SectionHeader index={5} slug="framework" title="DABM." />
 
       <div className="mb-6">
         <p className="font-mono text-base text-text-primary">

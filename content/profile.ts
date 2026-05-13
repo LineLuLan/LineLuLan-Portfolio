@@ -26,4 +26,46 @@ export const profile: Profile = {
   research: 'dengue shock prediction (HTD × IU)',
   building: '100B Studio · co-founder',
   openTo: 'DS / MLE / AI Engineer internships',
+  stats: [
+    { value: 2, suffix: '+', label: 'years in tech' },
+    { value: 3.69, suffix: '/4.0', label: 'current GPA', decimals: 2 },
+    { value: 1, suffix: '', label: 'paper in progress', pad: 2 },
+    { value: 6, suffix: '+', label: 'projects shipped' },
+  ],
+  whatIBring: [
+    {
+      title: 'ML Engineering',
+      description:
+        'End-to-end pipelines — from raw data to deployed models. Comfortable across PyTorch, scikit-learn, and the messy middle.',
+    },
+    {
+      title: 'Applied AI · LLM',
+      description:
+        'Multi-provider experience (OpenAI, Anthropic, Gemini). I build agent systems that actually do work, not just look smart in demos.',
+    },
+    {
+      title: 'Research & Causal',
+      description:
+        'Causal inference and Bayesian thinking for problems where prediction is not enough. Currently applying this to dengue shock progression.',
+    },
+    {
+      title: 'Production Builder',
+      description:
+        'I ship. From Next.js frontends to backend services on Vercel / Supabase / Neon. Code that runs, not slides that pitch.',
+    },
+  ],
+  exploring: [
+    'AI Agents',
+    'Causal Inference',
+    'Game Theory',
+    'Simulation',
+    'Dengue Modeling',
+    'MLOps',
+  ],
+  narrative: {
+    intro:
+      "I'm a Vietnamese data scientist & AI engineer who doesn't fit neatly into one box. Coming from a Data Science program but living half my time in production code, half in research papers.",
+    mission:
+      "Right now I'm splitting effort between dengue shock prediction research with Hospital for Tropical Diseases, co-founding 100B Studio, and leading GDGoC HCMIU. The thread tying it together: build things that survive contact with reality.",
+  },
 };

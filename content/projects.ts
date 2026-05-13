@@ -34,7 +34,7 @@ export const projects: Project[] = [
   {
     slug: 'slot-02',
     name: 'LegalLLM',
-    codename: '████-██',
+    codename: 'LGL-██',
     tagline: '[CLASSIFIED]',
     domains: ['LLM', 'EdTech'],
     state: 'classified',
@@ -43,7 +43,7 @@ export const projects: Project[] = [
   {
     slug: 'slot-03',
     name: 'Panic Hub',
-    codename: '████-██',
+    codename: 'PNC-██',
     tagline: '[CLASSIFIED]',
     domains: ['research'],
     state: 'classified',
@@ -52,7 +52,7 @@ export const projects: Project[] = [
   {
     slug: 'slot-04',
     name: 'Worldforesight',
-    codename: '████-██',
+    codename: 'WLD-██',
     tagline: '[CLASSIFIED]',
     domains: ['ML'],
     state: 'classified',
@@ -61,7 +61,7 @@ export const projects: Project[] = [
   {
     slug: 'slot-05',
     name: 'Educata',
-    codename: '████-██',
+    codename: 'EDU-██',
     tagline: '[CLASSIFIED]',
     domains: ['EdTech'],
     state: 'classified',
@@ -70,7 +70,7 @@ export const projects: Project[] = [
   {
     slug: 'slot-06',
     name: '100B Studio',
-    codename: '████-██',
+    codename: 'STU-██',
     tagline: '[CLASSIFIED]',
     domains: ['creative'],
     state: 'classified',

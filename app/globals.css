@@ -24,6 +24,11 @@
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-glow: rgba(138, 43, 226, 0.4);
 
+  /* ── Editorial rules (Inugami-style section dividers) ── */
+  --rule-strong: rgba(255, 255, 255, 0.16);
+  --rule-subtle: rgba(255, 255, 255, 0.06);
+  --num-display: var(--accent-pink);
+
   /* ── Status ─────────────────────────────────── */
   --success: #4ade80;
   --warning: #fbbf24;
@@ -131,6 +136,73 @@
   }
   .glitch-on-hover:hover {
     animation-play-state: running;
+  }
+
+  /* ── Editorial primitives ─────────────────────── */
+  .section-rule {
+    border-top: 1px solid var(--rule-strong);
+    margin: 0;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono), JetBrains_Mono, monospace;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .eyebrow::before,
+  .eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 1.75rem;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+
+  .editorial-h2 {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 2rem;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .editorial-h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* Boot splash glitch reveal */
+  .boot-glitch {
+    position: relative;
+    color: var(--accent-pink);
+    text-shadow: 0 0 12px rgba(224, 123, 151, 0.55);
+  }
+  .boot-glitch::before,
+  .boot-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .boot-glitch::before {
+    color: var(--accent-purple);
+    transform: translate(-2px, 0);
+    mix-blend-mode: screen;
+    animation: bootRgbA 1.2s ease-out forwards;
+  }
+  .boot-glitch::after {
+    color: var(--accent-magenta);
+    transform: translate(2px, 0);
+    mix-blend-mode: screen;
+    animation: bootRgbB 1.2s ease-out forwards;
   }
 }
 
@@ -281,6 +353,22 @@
   border-radius: 1px;
   box-shadow: 0 0 6px rgba(224, 123, 151, 0.8);
   animation: sparkRay 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Boot splash glitch (RGB split, slice) ─────── */
+@keyframes bootRgbA {
+  0%   { transform: translate(-4px, 0); opacity: 0.9; }
+  20%  { transform: translate(2px, 1px); opacity: 0.85; }
+  40%  { transform: translate(-3px, -1px); opacity: 0.7; }
+  70%  { transform: translate(-1px, 0); opacity: 0.4; }
+  100% { transform: translate(0, 0); opacity: 0; }
+}
+@keyframes bootRgbB {
+  0%   { transform: translate(4px, 0); opacity: 0.9; }
+  20%  { transform: translate(-2px, -1px); opacity: 0.85; }
+  40%  { transform: translate(3px, 1px); opacity: 0.7; }
+  70%  { transform: translate(1px, 0); opacity: 0.4; }
+  100% { transform: translate(0, 0); opacity: 0; }
 }
 
 /* Reduced-motion: disable all decorative animations */

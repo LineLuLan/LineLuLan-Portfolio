@@ -8,6 +8,7 @@ import { profile } from '@/content/profile';
 import { AVATAR_PATH, CV_PATH, SOCIAL } from '@/lib/constants';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { PillarTags } from './PillarTags';
+import { StatsCounters } from './StatsCounters';
 import { trackEvent } from '@/lib/analytics';
 
 export function HeroRecruiter() {
@@ -33,7 +34,7 @@ export function HeroRecruiter() {
 
       <motion.h1
         {...fade(1)}
-        className="text-balance font-sans text-3xl font-semibold tracking-tight text-text-primary"
+        className="text-balance font-sans text-3xl font-semibold tracking-tight text-text-primary md:text-4xl"
       >
         {profile.name}
       </motion.h1>
@@ -55,33 +56,23 @@ export function HeroRecruiter() {
         <PillarTags pillars={profile.pillars} />
       </motion.div>
 
-      <motion.dl
-        {...fade(5)}
-        className="mx-auto mt-8 grid max-w-lg gap-y-1.5 rounded-md border border-border-subtle bg-card/40 p-4 text-left font-mono text-xs"
-      >
-        {profile.facts.map((f) => (
-          <div key={f.key} className="flex gap-3">
-            <dt className="w-20 shrink-0 text-text-tertiary">&gt; {f.key}:</dt>
-            <dd className="flex-1 text-text-secondary">{f.value}</dd>
-          </div>
-        ))}
-      </motion.dl>
+      <StatsCounters stats={profile.stats} />
 
       <motion.div
         {...fade(6)}
-        className="mt-7 flex flex-wrap justify-center gap-2.5 font-mono text-xs"
+        className="mt-10 flex flex-wrap justify-center gap-2.5 font-mono text-xs"
       >
         <a
           href={CV_PATH}
           download
           onClick={() => trackEvent('cv_download', { from: 'hero' })}
-          className="inline-flex items-center gap-2 rounded-sm border border-accent-pink/70 bg-accent-pink/10 px-3.5 py-2 text-accent-pink transition-colors hover:bg-accent-pink hover:text-void"
+          className="inline-flex items-center gap-2 rounded-sm border border-accent-pink/70 bg-accent-pink/10 px-3.5 py-2 text-accent-pink transition-all hover:bg-accent-pink hover:text-void hover:shadow-[0_0_18px_rgba(224,123,151,0.35)]"
         >
           <Download size={12} aria-hidden /> download CV
         </a>
         <Link
           href="#contact"
-          className="inline-flex items-center gap-2 rounded-sm border border-border-subtle px-3.5 py-2 text-text-secondary transition-colors hover:border-accent-pink hover:text-accent-pink"
+          className="inline-flex items-center gap-2 rounded-sm border border-border-subtle px-3.5 py-2 text-text-secondary transition-all hover:border-accent-pink hover:text-accent-pink hover:shadow-[0_0_14px_rgba(224,123,151,0.18)]"
         >
           <Mail size={12} aria-hidden /> get in touch
         </Link>
@@ -89,7 +80,7 @@ export function HeroRecruiter() {
           href={SOCIAL.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-sm border border-border-subtle px-3.5 py-2 text-text-secondary transition-colors hover:border-accent-pink hover:text-accent-pink"
+          className="inline-flex items-center gap-2 rounded-sm border border-border-subtle px-3.5 py-2 text-text-secondary transition-all hover:border-accent-pink hover:text-accent-pink hover:shadow-[0_0_14px_rgba(224,123,151,0.18)]"
         >
           <Github size={12} aria-hidden /> github
         </a>

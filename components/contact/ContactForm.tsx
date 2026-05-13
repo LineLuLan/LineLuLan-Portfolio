@@ -92,7 +92,11 @@ export function ContactForm() {
   return (
     <GlassCard className="p-5">
       <p className="font-mono text-xs uppercase tracking-widest text-accent-pink">$ send_packet</p>
-      <form onSubmit={onSubmit} className="mt-4 space-y-3 font-mono text-xs">
+      <form
+        onSubmit={onSubmit}
+        className="mt-4 space-y-3 font-mono text-xs"
+        suppressHydrationWarning
+      >
         <input
           type="text"
           name="company"
@@ -100,6 +104,7 @@ export function ContactForm() {
           autoComplete="off"
           className="hidden"
           aria-hidden
+          suppressHydrationWarning
         />
         <Field label="from" name="from" type="email" placeholder="your_email" required />
         <Field label="subject" name="subject" placeholder="what's this about" required />
@@ -147,6 +152,7 @@ function Field({
         required={required}
         placeholder={placeholder}
         className={inputClass}
+        suppressHydrationWarning
       />
     </label>
   );
@@ -172,6 +178,7 @@ function Textarea({
         placeholder={placeholder}
         rows={4}
         className={`${inputClass} resize-y`}
+        suppressHydrationWarning
       />
     </label>
   );

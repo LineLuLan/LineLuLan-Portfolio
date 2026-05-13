@@ -83,6 +83,24 @@ export type SocialLinks = {
   email: string;
 };
 
+export type ProfileStat = {
+  value: number;
+  suffix?: string;
+  label: string;
+  decimals?: number;
+  pad?: number;
+};
+
+export type WhatIBringItem = {
+  title: string;
+  description: string;
+};
+
+export type ProfileNarrative = {
+  intro: string;
+  mission: string;
+};
+
 export type Profile = {
   name: string;
   alias: string;
@@ -101,4 +119,9 @@ export type Profile = {
   research: string;
   building: string;
   openTo: string;
+  // Editorial enhancements
+  stats: ProfileStat[];
+  whatIBring: WhatIBringItem[];
+  exploring: string[];
+  narrative: ProfileNarrative;
 };

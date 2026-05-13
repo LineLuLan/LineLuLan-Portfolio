@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SITE_URL, SOCIAL } from '@/lib/constants';
+import { BootSplashGate } from '@/components/ui/BootSplashGate';
 import './globals.css';
 
 const sans = Inter({
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <BootSplashGate />
         {children}
         <Analytics />
       </body>

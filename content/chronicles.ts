@@ -83,6 +83,13 @@ export const chronicles: ChronicleEvent[] = [
     title: 'Co-founded 100B Studio',
   },
   {
+    id: 'enstudy-hub-v02',
+    date: '2026-05-13',
+    type: 'project',
+    title: 'Shipped EnStudy-Hub v0.2.0',
+    description: 'FSRS-4.5 vocab trainer · live on Vercel.',
+  },
+  {
     id: 'gdgoc-end',
     date: '2026-09-01',
     type: 'role',

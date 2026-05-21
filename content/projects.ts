@@ -32,6 +32,40 @@ export const projects: Project[] = [
     why: 'Early warning systems for dengue can save lives in tropical regions where the disease is endemic.',
   },
   {
+    slug: 'enstudy-hub',
+    name: 'EnStudy-Hub',
+    tagline: 'FSRS-powered vocabulary trainer for Vietnamese English learners.',
+    domains: ['EdTech'],
+    state: 'live',
+    featured: true,
+    problem:
+      'Vietnamese English learners lack a localized spaced-repetition tool that handles their own wordlists end-to-end. Existing apps (Anki, Quizlet) are either too friction-heavy or run on outdated SRS algorithms with no first-class Vietnamese UX.',
+    dataset:
+      'User-imported CSV wordlists + curated Oxford 3000-derived seed (10 topics × 42 lessons for MVP); per-user user_cards rows store live FSRS memory state (stability, difficulty, due date) keyed by card + owner.',
+    method:
+      'FSRS-4.5 via ts-fsrs for next-review scheduling, replacing the legacy SM-2 family with a parameterized memory model; server-first Next.js 15 App Router on Supabase Postgres with Drizzle ORM, multi-tenant via a topics → collections → lessons → cards ownership chain; review session orchestrated through 4 minigame modes (cloze, MCQ, typing-from-definition, Web Speech listening) with Zustand for transient state.',
+    results:
+      'Live on Vercel · v0.2.0 shipped 2026-05-13 (dashboard, stats, 4 minigame modes, settings, theme); v1.0.0 in flight with CSV import, per-card actions, inline editing · 108 green vitest unit tests covering schema/queue/FSRS logic.',
+    tech: ['Next.js 15', 'TypeScript', 'Supabase', 'Drizzle ORM', 'ts-fsrs', 'Zod', 'Tailwind v4', 'Vitest'],
+    role: 'Lead dev · architecture, FSRS integration, server actions, UI',
+    collaborators: [
+      { name: 'Phí Vương Tường Tâm', role: 'contributor' },
+      { name: 'Trần Nam Anh', role: 'contributor' },
+      { name: 'Lê Thành Danh', role: 'contributor' },
+    ],
+    links: {
+      github: 'https://github.com/LineLuLan/EnStudy-Hub',
+      demo: 'https://en-study-hub.vercel.app',
+    },
+    dabm: {
+      D: 'user CSV wordlists + Oxford 3000 seed · per-user FSRS state',
+      A: 'Vietnamese English learners reviewing vocab daily',
+      B: 'retention curves · review timing across cards',
+      M: 'FSRS-4.5 scheduler · 4 minigame review modes',
+    },
+    why: 'Brings a modern ML-derived SRS algorithm (FSRS-4.5) into a Vietnamese-language vocabulary workflow so learners can import their own lists and review at the statistically optimal interval — closing the localization and algorithmic gap left by mainstream flashcard apps.',
+  },
+  {
     slug: 'slot-02',
     name: 'LegalLLM',
     codename: 'LGL-██',

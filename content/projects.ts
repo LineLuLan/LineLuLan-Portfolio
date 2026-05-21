@@ -66,6 +66,34 @@ export const projects: Project[] = [
     why: 'Brings a modern ML-derived SRS algorithm (FSRS-4.5) into a Vietnamese-language vocabulary workflow so learners can import their own lists and review at the statistically optimal interval — closing the localization and algorithmic gap left by mainstream flashcard apps.',
   },
   {
+    slug: 'ezidatic',
+    name: 'Ezidatic',
+    tagline: 'AI data analyst platform — instant EDA, AutoML, and an agent that talks to your data.',
+    domains: ['LLM', 'ML'],
+    state: 'wip',
+    problem:
+      'Students and junior analysts spend hours wiring up ingestion, EDA, preprocessing, and baseline ML before they can ask a real question of their data. Ezidatic collapses that loop into upload → profile → train → chat.',
+    dataset:
+      'User-uploaded tabular files (CSV/TSV today; Excel, JSON, Parquet via pluggable parsers), capped at 50 MB per upload — no fixed corpus.',
+    method:
+      'Plug-in registries (Adapter Pattern + Pipeline Architecture) over a FastAPI backend: parsers, preprocessing steps, and AutoML estimators (LightGBM, Random Forest, Logistic Regression) are all hot-swappable. A Router-Worker LLM topology dispatches each question to a specialist agent over a multi-provider stack (Groq → Gemini → OpenRouter → Ollama) with automatic fallback; ChromaDB grounds chat with dataset context and Redis caches LLM responses.',
+    results:
+      'Sprint 4 in progress — ingestion, EDA, AutoML, and agentic chat working end-to-end on dev; Supabase storage backend, Redis LLM cache, dark-mode UI, and a11y baseline have landed; free-tier deploy + UptimeRobot monitoring runbook in the polish phase.',
+    tech: ['Python', 'FastAPI', 'Polars', 'scikit-learn', 'LangChain', 'Next.js', 'PostgreSQL', 'ChromaDB'],
+    role: 'Solo builder · architecture, backend, ML pipeline, and frontend',
+    links: {
+      github: 'https://github.com/LineLuLan/Ezidatic',
+    },
+    dabm: {
+      D: 'user-uploaded tabular datasets + their column profiles',
+      A: 'Router-Worker LLM dispatching to EDA / SQL / ML specialist workers',
+      B: 'exploratory analysis + supervised classification/regression on arbitrary tabular data',
+      M: 'AutoML leaderboard over classical estimators with LLM-driven narration',
+    },
+    eta: 'Q3 2026',
+    why: 'Shows end-to-end Data + AI delivery — from ingestion and AutoML pipelines to a multi-provider LLM agent system, all behind a production-grade extensible architecture that one engineer can ship and maintain.',
+  },
+  {
     slug: 'slot-02',
     name: 'LegalLLM',
     codename: 'LGL-██',

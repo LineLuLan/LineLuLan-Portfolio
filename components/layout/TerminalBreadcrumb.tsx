@@ -17,25 +17,31 @@ export function TerminalBreadcrumb() {
       const obs = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+            if (entry.isIntersecting) {
               setActive(id);
             }
           });
         },
-        { threshold: [0.4, 0.6] },
+        { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
       );
       obs.observe(el);
       observers.push(obs);
     });
-    const onScroll = () => {
+    let frame: number | null = null;
+    const updateProgress = () => {
+      frame = null;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(max > 0 ? Math.min(1, window.scrollY / max) : 0);
+    };
+    const onScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(updateProgress);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => {
       observers.forEach((o) => o.disconnect());
       window.removeEventListener('scroll', onScroll);
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, []);
 

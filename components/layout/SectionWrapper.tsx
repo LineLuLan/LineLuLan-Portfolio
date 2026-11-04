@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { cn } from '@/lib/cn';
 
 type Width = 'sm' | 'md' | 'lg';
@@ -29,12 +28,11 @@ export function SectionWrapper({
   withTopRule = false,
   children,
 }: Props) {
-  const reduce = useReducedMotion();
   return (
     <motion.section
       id={id}
       aria-label={ariaLabel}
-      initial={reduce ? false : { opacity: 0, y: 30 }}
+      initial={id === 'hero' ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-80px' }}

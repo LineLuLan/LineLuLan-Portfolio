@@ -330,6 +330,36 @@
   animation: sparkRay 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ── Boot splash + reveal ───────────────────────── */
+@keyframes boot-splash-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes boot-splash-out {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* CSS owns dismissal without JS; keep the delay when reduced motion shortens durations. */
+.boot-splash {
+  animation: boot-splash-out 600ms ease-out 1400ms forwards;
+}
+
+.boot-splash__text {
+  animation: boot-splash-in 500ms ease-out both;
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.reveal-up {
+  animation: reveal-up 400ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
 /* Reduced-motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -53,10 +53,12 @@ export function ContactForm() {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        signal: typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(15000) : undefined,
         body: JSON.stringify({
           access_key: accessKey,
           subject: `[linelulan.dev] ${subject}`,
-          from_name: from,
+          email: from,
+          from_name: 'linelulan.dev',
           replyto: from,
           message,
           botcheck: '',

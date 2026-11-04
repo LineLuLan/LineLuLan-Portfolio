@@ -6,7 +6,6 @@ import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EventModal } from './EventModal';
 import { chronicles } from '@/content/chronicles';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { cn } from '@/lib/cn';
 import type { ChronicleEvent, ChronicleType } from '@/types';
 
@@ -51,7 +50,6 @@ type BlockProps = {
 };
 
 function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
-  const reduce = useReducedMotion();
   if (events.length === 0) return null;
   return (
     <section className="mt-10 first:mt-0">
@@ -61,19 +59,17 @@ function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
       <ul className="divide-y divide-rule-subtle border-t border-rule-subtle">
         {events.map((e, i) => {
           const interactive = Boolean(e.description || e.link);
+          const Row = interactive ? 'button' : 'div';
           return (
             <motion.li
               key={e.id}
-              initial={reduce ? false : { opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -8 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: i * 0.03 }}
               viewport={{ once: true, margin: '-40px' }}
             >
-              <button
-                type="button"
-                onClick={() => interactive && onSelect(e)}
-                aria-label={`${e.title} on ${e.date}`}
-                disabled={!interactive}
+              <Row
+                {...(interactive ? { type: 'button' as const, onClick: () => onSelect(e) } : {})}
                 className={cn(
                   'group grid w-full grid-cols-[18px_1fr_auto] items-baseline gap-4 px-1 py-3 text-left transition-colors',
                   interactive
@@ -108,7 +104,7 @@ function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
                 >
                   {formatRange(e)}
                 </span>
-              </button>
+              </Row>
             </motion.li>
           );
         })}

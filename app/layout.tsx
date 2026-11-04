@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SITE_URL, SOCIAL } from '@/lib/constants';
 import { BootSplashGate } from '@/components/ui/BootSplashGate';
+import { MotionProvider } from '@/components/layout/MotionProvider';
 import './globals.css';
 
 const sans = Inter({
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s · Line',
   },
   description:
-    'Trần Nam Anh (Line) — Data Scientist & AI Engineer. Working at the intersection of ML, LLMs, and algorithmic reasoning. Co-founder at 100B Studio, dengue research, GDGoC Vice Lead.',
+    'Trần Nam Anh (Line) — AI / Machine Learning Engineer. Data engineering at Twohearts Technologies, first-author clinical ML research with HTD HCMC, GoiBERT Vietnamese encoders, GDGoC HCMIU Vice Lead.',
   keywords: [
     'data science',
     'machine learning',
@@ -43,15 +44,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'linelulan.dev',
-    title: 'Line — Data Scientist & AI Engineer',
+    title: 'Line — AI / Machine Learning Engineer',
     description: 'DABM: Data · Agent · Behavioral · Modeling',
-    images: ['/og.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Line — Data Scientist & AI Engineer',
+    title: 'Line — AI / Machine Learning Engineer',
     description: 'DABM: Data · Agent · Behavioral · Modeling',
-    images: ['/og.png'],
   },
   robots: {
     index: true,
@@ -70,7 +69,7 @@ const personJsonLd = {
   '@type': 'Person',
   name: 'Trần Nam Anh',
   alternateName: 'Line',
-  jobTitle: 'Data Scientist & AI Engineer',
+  jobTitle: 'AI / Machine Learning Engineer',
   url: SITE_URL,
   email: `mailto:${SOCIAL.email}`,
   sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.kaggle],
@@ -84,6 +83,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${jetbrains.variable}`}>
       <head>
+        <noscript>
+          <style dangerouslySetInnerHTML={{ __html: '[style*="opacity:0"]{opacity:1!important;transform:none!important}' }} />
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -97,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <BootSplashGate />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <Analytics />
       </body>
     </html>

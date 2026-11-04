@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ChronicleEvent } from '@/types';
@@ -11,14 +11,19 @@ type Props = {
 };
 
 export function EventModal({ event, onClose }: Props) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (!event) return;
+    const prev = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
+    closeRef.current?.focus();
     document.body.style.overflow = 'hidden';
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      prev?.focus?.();
     };
   }, [event, onClose]);
 
@@ -34,6 +39,7 @@ export function EventModal({ event, onClose }: Props) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-void/80 backdrop-blur p-4"
           role="dialog"
           aria-modal="true"
+          aria-labelledby="event-modal-title"
         >
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -46,12 +52,13 @@ export function EventModal({ event, onClose }: Props) {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="font-mono text-xs text-text-tertiary">{event.date}</p>
-                <h2 className="mt-1 text-lg text-text-primary">{event.title}</h2>
+                <h2 id="event-modal-title" className="mt-1 text-lg text-text-primary">{event.title}</h2>
                 {event.org && (
                   <p className="mt-1 font-mono text-xs text-accent-pink">{event.org}</p>
                 )}
               </div>
               <button
+                ref={closeRef}
                 type="button"
                 onClick={onClose}
                 aria-label="Close"

@@ -1,14 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { DABMQuadrant as Q } from '@/types';
 
 export function DABMQuadrant({ q, index }: { q: Q; index: number }) {
-  const reduce = useReducedMotion();
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.08, duration: 0.35 }}
       viewport={{ once: true }}

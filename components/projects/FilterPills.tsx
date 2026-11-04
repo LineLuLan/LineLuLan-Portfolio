@@ -10,15 +10,14 @@ type Props = {
 
 export function FilterPills({ active, onChange }: Props) {
   return (
-    <div role="tablist" aria-label="Filter projects" className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+    <div aria-label="Filter projects" className="flex flex-wrap gap-1.5 font-mono text-[11px]">
       {projectFilters.map((f) => {
         const isActive = active === f;
         return (
           <button
             key={f}
             type="button"
-            role="tab"
-            aria-selected={isActive}
+            aria-pressed={isActive}
             onClick={() => onChange(f)}
             className={cn(
               'rounded-sm border px-2.5 py-1 transition-colors',

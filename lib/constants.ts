@@ -1,16 +1,17 @@
 import type { SocialLinks } from '@/types';
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://linelulan.dev';
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://linelulan.vercel.app';
 
 export const SOCIAL: SocialLinks = {
   github: 'https://github.com/LineLuLan',
   linkedin: 'https://www.linkedin.com/in/anhline03',
   kaggle: 'https://www.kaggle.com/lineizumi',
-  email: 'tnanh.gdsciu@gmail.com',
+  email: 'anhtrannam097@gmail.com',
 };
 
-export const CV_PATH = '/cv/line-resume-2026.pdf';
+export const CV_PATH = '/line-cv';
+export const CV_FILE = '/cv/tran-nam-anh-cv.pdf';
 export const AVATAR_PATH = '/avatar.png';
 
 // Section anchors + breadcrumb labels (editorial 7-section structure).

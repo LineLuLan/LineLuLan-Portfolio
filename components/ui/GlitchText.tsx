@@ -1,6 +1,5 @@
 'use client';
 
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import { cn } from '@/lib/cn';
 
 type Props = {
@@ -10,12 +9,11 @@ type Props = {
 };
 
 export function GlitchText({ text, className, always = false }: Props) {
-  const reduce = useReducedMotion();
   return (
     <span
       className={cn(
         'inline-block font-mono text-accent-magenta gpu',
-        !reduce && (always ? 'animate-glitch' : 'glitch-on-hover'),
+        always ? 'animate-glitch' : 'glitch-on-hover',
         className,
       )}
       aria-label={text}

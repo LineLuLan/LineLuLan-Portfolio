@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Line — Data Scientist & AI Engineer';
+export const alt = 'Line — AI / Machine Learning Engineer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -27,7 +27,7 @@ export default function OG() {
           Trần Nam Anh — Line
         </div>
         <div style={{ display: 'flex', fontSize: 36, color: '#a3a3a3', marginTop: 16 }}>
-          Data Scientist &amp; AI Engineer
+          AI / Machine Learning Engineer
         </div>
         <div
           style={{

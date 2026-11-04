@@ -14,6 +14,7 @@ export function ClickSpark() {
   useEffect(() => {
     if (reduce) return;
     let nextId = 0;
+    const timeouts = new Set<number>();
 
     const onClick = (e: MouseEvent) => {
       // Skip clicks on form fields — keeps native UX clean
@@ -22,13 +23,18 @@ export function ClickSpark() {
 
       const id = nextId++;
       setSparks((prev) => [...prev, { id, x: e.clientX, y: e.clientY }]);
-      window.setTimeout(() => {
+      const timeout = window.setTimeout(() => {
+        timeouts.delete(timeout);
         setSparks((prev) => prev.filter((s) => s.id !== id));
       }, 550);
+      timeouts.add(timeout);
     };
 
     window.addEventListener('click', onClick);
-    return () => window.removeEventListener('click', onClick);
+    return () => {
+      window.removeEventListener('click', onClick);
+      timeouts.forEach((timeout) => window.clearTimeout(timeout));
+    };
   }, [reduce]);
 
   if (reduce) return null;

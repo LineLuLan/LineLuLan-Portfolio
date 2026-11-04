@@ -1,19 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
+import { useCallback, useState } from 'react';
 import { BootSplash } from './BootSplash';
 
 export function BootSplashGate() {
-  const reduce = useReducedMotion();
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (reduce) return;
-    setShow(true);
-  }, [reduce]);
+  const [show, setShow] = useState(true);
+  const dismiss = useCallback(() => setShow(false), []);
 
   if (!show) return null;
 
-  return <BootSplash onDismiss={() => setShow(false)} />;
+  return <BootSplash onDismiss={dismiss} />;
 }

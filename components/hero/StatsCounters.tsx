@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
 import type { ProfileStat } from '@/types';
 
@@ -23,14 +23,15 @@ function format(value: number, decimals = 0, pad = 0) {
 
 function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
   const reduce = useReducedMotion();
-  const [display, setDisplay] = useState(reduce ? stat.value : 0);
+  const [display, setDisplay] = useState(stat.value);
 
   useEffect(() => {
     if (!start) return;
-    if (reduce) {
+    if (reduce !== false) {
       setDisplay(stat.value);
       return;
     }
+    setDisplay(0);
     let raf = 0;
     const t0 = performance.now();
     const tick = (now: number) => {
@@ -59,26 +60,21 @@ function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
 }
 
 export function StatsCounters({ stats }: Props) {
-  const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10%' });
-  const start = inView || Boolean(reduce);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={reduce ? false : { opacity: 0, y: 12 }}
-      animate={start ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-8 border-t border-rule-subtle pt-8 md:grid-cols-4 md:gap-x-10"
+      className="reveal-up mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-8 border-t border-rule-subtle pt-8 md:grid-cols-4 md:gap-x-10"
       role="list"
       aria-label="Quick stats"
     >
       {stats.map((s) => (
         <div key={s.label} role="listitem">
-          <Counter stat={s} start={start} />
+          <Counter stat={s} start={inView} />
         </div>
       ))}
-    </motion.div>
+    </div>
   );
 }

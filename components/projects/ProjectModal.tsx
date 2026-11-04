@@ -17,6 +17,7 @@ export function ProjectModal({ project, onClose }: Props) {
 
   useEffect(() => {
     if (!project) return;
+    const prev = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
     closeRef.current?.focus();
@@ -24,6 +25,7 @@ export function ProjectModal({ project, onClose }: Props) {
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      prev?.focus?.();
     };
   }, [project, onClose]);
 

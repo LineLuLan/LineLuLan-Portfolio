@@ -51,6 +51,11 @@
       min-height: calc(100svh - var(--header-h));
       padding-block: 32px;
     }
+
+    /* Contact and the footer fill the last screen together. */
+    #contact.screen-section {
+      min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+    }
   }
 
   .container-x {

@@ -16,9 +16,10 @@ export const projects: Project[] = [
     method: 'Two-stage knowledge distillation into 26.4M-parameter (base) and 49.4M-parameter (large) encoders.',
     results: 'Average 81.13 across eight benchmarks with GoiBERT-large, above BamiBERT (80.65) and PhoBERT-v2 (80.71). 2× GPU throughput at roughly half the parameters and peak memory of BamiBERT; GoiBERT-base keeps 99% of BamiBERT’s score at a quarter of the parameters.',
     tech: ['Python', 'PyTorch', 'HuggingFace', 'Knowledge Distillation'],
-    role: 'Co-developer · distillation and evaluation',
+    role: 'Co-first author · distillation and evaluation',
     links: {
       paper: 'https://arxiv.org/abs/2610.30067',
+      model: 'https://huggingface.co/TwoheartsTechnologies/GoiBERT-M',
     },
     dabm: {
       D: '328.6M Vietnamese tokens · 8 benchmarks',

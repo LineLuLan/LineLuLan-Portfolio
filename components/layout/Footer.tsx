@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { SOCIAL } from '@/lib/constants';
 import { ThemeStamp } from './ThemeStamp';
@@ -7,7 +7,7 @@ const iconLink = 'hairline grid h-11 w-11 place-items-center rounded-[var(--them
 
 export function Footer() {
   return (
-    <footer className="hairline mt-8 border-t pb-24 pt-10 md:py-10">
+    <footer data-site-footer className="hairline border-t pb-24 pt-10 md:py-6">
       <div className="container-x flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <p className="font-mono text-xs text-muted" suppressHydrationWarning>
           © {new Date().getFullYear()} Trần Nam Anh (Line) · Built with intention.

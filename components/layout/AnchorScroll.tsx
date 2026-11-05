@@ -11,10 +11,14 @@ export function AnchorScroll() {
   useEffect(() => {
     const root = document.documentElement;
     const header = document.querySelector<HTMLElement>('[data-site-header]');
+    // The footer height lets Contact and the footer share the last screen (Line, 2026-11-06).
+    const footer = document.querySelector<HTMLElement>('[data-site-footer]');
     const measureHeader = () => {
       if (header) root.style.setProperty('--header-h', `${header.getBoundingClientRect().height}px`);
+      if (footer) root.style.setProperty('--footer-h', `${footer.getBoundingClientRect().height}px`);
     };
     const observer = new ResizeObserver(measureHeader);
+    if (footer) observer.observe(footer);
     if (header) observer.observe(header);
     measureHeader();
     const reveals = new IntersectionObserver((entries) => {

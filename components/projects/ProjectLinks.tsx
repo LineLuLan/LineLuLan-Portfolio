@@ -3,7 +3,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import type { Project } from '@/types';
 
-const actions = [['paper', 'Paper'], ['demo', 'Live demo'], ['github', 'GitHub'], ['video', 'Watch video']] as const;
+const actions = [['paper', 'Paper'], ['model', 'Hugging Face'], ['demo', 'Live demo'], ['github', 'GitHub'], ['video', 'Watch video']] as const;
 
 export function ProjectLinks({ links }: { links: Project['links'] }) {
   if (!links) return null;

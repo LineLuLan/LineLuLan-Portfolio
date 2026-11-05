@@ -53,7 +53,7 @@ export const profile: Profile = {
     },
     {
       title: 'Applied NLP research',
-      description: 'Co-developed GoiBERT: compact Vietnamese encoders that beat PhoBERT-v2 at a quarter of the size.',
+      description: 'Co-first author of GoiBERT: compact Vietnamese encoders that beat PhoBERT-v2 at a quarter of the size.',
       proof: 'GoiBERT · arXiv',
     },
   ],

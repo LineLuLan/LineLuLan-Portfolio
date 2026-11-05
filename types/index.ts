@@ -40,6 +40,7 @@ export type Project = {
     demo?: string;
     paper?: string;
     video?: string;
+    model?: string; // Hugging Face model page
   };
   // DABM
   dabm?: DABMMapping;

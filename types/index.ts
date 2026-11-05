@@ -84,6 +84,7 @@ export type DABMStep = {
 };
 
 export type SocialLinks = {
+  openreview: string;
   github: string;
   linkedin: string;
   kaggle: string;

@@ -2,10 +2,10 @@
 
 // Intent: center Line's invitation and form around a quiet, themed planet scene.
 // Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: unchanged form behavior.
-import { Linkedin, ArrowUpRight } from 'lucide-react';
-import { siGithub, siKaggle } from 'simple-icons';
+import { ArrowUpRight } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SiteIcon } from '@/components/ui/SiteIcon';
 import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { CV_PATH, SOCIAL } from '@/lib/constants';
 import { trackEvent } from '@/lib/analytics';
@@ -25,9 +25,10 @@ export function ContactSection() {
           <p className="text-[17px] leading-7 text-ink">Hiring for an AI / ML or data role, or have a research idea worth testing? My inbox is open.</p>
           <CopyEmail email={SOCIAL.email} />
           <ul className="mt-4 flex flex-wrap gap-2">
-            <li><a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className={socialClass}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d={siGithub.path} /></svg>GitHub</a></li>
-            <li><a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className={socialClass}><Linkedin size={18} aria-hidden />LinkedIn</a></li>
-            <li><a href={SOCIAL.kaggle} target="_blank" rel="noopener noreferrer" className={socialClass}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d={siKaggle.path} /></svg>Kaggle</a></li>
+            <li><a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className={socialClass}><SiteIcon href={SOCIAL.github} size={18} />GitHub</a></li>
+            <li><a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className={socialClass}><SiteIcon href={SOCIAL.linkedin} size={18} />LinkedIn</a></li>
+            <li><a href={SOCIAL.kaggle} target="_blank" rel="noopener noreferrer" className={socialClass}><SiteIcon href={SOCIAL.kaggle} size={18} />Kaggle</a></li>
+            <li><a href={SOCIAL.openreview} target="_blank" rel="noopener noreferrer" className={socialClass}><SiteIcon href={SOCIAL.openreview} size={18} />OpenReview</a></li>
             <li><a href={CV_PATH} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('cv_open', { from: 'contact_section' })} className={socialClass}>Open CV<ArrowUpRight size={16} aria-hidden /></a></li>
           </ul>
         </div>

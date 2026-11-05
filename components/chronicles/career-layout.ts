@@ -4,9 +4,10 @@ import type { ChronicleEvent } from '@/types';
 
 export function careerLayout(events: ChronicleEvent[], today: string) {
   const nodes = [...events].sort((a, b) => a.date.localeCompare(b.date)).map((event, index) => {
-    const row = Math.floor(index / 5);
-    const column = row % 2 ? 4 - index % 5 : index % 5;
-    return { event, index, row, column, x: 100 + column * 200, y: 115 + row * 135,
+    // 6 columns x 4 rows holds up to 24 milestones inside the one-screen budget.
+    const row = Math.floor(index / 6);
+    const column = row % 2 ? 5 - index % 6 : index % 6;
+    return { event, index, row, column, x: 80 + column * 168, y: 115 + row * 135,
       mx: index % 2 ? 170 : 130, my: 70 + index * 140, future: event.date > today };
   });
   const firstFuture = nodes.findIndex((node) => node.future);

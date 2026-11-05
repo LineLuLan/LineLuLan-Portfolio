@@ -7,6 +7,7 @@ export const SOCIAL: SocialLinks = {
   github: 'https://github.com/LineLuLan',
   linkedin: 'https://www.linkedin.com/in/anhline03',
   kaggle: 'https://www.kaggle.com/lineizumi',
+  openreview: 'https://openreview.net/profile?id=~Tran_Nam_Anh3',
   email: 'anhtrannam097@gmail.com',
 };
 

@@ -24,20 +24,20 @@ assert.equal(sectionScrollTop('contact', 4000, 81), 3919);
 const { chronicles } = load('../content/chronicles.ts');
 const { careerLayout } = load('../components/chronicles/career-layout.ts');
 const layout = careerLayout(chronicles, '2026-11-06');
-assert.equal(layout.nodes.length, 20);
-assert.equal(new Set(layout.nodes.map(({ event }) => event.id)).size, 20);
+assert.equal(layout.nodes.length, 21);
+assert.equal(new Set(layout.nodes.map(({ event }) => event.id)).size, 21);
 assert.ok(layout.nodes.every((node, i, nodes) => !i || nodes[i - 1].event.date <= node.event.date));
 assert.deepEqual(Array.from(layout.nodes.filter((node) => node.future), ({ event }) => event.id), ['iu-grad']);
 assert.equal(layout.nodes.at(-1).future, true);
 for (let row = 0; row < 4; row++) {
-  const nodes = layout.nodes.slice(row * 5, row * 5 + 5);
+  const nodes = layout.nodes.slice(row * 6, row * 6 + 6);
   assert.equal(new Set(nodes.map((node) => node.y)).size, 1);
-  assert.equal(nodes[1].x - nodes[0].x, row % 2 ? -200 : 200);
+  assert.equal(nodes[1].x - nodes[0].x, row % 2 ? -168 : 168);
 }
 assert.equal((layout.desktop.full.match(/ A /g) ?? []).length, 3);
-assert.ok(layout.desktop.future.endsWith('L 100 520'));
-assert.ok(layout.desktop.travelled.endsWith('L 300 520'));
-assert.equal(layout.mobile.full.split(' C ').length - 1, 19);
+assert.ok(layout.desktop.future.endsWith('L 584 520'));
+assert.ok(layout.desktop.travelled.endsWith('L 752 520'));
+assert.equal(layout.mobile.full.split(' C ').length - 1, 20);
 const boundary = careerLayout([
   { id: 'tomorrow', date: '2026-11-07' },
   { id: 'today', date: '2026-11-06' },
@@ -62,6 +62,7 @@ const { CareerPath } = load('../components/chronicles/CareerPath.tsx', {
       } },
       '@/lib/dates': { formatChronicleDate: (date) => date },
       '@/components/pixel/PixelPlanet': { PixelPlanet: () => null },
+      '@/components/ui/SiteIcon': { SiteIcon: () => null },
       './career-layout': { careerLayout },
       './career-path.css': {},
     };
@@ -74,8 +75,8 @@ for (const event of chronicles) {
   const escapedTitle = renderToStaticMarkup(React.createElement('span', null, event.title)).slice(6, -7);
   assert.ok(recordHTML.includes(escapedTitle), `SSR must preserve milestone: ${event.id}`);
 }
-assert.equal((recordHTML.match(/data-milestone=/g) ?? []).length, 20);
-assert.equal((recordHTML.match(/aria-expanded="false"/g) ?? []).length, 20);
+assert.equal((recordHTML.match(/data-milestone=/g) ?? []).length, 21);
+assert.equal((recordHTML.match(/aria-expanded="false"/g) ?? []).length, 21);
 assert.match(recordHTML, />Next</);
 assert.ok(!recordHTML.includes('role="tab"'));
 
@@ -138,4 +139,4 @@ for (const dark of [false, true]) {
     }
   }
 }
-console.log(`PASS: section offsets, Record chronology/road geometry/20 SSR milestones, scroll/focus, 10 motion preferences and ${appearanceCases} pre-paint appearance cases.`);
+console.log(`PASS: section offsets, Record chronology/road geometry/21 SSR milestones, scroll/focus, 10 motion preferences and ${appearanceCases} pre-paint appearance cases.`);

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
+import { SiteIcon } from '@/components/ui/SiteIcon';
 import { formatChronicleDate } from '@/lib/dates';
 import type { PlanetKind } from '@/lib/pixel-planets';
 import type { ChronicleEvent } from '@/types';
@@ -72,7 +73,7 @@ export function CareerPath({ events, today }: { events: ChronicleEvent[]; today:
                 onClick={() => setOpen((current) => current === event.id ? null : event.id)}>
                 <motion.span className="career-marker-wrap" initial={reducedMotion ? false : { scale: 0 }} whileInView={{ scale: 1 }}
                   viewport={{ once: true }} transition={{ duration: reducedMotion ? 0 : 0.25, delay: reducedMotion ? 0 : index * 0.045 }}>
-                  <span className="career-marker" data-ongoing={event.type === 'role' && event.ongoing} />
+                  <span className="career-marker" data-ongoing={Boolean(event.ongoing)} />
                   <PixelPlanet kind={TYPES[event.type].planet} size={16} className="career-glyph" />
                 </motion.span>
                 <span className="career-label">
@@ -89,7 +90,7 @@ export function CareerPath({ events, today }: { events: ChronicleEvent[]; today:
                   <h3 className="font-display text-lg font-bold text-ink">{event.title}</h3>
                   {event.org && <p className="mt-1 text-sm text-muted">{event.org}</p>}
                   {event.description && <p className="mt-3 text-sm leading-6 text-ink">{event.description}</p>}
-                  {event.link && <a href={event.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center text-sm text-accent underline underline-offset-4">Learn more</a>}
+                  {event.link && <a href={event.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm text-accent underline underline-offset-4"><SiteIcon href={event.link} />Visit {new URL(event.link).hostname.replace(/^www\./, '')}</a>}
                 </div>
               )}
             </li>

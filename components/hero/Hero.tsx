@@ -3,6 +3,7 @@
 import type { CSSProperties } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
+import { SiteIcon } from '@/components/ui/SiteIcon';
 import { PixelStars } from '@/components/pixel/PixelStars';
 import { profile } from '@/content/profile';
 import { CV_PATH, SOCIAL } from '@/lib/constants';
@@ -55,10 +56,13 @@ export function Hero() {
               Let&apos;s connect
             </a>
             <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] px-2 font-mono text-sm text-ink hover:text-accent">
-              GitHub <ArrowUpRight size={16} aria-hidden />
+              <SiteIcon href={SOCIAL.github} /> GitHub <ArrowUpRight size={16} aria-hidden />
             </a>
             <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] px-2 font-mono text-sm text-ink hover:text-accent">
-              LinkedIn <ArrowUpRight size={16} aria-hidden />
+              <SiteIcon href={SOCIAL.linkedin} /> LinkedIn <ArrowUpRight size={16} aria-hidden />
+            </a>
+            <a href={SOCIAL.openreview} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] px-2 font-mono text-sm text-ink hover:text-accent">
+              <SiteIcon href={SOCIAL.openreview} /> OpenReview <ArrowUpRight size={16} aria-hidden />
             </a>
           </div>
         </div>

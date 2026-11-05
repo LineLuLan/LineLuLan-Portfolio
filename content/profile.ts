@@ -67,6 +67,6 @@ export const profile: Profile = {
   ],
   narrative: {
     intro: "I'm Line (Trần Nam Anh), an AI / ML engineer based in Ho Chi Minh City. I work across the whole life of a model: cleaning and validating the data, building and benchmarking the model, then shipping it inside a system people actually use.",
-    mission: "Right now I'm a Data Engineer at Twohearts Technologies, building validation and evaluation workflows for AI ordering agents. I'm also first author on a clinical ML study with the Hospital for Tropical Diseases HCMC, and Vice Lead of GDGoC HCMIU.",
+    mission: "Right now I'm a Data Engineer at Twohearts Technologies, building validation and evaluation workflows for AI ordering agents. I'm also first author on a clinical ML study with the Hospital for Tropical Diseases HCMC, and an Advisor to GDGoC HCMIU.",
   },
 };

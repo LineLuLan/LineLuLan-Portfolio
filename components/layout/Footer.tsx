@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { Mail, ArrowUp } from 'lucide-react';
+import { SiteIcon } from '@/components/ui/SiteIcon';
 import { SOCIAL } from '@/lib/constants';
 import { ThemeStamp } from './ThemeStamp';
 
@@ -19,10 +20,13 @@ export function Footer() {
               <Mail size={16} aria-hidden />
             </a>
             <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconLink}>
-              <Github size={16} aria-hidden />
+              <SiteIcon href={SOCIAL.github} />
             </a>
             <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconLink}>
-              <Linkedin size={16} aria-hidden />
+              <SiteIcon href={SOCIAL.linkedin} />
+            </a>
+            <a href={SOCIAL.openreview} target="_blank" rel="noopener noreferrer" aria-label="OpenReview" className={iconLink}>
+              <SiteIcon href={SOCIAL.openreview} />
             </a>
             <Link href="#hero" aria-label="Back to top" className={iconLink}>
               <ArrowUp size={16} aria-hidden />

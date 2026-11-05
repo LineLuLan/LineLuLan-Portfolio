@@ -119,6 +119,7 @@ export type Profile = {
   research: string;
   building: string;
   openTo: string;
+  availability: string; // short status chip in the hero, one line on phones
   // Editorial enhancements
   stats: ProfileStat[];
   whatIBring: WhatIBringItem[];

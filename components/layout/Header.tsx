@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
-import { cn } from '@/lib/cn';
+import { capitalize, cn } from '@/lib/cn';
 
 // The brand is the whoami link; the brief reserves navigation for the six later sections.
 const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
@@ -97,11 +97,11 @@ export function Header() {
         aria-current={active === id ? 'location' : undefined}
         onClick={() => setOpen(false)}
         className={cn(
-          'flex min-h-11 items-center border-b-2 px-2 font-mono text-xs lowercase hover:text-accent',
-          active === id ? 'border-accent text-ink' : 'border-transparent text-muted',
+          'flex min-h-11 items-center border-b-2 px-3 font-sans text-[15px] font-medium hover:text-accent',
+          active === id ? 'border-accent text-accent' : 'border-transparent text-ink',
         )}
       >
-        {SECTIONS[id].label}
+        {capitalize(SECTIONS[id].label)}
       </Link>
     </li>
   ));
@@ -112,26 +112,27 @@ export function Header() {
       onFocusCapture={() => setHidden(false)}
       className={cn('hairline sticky top-0 z-40 border-b bg-paper transition-transform duration-200', hidden && '-translate-y-full')}
     >
-      <div className="container-x flex min-h-20 items-center justify-between gap-2 py-3">
-        <Link href="#hero" aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2 font-sans font-bold text-ink">
-          <PixelPlanet kind="saturn" size={24} />
-          Line
+      <div className="container-x flex min-h-20 flex-wrap items-center justify-between gap-2 py-3">
+        <Link href="#hero" aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2">
+          <PixelPlanet kind="saturn" size={28} />
+          <span className="font-sans text-xl font-bold text-ink">Line</span>
+          <span className="hidden font-mono text-sm text-muted nav:inline">linelulan.vercel.app</span>
         </Link>
-        <nav aria-label="Sections" className="hidden nav:block">
+        <nav aria-label="Sections" className="order-last hidden basis-full nav:block xl:order-none xl:basis-auto">
           <ul className="flex items-center">{links}</ul>
         </nav>
         <div className="flex shrink-0 items-center gap-2">
-          <a href={CV_PATH} target="_blank" rel="noopener noreferrer" className="hairline inline-flex min-h-11 items-center rounded-[var(--theme-control-radius)] border px-3 font-mono text-xs text-ink hover:border-accent hover:text-accent">
+          <a href={CV_PATH} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:bg-accent-hover">
             Open CV
           </a>
-          <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={36} height={36} className="h-9 w-9 rounded-full" />
+          <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={40} height={40} className="h-10 w-10 rounded-full ring-2 ring-accent/40" />
           <button
             ref={menuButton}
             type="button"
             aria-expanded={open}
             aria-controls="mobile-navigation"
             onClick={() => setOpen((value) => !value)}
-            className="hairline min-h-11 rounded-[var(--theme-control-radius)] border px-2 font-mono text-xs text-ink hover:border-accent nav:hidden"
+            className="hairline min-h-11 rounded-[var(--theme-control-radius)] border px-2 font-mono text-sm text-ink hover:border-accent nav:hidden"
           >
             Menu
           </button>

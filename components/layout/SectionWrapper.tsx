@@ -28,7 +28,8 @@ export function SectionWrapper({
       transition={{ duration: 0.4, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-80px' }}
       className={cn(
-        'relative scroll-mt-20 py-16 md:py-24',
+        'relative scroll-mt-20 nav:scroll-mt-32 xl:scroll-mt-20',
+        id === 'hero' ? 'pt-8 pb-16 md:pt-12 md:pb-20' : 'py-16 md:py-24',
         withTopRule && 'border-t hairline',
         className,
       )}

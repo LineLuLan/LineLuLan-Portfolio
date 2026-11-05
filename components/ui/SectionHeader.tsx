@@ -23,7 +23,7 @@ export function SectionHeader({ index, slug, title, sub, className, planet }: Pr
       <p className="eyebrow">
         {planet && <PixelPlanet kind={planet} size={28} className="shrink-0" />}
         <span>
-          {pad(index)} / {pad(SECTION_TOTAL)} · {slug}
+          <span className="eyebrow-muted">{pad(index)} / {pad(SECTION_TOTAL)}</span> · {slug}
         </span>
       </p>
       <h2 className="editorial-h2 mt-3">

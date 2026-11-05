@@ -2,11 +2,10 @@ import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { PixelPlanet } from '@/components/pixel/PixelPlanet';
+import { PixelStars } from '@/components/pixel/PixelStars';
 import { profile } from '@/content/profile';
 import { AVATAR_PATH, CV_PATH, SOCIAL } from '@/lib/constants';
-import { SECTION_PLANET } from '@/lib/pixel-planets';
-import { OrbitArtwork } from './OrbitArtwork';
+import { OrbitSystem } from './OrbitSystem';
 import { StatsCounters } from './StatsCounters';
 
 export function Hero() {
@@ -14,18 +13,24 @@ export function Hero() {
 
   return (
     <SectionWrapper id="hero" ariaLabel="Introduction" className="isolate">
-      <div aria-hidden className="pixel-grid-bg pointer-events-none absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" />
-      <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:items-center">
+      <div aria-hidden className="pixel-grid-bg pointer-events-none absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent)]">
+        <PixelStars />
+      </div>
+      <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center xl:gap-16">
         <div className="min-w-0">
           <p style={reveal(0)} className="reveal-up eyebrow">
-            <PixelPlanet kind={SECTION_PLANET.whoami} size={28} className="shrink-0" />
-            <span>01 / 07 · AI / ML ENGINEER · DATA ENGINEERING · 2026</span>
+            <span className="eyebrow-muted shrink-0">01 / 07</span>
+            <span>AI / ML Engineer · Data Engineering · 2026</span>
           </p>
           <h1 style={reveal(1)} className="reveal-up mt-6 font-sans font-extrabold text-display text-ink">
             Build things that survive
             <span className="serif-accent block">contact with reality.</span>
           </h1>
-          <div style={reveal(2)} className="reveal-up mt-8 flex items-center gap-4">
+          <p style={reveal(2)} className="reveal-up mt-5 inline-flex min-h-10 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline bg-panel px-3 font-mono text-sm text-ink">
+            <span className="h-2 w-2 shrink-0 rounded-full bg-success" aria-hidden />
+            <span>{profile.availability}</span>
+          </p>
+          <div style={reveal(3)} className="reveal-up mt-8 flex items-center gap-4">
             <Image
               src={AVATAR_PATH}
               alt={`${profile.name} avatar`}
@@ -39,10 +44,10 @@ export function Hero() {
               <p className="font-mono text-sm text-muted">{profile.alias} · {profile.title}</p>
             </div>
           </div>
-          <p style={reveal(3)} className="reveal-up mt-6 max-w-[42ch] text-lg text-muted">
+          <p style={reveal(4)} className="reveal-up mt-6 max-w-[44ch] text-lg text-muted md:text-xl">
             {profile.positioning}
           </p>
-          <div style={reveal(4)} className="reveal-up mt-8 flex flex-wrap gap-3">
+          <div style={reveal(5)} className="reveal-up mt-8 flex flex-wrap gap-3">
             <a
               href={CV_PATH}
               target="_blank"
@@ -63,8 +68,8 @@ export function Hero() {
             </a>
           </div>
         </div>
-        <div className="hidden min-w-0 lg:block">
-          <OrbitArtwork />
+        <div className="mx-auto hidden w-full min-w-0 max-w-[440px] md:block lg:max-w-[600px]">
+          <OrbitSystem />
         </div>
       </div>
       <StatsCounters stats={profile.stats} />

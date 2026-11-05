@@ -46,8 +46,8 @@ function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <span className="font-sans text-4xl font-bold text-ink">
-        {format(display, stat.decimals ?? 0, stat.pad ?? 0)}
+      <span className="flex flex-wrap items-baseline justify-center gap-x-1 gap-y-2 font-sans text-5xl font-extrabold leading-none text-ink md:text-[56px]">
+        <span>{format(display, stat.decimals ?? 0, stat.pad ?? 0)}</span>
         {stat.suffix && (
           <span className="text-accent">{stat.suffix}</span>
         )}
@@ -66,7 +66,7 @@ export function StatsCounters({ stats }: Props) {
   return (
     <div
       ref={ref}
-      className="reveal-up mt-12 grid grid-cols-2 gap-x-4 gap-y-8 border-t hairline pt-8 md:grid-cols-4 md:gap-x-10"
+      className="reveal-up mt-12 grid grid-cols-2 gap-x-4 gap-y-10 border-t hairline pt-8 md:grid-cols-4 md:gap-x-10"
       role="list"
       aria-label="Quick stats"
     >

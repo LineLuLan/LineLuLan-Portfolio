@@ -26,6 +26,7 @@ export const profile: Profile = {
   research: 'clinical ML with HTD HCMC · first author',
   building: 'Twohearts Technologies · Data Engineer',
   openTo: 'AI / ML Engineer · Data Engineering roles',
+  availability: 'Open to AI / ML & Data roles · HCMC',
   stats: [
     { value: 4, suffix: '+', label: 'years in tech' },
     { value: 1, suffix: '+', label: 'year in industry' },

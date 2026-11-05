@@ -8,6 +8,7 @@ import { profile } from '@/content/profile';
 import { CV_PATH, SOCIAL } from '@/lib/constants';
 import { OrbitSystem } from './OrbitSystem';
 import { StatsCounters } from './StatsCounters';
+import { VietnamTime } from './VietnamTime';
 
 export function Hero() {
   const reveal = (i: number) => ({ '--reveal-delay': `${i * 60}ms` } as CSSProperties);
@@ -24,12 +25,12 @@ export function Hero() {
             <span>AI / ML Engineer · Data Engineering</span>
           </p>
           <h1 style={reveal(1)} className="reveal-up hero-heading mt-4 font-display font-bold text-ink">
-            <span className="block [text-wrap:balance]">Build things that survive</span>
-            <span className="block text-accent">contact with reality.</span>
+            <span className="block [text-wrap:balance]">Chill in coding</span>
+            <span className="block text-accent">feel in styling.</span>
           </h1>
           <p style={reveal(2)} className="reveal-up mt-3 inline-flex min-h-10 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline bg-panel px-3 font-mono text-sm text-ink">
             <span className="h-2 w-2 shrink-0 rounded-full bg-success" aria-hidden />
-            <span>{profile.availability}</span>
+            <span>{profile.availability}<VietnamTime /></span>
           </p>
           <div style={reveal(3)} className="reveal-up mt-4 flex items-center">
             <div>

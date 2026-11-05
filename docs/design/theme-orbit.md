@@ -85,7 +85,7 @@ Browser and Apple icons are static 32?32 and 180?180 PNGs generated from `public
 - `--font-sans`: Manrope, weights 400/500/700/800, for body text and tool chips.
 - `--font-display`: Space Grotesk, weights 500/700, for all headings. Both fonts use Latin, Latin-ext and Vietnamese subsets with `display: swap`.
 - `--font-mono`: JetBrains Mono 400/500 for metadata, eyebrows and dates.
-- Hero H1: upright display 700, `clamp(2.5rem, 1.5rem + 3vw, 4.25rem)`, line-height 1.02, tracking -0.035em. “Build things that survive” is ink; “contact with reality.” is accent.
+- Hero H1: upright display 700, `clamp(2.5rem, 1.5rem + 3vw, 4.25rem)`, line-height 1.02, tracking -0.035em. “Chill in coding” is ink; “feel in styling.” is accent (Line, 2026-11-06). The availability chip shows live Vietnam time (GMT+7).
 - Section H2: upright display 700, `clamp(2rem, 1.4rem + 2.2vw, 3rem)`, line-height 1.1, tracking -0.03em. Only the final period is accent.
 - Eyebrow: mono 14px/1.5, weight 500, tracking 0.02em, ink. Section format: planet, muted two-digit index, then a capitalized label.
 - Labels use sentence case, retaining official brand capitalization. Body paragraphs use ink; metadata uses muted. No italic styles.

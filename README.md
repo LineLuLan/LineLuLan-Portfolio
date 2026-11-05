@@ -1,78 +1,102 @@
-# linelulan-portfolio
+# Line's portfolio
 
-Personal portfolio for **Trần Nam Anh — Line**. Data Scientist & AI Engineer.
+Personal portfolio for Trần Nam Anh (Line), built around the Orbit theme: warm paper, semantic colors, and pixel planets. Seven sections cover profile, skills, projects, DABM, experience, and contact. A theme registry powers the appearance dock and footer stamp; a small planet follows the active section.
 
-> *Working at the intersection of ML, LLMs, and algorithmic reasoning — and I care that each thing I ship has its own shape.*
-
-**Live:** https://linelulan.dev (after deploy)
-
----
-
-## Quickstart
-
-```bash
-# 1. Install deps
-npm install
-
-# 2. Copy env example and fill in values
-cp .env.local.example .env.local
-# → set NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY (free at https://web3forms.com)
-
-# 3. Run dev server
-npm run dev
-# → http://localhost:3000
-```
+**Live:** https://linelulan.vercel.app
 
 ## Stack
 
-- **Next.js 14** (App Router) + **TypeScript** strict mode
-- **Tailwind CSS** + CSS custom properties for design tokens
-- **Framer Motion** for animations (with `prefers-reduced-motion` guards)
-- **Geist** + **JetBrains Mono** via `next/font`
-- **Web3Forms** for contact form (no backend needed)
-- **Vercel Analytics** (optional, free tier)
+| Concern | Choice |
+| --- | --- |
+| Framework | Next.js 14 App Router |
+| Language | TypeScript strict |
+| Styling | Tailwind CSS 3 and CSS custom properties |
+| Motion | framer-motion 11, CSS reveals, reduced-motion support |
+| Fonts | Manrope, JetBrains Mono, DM Serif Display via next/font |
+| Contact | Web3Forms, called from the browser |
+| Hosting and analytics | Vercel |
+
+## Quickstart
+
+```sh
+pnpm install
+cp .env.local.example .env.local
+pnpm dev
+```
+
+Open http://localhost:3000. Set these public build-time variables in your local environment:
+
+| Variable | Purpose |
+| --- | --- |
+| NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY | Web3Forms public access key for the intended inbox |
+| NEXT_PUBLIC_SITE_URL | Canonical URL; use https://linelulan.vercel.app for Vercel |
+
+```sh
+pnpm build
+pnpm check:contrast
+```
+
+The contact form needs a configured key. Public variables are included in browser assets; never put secrets in them.
 
 ## Project structure
 
-```
-app/                  # Next.js App Router (pages, layouts, API routes)
-components/           # React components grouped by feature
-  ├── layout/         # nav, footer, section wrapper, mode toggle
-  ├── hero/           # hero section (recruiter + experience modes)
-  ├── skills/         # skills section
-  ├── projects/       # projects section + cards
-  ├── dabm/           # DABM framework section
-  ├── chronicles/     # timeline section
-  ├── contact/        # contact section + form
-  └── ui/             # reusable primitives (GlassCard, StatusDot, etc.)
-content/              # ALL content data (typed). Edit here, not in JSX.
-  ├── profile.ts      # name, tagline, social links
-  ├── skills.ts       # 4 skill tiers
-  ├── projects.ts     # featured + classified slots
-  ├── dabm.ts         # quadrants + project mappings
-  └── chronicles.ts   # 13 timeline events
-lib/                  # utilities (cn, constants, hooks)
-types/                # TypeScript type definitions
-public/               # static assets (avatar, CV, OG image)
+```text
+app/                    routes, layout, theme tokens, global CSS, generated icons
+components/
+  about/                narrative, facts, strengths
+  chronicles/           experience rows and event modal
+  contact/              contact band and form
+  dabm/                 framework panels and project mapping
+  hero/                 SSR-visible hero, artwork, stats
+  layout/               header, footer, section wrapper, motion, theme stamp
+  pixel/                planet renderer and active-section companion
+  projects/             project rows, filters, modal
+  providers/            theme state and persistence
+  skills/               skill tiers
+  ui/                   section headings, status, boot splash
+  ThemeDock.tsx         appearance and motion controls
+content/                typed profile, projects, skills, DABM, chronicles
+docs/design/            current design authority
+lib/                    constants, theme registry, planet grids, helpers
+public/                 avatar and CV assets
+scripts/                contrast gate
+types/                  shared content shapes
 ```
 
-## Documentation
+The `/line-cv` route serves the CV PDF inline through a rewrite in `next.config.mjs`. Public CV paths live in `lib/constants.ts`.
 
-| File | Purpose |
-|---|---|
-| [`PLANNING.md`](./PLANNING.md) | Strategy, scope, decisions, architecture rules |
-| [`TRACKING.md`](./TRACKING.md) | Living checklist of implementation tasks |
-| [`HANDOFF.md`](./HANDOFF.md) | Onboarding — how to add/edit/deploy |
-| [`linelulan-portfolio-blueprint.md`](./linelulan-portfolio-blueprint.md) | Full design specification (source of truth) |
+## Common changes
+
+### Add a theme
+
+1. Add a registry entry in `lib/themes.ts` with a unique id, number, name, symbol, accent, paper, and description.
+2. Add an `html[data-theme="id"]` block in `app/themes.css`. Omitted tokens inherit the Orbit defaults in `:root`; color tokens use six-digit hex values.
+3. Run `pnpm check:contrast` before shipping. It checks the root palette and every theme.
+4. Check the dock, footer stamp, keyboard focus, stored preference, and motion settings. Sections use semantic classes and need no palette edits.
+
+### Add a project
+
+Add a typed `Project` to `content/projects.ts`. Keep the slug unique and fill name, tagline, domains, and state; add tech, links, role, and DABM fields as available. Featured entries sort first. Classified entries appear in the compact In orbit list; public entries appear in the filtered rows and project selector.
+
+### Add a chronicle event
+
+Add a `ChronicleEvent` to the `chronicles` array in `content/chronicles.ts`. Use a unique id, ISO date, type, and title. Optional org, description, link, endDate, and ongoing fields control the row and modal. The UI groups by type and sorts newest first. Dates ending in `-01` display month and year.
 
 ## Deploy
 
-1. Push to GitHub.
-2. Import in Vercel → auto-detects Next.js.
-3. Add env var `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in Vercel project settings.
-4. Connect custom domain `linelulan.dev`.
-5. Enable Vercel Analytics (free).
+1. After Line approves the changes and explicitly authorizes the Git actions, merge to the chosen branch and push.
+2. Import the repository into Vercel as a Next.js project and use pnpm for installation and builds.
+3. Set `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` for the intended inbox and `NEXT_PUBLIC_SITE_URL=https://linelulan.vercel.app`.
+4. Deploy the approved revision and confirm the project domain is `linelulan.vercel.app`.
+5. Complete the checks in [TRACKING.md](TRACKING.md), including an authorized contact delivery test.
+
+## Documentation
+
+- [Design authority](docs/design/theme-orbit.md)
+- [Maintainer guide](HANDOFF.md)
+- [Strategy and open questions](PLANNING.md)
+- [Verification and deployment checklist](TRACKING.md)
 
 ## License
 
-Source code: MIT. Content (writing, photos, branding): © 2026 Trần Nam Anh, all rights reserved.
+Source code: MIT. Content, writing, images, and branding: © 2026 Trần Nam Anh.

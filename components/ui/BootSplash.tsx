@@ -3,9 +3,10 @@
 import { useEffect } from 'react';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 
-const FADE_IN = 500;
-const HOLD = 900;
-const FADE_OUT = 600;
+// Keep the intro short: the splash delays LCP for every visitor (Lighthouse LCP 3.2 s at 2000 ms total).
+const FADE_IN = 400;
+const HOLD = 500;
+const FADE_OUT = 400;
 
 type Props = {
   onDismiss: () => void;

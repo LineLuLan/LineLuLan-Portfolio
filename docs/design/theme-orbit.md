@@ -1,6 +1,6 @@
 # Design brief — Theme 01 "Orbit"
 
-Status: draft v1 · 2026-11-05 · owner Line · written by the supervisor session.
+Status: implemented v1 · 2026-11-05
 This file is the brief every implementation packet reads. Reference: tamir39.com (Swiss / Editorial art direction, theme dock, wide project rows). The implementation is original; nothing is copied from that repository.
 
 ## 1. Goals
@@ -126,9 +126,9 @@ Section headings: `01 whoami` · `02 about — jack of all trades.` · `03 stack
 
 | Phase | Scope | Validate |
 |---|---|---|
-| P1 Foundation | themes registry, themes.css, Tailwind remap, fonts, ThemeProvider + pre-paint script + ThemeDock, PixelPlanet + planet set, Header, Footer, boot splash restyle, remove StarField/GrainOverlay/ClickSpark/GlitchText/TerminalPrompt/useTypewriter and the glass/neon CSS | tsc, lint, build, contrast script, screenshot |
-| P2 Sections A | Hero + OrbitArtwork, About, Stack | same + mobile screenshot |
-| P3 Sections B | Work rows + modal, DABM, Record + modal, Contact band + form | same + Playwright 4-condition probe |
-| P4 Polish | OrbitCompanion, header hide/reveal, Lighthouse ≥ 95, docs refresh (README/PLANNING/TRACKING/HANDOFF), delete dead files | Lighthouse + a11y audit |
+| P1 Foundation — done | themes registry, themes.css, Tailwind remap, fonts, ThemeProvider + pre-paint script + ThemeDock, PixelPlanet + planet set, Header, Footer, boot splash restyle, remove StarField/GrainOverlay/ClickSpark/GlitchText/TerminalPrompt/useTypewriter and the glass/neon CSS | tsc, lint, build, contrast script, screenshot |
+| P2 Sections A — done | Hero + OrbitArtwork, About, Stack | same + mobile screenshot |
+| P3 Sections B — done | Work rows + modal, DABM, Record + modal, Contact band + form | same + Playwright 4-condition probe |
+| P4 Polish — done | OrbitCompanion, header hide/reveal, Lighthouse ≥ 95, docs refresh (README/PLANNING/TRACKING/HANDOFF), delete dead files | Lighthouse + a11y audit |
 
 Each phase lands on branch `redesign/theme-planets`; `main` stays untouched until Line approves the whole redesign. Backup of the pre-redesign site: branch `backup/pre-ui-refactor-2026-11-05`, tag `v1.1.0-pre-ui-refactor`.

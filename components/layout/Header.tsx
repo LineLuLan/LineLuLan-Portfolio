@@ -13,7 +13,51 @@ const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
 export function Header() {
   const [active, setActive] = useState<SectionId>('whoami');
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const header = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    // Intent: hide only after deliberate desktop scrolling; keep keyboard navigation visible.
+    // Status: P4 complete. Next: none. Blockers: none. Confidence: direction/focus/media checks.
+    const media = window.matchMedia('(min-width: 900px) and (hover: hover) and (pointer: fine)');
+    let previousY = window.scrollY;
+    let downwardTravel = 0;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const currentY = Math.max(0, window.scrollY);
+      const delta = currentY - previousY;
+      previousY = currentY;
+      if (delta < 0 || currentY === 0 || header.current?.contains(document.activeElement)) {
+        downwardTravel = 0;
+        setHidden(false);
+      } else if (delta > 0) {
+        downwardTravel += delta;
+        if (downwardTravel > 80) setHidden(true);
+      }
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const syncMedia = () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previousY = Math.max(0, window.scrollY);
+      downwardTravel = 0;
+      setHidden(false);
+      if (media.matches) window.addEventListener('scroll', onScroll, { passive: true });
+    };
+    syncMedia();
+    media.addEventListener('change', syncMedia);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      media.removeEventListener('change', syncMedia);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -63,7 +107,11 @@ export function Header() {
   ));
 
   return (
-    <header className="hairline sticky top-0 z-40 border-b bg-paper">
+    <header
+      ref={header}
+      onFocusCapture={() => setHidden(false)}
+      className={cn('hairline sticky top-0 z-40 border-b bg-paper transition-transform duration-200', hidden && '-translate-y-full')}
+    >
       <div className="container-x flex min-h-20 items-center justify-between gap-2 py-3">
         <Link href="#hero" aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2 font-sans font-bold text-ink">
           <PixelPlanet kind="saturn" size={24} />

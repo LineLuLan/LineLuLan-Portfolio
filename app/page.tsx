@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { ThemeDock } from '@/components/ThemeDock';
+import { OrbitCompanion } from '@/components/pixel/OrbitCompanion';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/hero/Hero';
 import { AboutSection } from '@/components/about/AboutSection';
@@ -24,6 +25,7 @@ export default function Page() {
       </main>
       <Footer />
       <ThemeDock />
+      <OrbitCompanion />
     </div>
   );
 }

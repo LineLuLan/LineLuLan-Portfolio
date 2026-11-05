@@ -1,135 +1,79 @@
-# HANDOFF — Maintainer onboarding
+# Maintainer guide
 
-> Read this if you're picking the codebase up for the first time (or coming back after months). It tells you where things live, how to make common changes, and what NOT to do.
+Line owns this portfolio. The current design authority is [Orbit](docs/design/theme-orbit.md). [TRACKING.md](TRACKING.md) records the remaining release checks.
 
----
+## Run and verify
 
-## How to run locally
+Use `pnpm install`, copy `.env.local.example` to `.env.local`, then run `pnpm dev`. Configure the public Web3Forms key and Vercel site URL before building. Do not put secrets in public variables.
 
-```bash
-npm install
-cp .env.local.example .env.local        # then fill NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
-npm run dev                              # → http://localhost:3000
-```
+Run `pnpm exec tsc --noEmit`, `pnpm lint`, `pnpm check:contrast`, and `pnpm build`. Use `pnpm start` to probe the production build.
 
-Production build smoke:
+## Content and routes
 
-```bash
-npm run build
-npm run start
-```
+| Change | Location |
+| --- | --- |
+| Profile, narrative, facts, stats | content/profile.ts |
+| Skill tiers | content/skills.ts |
+| Projects, filters, DABM mappings | content/projects.ts |
+| Framework copy | content/dabm.ts |
+| Experience and achievements | content/chronicles.ts |
+| Shared content shapes | types/index.ts |
+| Social URLs, section ids, CV paths | lib/constants.ts |
+| Homepage assembly | app/page.tsx |
+| CV route rewrite and response headers | next.config.mjs |
 
----
+Add projects with a stable unique slug and the typed fields in `Project`. Links are optional; classified projects appear in the static In orbit list. Add events to the `chronicles` array with a unique id, date, type, and title. The UI groups events into organizations, education, and achievements and sorts each group newest first. Use description or link for an interactive event; `ongoing` renders Present. Placeholder day `-01` renders only month and year.
 
-## Architecture map
+The `/line-cv` rewrite serves the PDF inline. When renaming the PDF in `public/cv/`, update `CV_FILE` and the rewrite and header paths in `next.config.mjs` together.
 
-```
-                         ┌──────────────────┐
-                         │   content/*.ts   │  ← strings, data, tiers, events
-                         │  (typed source)  │
-                         └────────┬─────────┘
-                                  │
-                                  ▼
-┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│  components/ui/  │ ←─ │ components/<sec>/│ ─→ │   app/page.tsx   │
-│  (primitives)    │    │ (feature blocks) │    │ (assembled view) │
-└──────────────────┘    └────────┬─────────┘    └──────────────────┘
-                                 │                       │
-                                 ▼                       ▼
-                         ┌──────────────────┐    ┌──────────────────┐
-                         │  app/globals.css │    │  app/layout.tsx  │
-                         │ (design tokens)  │    │ (fonts, meta)    │
-                         └──────────────────┘    └──────────────────┘
-```
+## Theme system
 
-**Rule of thumb:** if you're editing JSX to change a sentence, you're doing it wrong — find the right `content/*.ts` file.
+`lib/themes.ts` defines the registry, default theme, validation, and storage keys. `app/themes.css` supplies Orbit in `:root` for SSR and no-JavaScript visits. Each `html[data-theme="id"]` block overrides those tokens. `tailwind.config.ts` maps semantic classes to CSS variables.
 
----
+The inline pre-paint script in `app/layout.tsx` reads `line.theme` and `line.motion` before rendering the page. It validates theme ids and catches storage failures, then sets `data-theme` and `data-motion` on the root element.
 
-## Common tasks
+`ThemeProvider` starts with the same default state on the server and first client render. After hydration it adopts the pre-paint attributes. It persists changes, syncs across tabs, tracks system reduced motion, and updates the theme-color metadata. `ThemeDock` selects preferences. `ThemeStamp` reads the registry through the provider; changes after hydration are ordinary state updates.
 
-### How to add a new project
+Add a theme with one registry entry and one CSS block, then run the contrast gate. Use six-digit hex color tokens. The checker prints a root table and a table for every theme, inheriting omitted tokens from the root.
 
-1. Open `content/projects.ts`.
-2. Add a new `Project` entry to the `projects` array (see existing Dengue card for full shape).
-3. Set `state: 'live'` (was `'classified'` for placeholder).
-4. Fill `dabm: { D, A, B, M }`. Each is a string; max 80 chars.
-5. Fill `tech` (array of stack), `links.github`, `links.demo` (optional).
-6. (Optional) drop a screenshot in `public/projects/<slug>.png` and reference via `image: '/projects/<slug>.png'`.
-7. The card auto-renders. The DABM section's "Apply" dropdown picks up the new project.
+## Layout and motion
 
-### How to flip a Classified slot to Live
+Components are grouped by feature. Pixel grids and section assignments live in `lib/pixel-planets.ts`; `PixelPlanet` renders them. The companion mirrors the header's section observer and is hidden below 480px. The header hides after more than 80px of downward travel on fine-pointer desktop devices, reappears on upward scroll, and stays visible while it contains keyboard focus.
 
-1. Find the slot (e.g. slot-02) in `content/projects.ts`.
-2. Replace the placeholder fields (`tagline`, `state`, `dabm`, `tech`, `links`) with real values.
-3. Keep `slug` stable to preserve any deep links.
+`MotionProvider` uses MotionConfig with the system preference and the dock's motion setting. Global CSS handles `data-motion="off"` and reduced motion. The hero is visible in SSR and uses CSS reveals. The splash is present in SSR and dismisses through CSS even without JavaScript. Keep the noscript fallback in the layout. `StatsCounters` still imports `lib/hooks/useReducedMotion.ts`; that file remains in use.
 
-### How to add a chronicle event
+## Splash regression probe
 
-1. Open `content/chronicles.ts`.
-2. Append to the `events` array, sorted chronologically by `date` (ISO string `YYYY-MM-DD`).
-3. Pick `type: 'education' | 'role' | 'award' | 'event' | 'project'` — controls icon/color.
-4. The horizontal timeline auto-positions by date.
+Section 7 of the design brief requires the hero to remain visible without JavaScript and the splash to work under reduced motion. Probe all four combinations on a fresh load:
 
-### How to change the palette
+| JavaScript | System motion | Expected |
+| --- | --- | --- |
+| On | Normal | Splash appears, dismisses, and reveals usable hero content |
+| Off | Normal | CSS dismisses the splash; the hero remains visible |
+| On | Reduced | Splash still appears briefly, dismisses, and leaves the hero usable |
+| Off | Reduced | CSS dismissal completes; hero text remains visible |
 
-1. Open `app/globals.css`.
-2. Edit the CSS custom properties under `:root` (e.g. `--accent-pink`, `--bg-midnight`).
-3. **Do not** edit Tailwind `colors` directly — they reference the vars.
-4. Run dev server, eyeball, iterate.
-
-### How to update the CV
-
-1. Replace `public/cv/line-resume-2026.pdf` with new file.
-2. If the year changes, also update `lib/constants.ts` → `CV_PATH` to e.g. `/cv/line-resume-2027.pdf` and rename the file.
-
-### How to change profile data (email, LinkedIn, etc.)
-
-1. Open `lib/constants.ts` for URLs/paths.
-2. Open `content/profile.ts` for displayed text (name, tagline, location, GPA).
-
-### How to deploy
-
-1. Push to GitHub `main`.
-2. In Vercel: import repo → auto-detects Next.js.
-3. **Add env var:** `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` (get from https://web3forms.com — Web3Forms free plan requires client-side calls, so the key is exposed to the browser by design).
-4. (Optional) `NEXT_PUBLIC_SITE_URL=https://linelulan.dev`.
-5. Connect domain `linelulan.dev` (Vercel → Domains).
-6. Enable Vercel Analytics in project settings.
-
----
+For each combination, inspect the initial splash and the state after its two-second dismissal window. Check heading visibility, scroll access, and absence of hydration errors when JavaScript is enabled. Separately test stored `line.motion=off`: the splash is hidden, the hero is visible, and motion is disabled. Check desktop and phone widths.
 
 ## Forbidden patterns
 
-These will be rejected in code review. They violate the architecture rules in `PLANNING.md` Section C.
+- No inline hex colors in UI components. Use semantic classes and CSS variables. The pixel-art pink and ImageResponse icon palettes are the design's explicit exceptions.
+- No compatibility alias classes.
+- No JavaScript-gated above-the-fold content.
+- No framer-motion `initial` on the hero.
+- No theme ships before the contrast check passes.
+- No untyped content or `any`; keep content separate from presentation.
+- No private keys in browser code. The Web3Forms access key is public by design.
 
-- ❌ Hardcoded strings inside JSX (`<h1>Trần Nam Anh</h1>`). → import from `content/profile.ts`.
-- ❌ Hardcoded URLs (`<a href="https://github.com/LineLuLan">`). → use `SOCIAL.github` from `lib/constants.ts`.
-- ❌ Inline color hex (`color: '#e07b97'`). → use Tailwind class (`text-accent-pink`) or CSS var.
-- ❌ Animation without `useReducedMotion` guard. → import `useReducedMotion` from `lib/hooks`.
-- ❌ `any` type. → define proper type in `types/index.ts`.
-- ❌ New folders like `common/`, `shared/`, `utils/`. → group by feature in `components/<section>/` or put utility in `lib/`.
-- ❌ Server-side proxy for Web3Forms on free plan. Web3Forms free tier blocks server-to-server requests; call directly from `ContactForm.tsx` using `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` (the key is public by design).
-- ❌ New top-level pages without entry in PLANNING.md Section D. → discuss scope before adding routes.
+## Troubleshooting and release
 
----
+| Symptom | Check |
+| --- | --- |
+| Theme does not persist | Registry id, pre-paint attributes, browser storage, ThemeProvider |
+| Animation stays static | System reduced motion and line.motion |
+| Contact fails | Public Web3Forms key, ContactForm validation, network response |
+| CV fails | CV_FILE and the PDF asset |
+| Icons fail | ImageResponse routes and Saturn grid palette |
+| Contrast gate fails | Reported text/background pair in app/themes.css |
 
-## Where to look when something breaks
-
-| Symptom | First place to check |
-|---|---|
-| Build fails on type error | `types/index.ts` — content shape probably drifted |
-| Animation not running | `lib/hooks/useReducedMotion.ts` — user might have reduced motion on |
-| Mode toggle doesn't persist | `app/providers.tsx` localStorage key `portfolio-mode` |
-| Contact form returns error | `components/contact/ContactForm.tsx` — env var `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` set? Restart dev server after changing `.env.local`. |
-| OG image broken | `app/opengraph-image.tsx` runtime — Edge or Node? |
-| CV 404 | filename in `public/cv/` matches `lib/constants.ts:CV_PATH`? |
-| Font flicker | `app/layout.tsx` — `next/font` variable should be on `<html>` |
-
----
-
-## Reference
-
-- **Source of truth for design:** `linelulan-portfolio-blueprint.md` (root)
-- **Decisions log:** `PLANNING.md`
-- **Implementation status:** `TRACKING.md`
+Deploy the approved revision to Vercel with the public environment variables and `linelulan.vercel.app` domain. Line authorizes Git writes and deployment. See README for setup and TRACKING for release checks.

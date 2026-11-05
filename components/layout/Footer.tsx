@@ -1,6 +1,7 @@
 ﻿import Link from 'next/link';
 import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { SOCIAL } from '@/lib/constants';
+import { ThemeStamp } from './ThemeStamp';
 
 const iconLink = 'hairline grid h-11 w-11 place-items-center rounded-[var(--theme-control-radius)] border text-muted hover:border-accent hover:text-accent';
 
@@ -12,7 +13,7 @@ export function Footer() {
           © {new Date().getFullYear()} Trần Nam Anh (Line) · Built with intention.
         </p>
         <div className="flex flex-col gap-3 md:items-end">
-          <p className="font-mono text-xs text-muted">theme 01 · orbit</p>
+          <ThemeStamp />
           <div className="flex items-center gap-2">
             <a href={`mailto:${SOCIAL.email}`} aria-label="Email" className={iconLink}>
               <Mail size={16} aria-hidden />

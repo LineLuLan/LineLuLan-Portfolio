@@ -14,10 +14,28 @@ const LEGEND: Record<string, string> = {
 
 type Props = { kind: PlanetKind; size?: number; className?: string; label?: string };
 
+// One <path> per color instead of one <rect> per cell: ~120 nodes → ~5 per sprite (DOM size audit).
+const PATH_CACHE = new Map<PlanetKind, { fill: string; d: string }[]>();
+
+function planetPaths(kind: PlanetKind) {
+  const cached = PATH_CACHE.get(kind);
+  if (cached) return cached;
+  const byColor = new Map<string, string[]>();
+  PLANETS[kind].forEach((row, y) => {
+    [...row].forEach((cell, x) => {
+      if (cell === '.' || !LEGEND[cell]) return;
+      const parts = byColor.get(cell) ?? [];
+      parts.push(`M${x} ${y}h1v1h-1z`);
+      byColor.set(cell, parts);
+    });
+  });
+  const paths = [...byColor.entries()].map(([cell, parts]) => ({ fill: LEGEND[cell] as string, d: parts.join('') }));
+  PATH_CACHE.set(kind, paths);
+  return paths;
+}
+
 function planetRects(kind: PlanetKind) {
-  return PLANETS[kind].flatMap((row, y) => [...row].map((cell, x) => cell === '.' ? null : (
-    <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={LEGEND[cell]} />
-  )));
+  return planetPaths(kind).map(({ fill, d }) => <path key={fill} fill={fill} d={d} />);
 }
 
 export function PixelPlanetGlyph({ kind }: Pick<Props, 'kind'>) {

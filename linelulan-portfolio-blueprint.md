@@ -1,3 +1,5 @@
+> Historical: v1 blueprint (May 2026). The current design authority is docs/design/theme-orbit.md.
+
 # Portfolio Blueprint — `linelulan.dev`
 
 **Owner:** Trần Nam Anh (Line)

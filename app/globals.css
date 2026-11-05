@@ -8,10 +8,14 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --header-h: 81px;
+    --header-height: var(--header-h);
+  }
+
   html {
     color-scheme: light;
     scroll-behavior: smooth;
-    --header-height: 81px;
   }
 
   body {
@@ -34,6 +38,21 @@
 }
 
 @layer components {
+  /* Intent: align desktop slides below the live header without clipping content.
+     Status: implemented. Next: viewport probe. Blockers: browser unavailable. Confidence: CSS budget. */
+  .screen-section {
+    box-sizing: border-box;
+    padding-block: 56px;
+    scroll-margin-top: var(--header-h);
+  }
+
+  @media (min-width: 1024px) and (min-height: 720px) {
+    .screen-section {
+      min-height: calc(100svh - var(--header-h));
+      padding-block: 32px;
+    }
+  }
+
   .container-x {
     max-width: 1200px;
     margin-inline: auto;
@@ -146,10 +165,10 @@
 
 /* Header fallback matches the two-row navigation between nav and xl breakpoints. */
 @media (min-width: 900px) and (max-width: 1279px) {
-  html { --header-height: 121px; }
+  :root { --header-h: 121px; }
 }
 @media (max-width: 359px) {
-  html { --header-height: 121px; }
+  :root { --header-h: 121px; }
 }
 @layer base {
   h1, h2, h3, h4, h5, h6 { font-family: var(--font-display), system-ui, sans-serif; }

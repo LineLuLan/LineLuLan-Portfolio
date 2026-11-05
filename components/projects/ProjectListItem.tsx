@@ -1,8 +1,9 @@
 'use client';
 
+// Intent: keep project summaries compact while preserving details and outbound actions.
+// Status: implemented. Next: viewport probe. Blockers: browser unavailable. Confidence: existing modal contract.
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
-import { StatusDot } from '@/components/ui/StatusDot';
 import { trackEvent } from '@/lib/analytics';
 import { capitalize, cn } from '@/lib/cn';
 import type { Project } from '@/types';
@@ -24,36 +25,30 @@ export function ProjectListItem({ index, project, onOpen }: Props) {
 
   return (
     <div className={cn(
-      'grid items-start gap-6 rounded-[var(--theme-radius)] border hairline p-6 transition-transform md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_auto] md:p-8 md:hover:translate-x-1',
+      'flex h-full min-w-0 flex-col rounded-[var(--theme-radius)] border hairline p-4',
       TINT[index % 3],
     )}>
       <div className="min-w-0">
         <p className="eyebrow">{String(position).padStart(2, '0')} · {capitalize(role ?? '')}</p>
-        <div className="mt-3 flex items-start gap-3">
+        <div className="mt-2 flex items-start gap-2">
           <PixelPlanet kind={PLANET[index % PLANET.length] ?? 'jupiter'} size={20} className="mt-1 shrink-0" />
-          <h3 className="min-w-0 break-words font-display text-2xl font-bold text-ink md:text-3xl">{project.name}</h3>
-        </div>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <StatusDot state={project.state} />
-          <span className="font-mono text-sm text-muted">{project.domains.map(capitalize).join(' · ')}</span>
-          {project.featured && (
-            <span className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink">Featured</span>
-          )}
+          <h3 className="min-w-0 break-words font-display text-[22px] font-bold leading-7 text-ink">{project.name}</h3>
         </div>
       </div>
-      <div className="min-w-0">
-        <p className="text-base text-ink">{project.tagline}</p>
+      <div className="mt-2 min-w-0">
+        <p className="line-clamp-2 text-[15px] leading-6 text-ink">{project.tagline}</p>
         {project.tech && project.tech.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {project.tech.slice(0, 6).map((tech) => (
-              <li key={tech} className="inline-flex min-h-9 max-w-full items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink [overflow-wrap:anywhere]">
+          <ul className="mt-3 flex flex-wrap gap-1.5">
+            {project.tech.slice(0, 4).map((tech) => (
+              <li key={tech} className="inline-flex min-h-6 max-w-full items-center rounded-[var(--theme-control-radius)] border hairline px-2 font-mono text-[13px] leading-5 text-ink [overflow-wrap:anywhere]">
                 {tech}
               </li>
             ))}
+            {project.tech.length > 4 && <li className="inline-flex min-h-6 items-center font-mono text-[13px] text-muted">+{project.tech.length - 4}</li>}
           </ul>
         )}
       </div>
-      <div className="flex flex-wrap items-center gap-2 md:flex-col md:items-end">
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-3">
         {externalHref && (
           <a
             href={externalHref}

@@ -10,7 +10,7 @@ export function AnchorScroll() {
     const root = document.documentElement;
     const header = document.querySelector<HTMLElement>('[data-site-header]');
     const measureHeader = () => {
-      if (header) root.style.setProperty('--header-height', `${header.getBoundingClientRect().height}px`);
+      if (header) root.style.setProperty('--header-h', `${header.getBoundingClientRect().height}px`);
     };
     const observer = new ResizeObserver(measureHeader);
     if (header) observer.observe(header);

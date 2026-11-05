@@ -26,8 +26,8 @@ export function SectionWrapper({
       aria-label={ariaLabel}
       tabIndex={-1}
       className={cn(
-        'relative scroll-mt-[var(--header-height)] focus:outline-none',
-        id === 'hero' ? 'hero-section py-8 lg:py-6 lg:flex lg:min-h-[calc(100svh-var(--header-height))] lg:items-center' : 'py-16 md:py-24',
+        'relative scroll-mt-[var(--header-h)] focus:outline-none',
+        id === 'hero' ? 'hero-section py-8 lg:py-6 lg:flex lg:min-h-[calc(100svh-var(--header-height))] lg:items-center' : 'screen-section',
         withTopRule && 'border-t hairline',
         className,
       )}

@@ -5,6 +5,9 @@ import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { WhatIBring } from './WhatIBring';
 import { ExploringTags } from './ExploringTags';
 
+// Intent: fit Line's narrative, facts and capabilities into a desktop screen.
+// Status: implemented. Next: viewport probe. Blockers: browser unavailable. Confidence: content budget.
+
 const IDENTITY_LABEL: Record<string, string> = {
   location: 'Based in',
   status: 'Studying',
@@ -17,25 +20,25 @@ const IDENTITY_LABEL: Record<string, string> = {
 export function AboutSection() {
   return (
     <SectionWrapper id="about" ariaLabel="About" withTopRule>
-      <SectionHeader index={2} slug="about" title="Where research meets production." planet={SECTION_PLANET.about} />
+      <SectionHeader index={2} slug="about" title="Where research meets production." planet={SECTION_PLANET.about} className="mb-6 md:mb-6" />
 
-      <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="max-w-[65ch] space-y-4">
-          <p className="text-lg leading-relaxed text-ink">{profile.narrative.intro}</p>
-          <p className="text-lg leading-relaxed text-ink">{profile.narrative.mission}</p>
+      <div className="grid gap-8 lg:grid-cols-[1.55fr_1fr]">
+        <div className="min-w-0">
+          <p className="text-[17px] leading-7 text-ink">{profile.narrative.intro}</p>
+          <p className="mt-3 text-[17px] leading-7 text-ink">{profile.narrative.mission}</p>
+          <ExploringTags tags={profile.exploring} />
         </div>
         <dl>
           {profile.facts.map((fact) => (
-            <div key={fact.key} className="grid grid-cols-[100px_minmax(0,1fr)] gap-4 border-t hairline py-3">
+            <div key={fact.key} className="grid min-h-11 grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 border-t hairline py-2">
               <dt className="eyebrow self-start">{IDENTITY_LABEL[fact.key] ?? fact.key}</dt>
-              <dd className="text-base text-ink">{fact.value}</dd>
+              <dd className="text-[15px] leading-7 text-ink">{fact.value}</dd>
             </div>
           ))}
         </dl>
       </div>
 
       <WhatIBring items={profile.whatIBring} />
-      <ExploringTags tags={profile.exploring} />
     </SectionWrapper>
   );
 }

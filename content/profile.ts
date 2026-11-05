@@ -38,22 +38,22 @@ export const profile: Profile = {
   whatIBring: [
     {
       title: 'ML modeling & evaluation',
-      description: 'Gradient boosting and set-based neural models, validated with nested, patient-grouped cross-validation so the numbers hold outside the notebook.',
+      description: 'Gradient boosting and set-based neural nets, checked with nested, patient-grouped cross-validation.',
       proof: 'Clinical ML · first author',
     },
     {
       title: 'Data engineering',
-      description: 'Reproducible pipelines that extract, harmonize and validate clinical lab data under strict privacy rules. Data quality first, models second.',
+      description: 'Reproducible pipelines that extract, harmonize and validate clinical lab data under strict privacy rules.',
       proof: '3.71M+ lab records',
     },
     {
       title: 'LLM & agent systems',
-      description: 'Multi-provider routing, tool-use validation and eval harnesses for Vietnamese–English ordering agents running in production.',
+      description: 'Multi-provider routing, tool-use validation and eval harnesses for ordering agents in production.',
       proof: 'Live at Twohearts',
     },
     {
       title: 'Applied NLP research',
-      description: 'Co-developed GoiBERT, compact Vietnamese encoders distilled on 328.6M tokens that beat PhoBERT-v2 at a quarter of the size.',
+      description: 'Co-developed GoiBERT: compact Vietnamese encoders that beat PhoBERT-v2 at a quarter of the size.',
       proof: 'GoiBERT · arXiv',
     },
   ],

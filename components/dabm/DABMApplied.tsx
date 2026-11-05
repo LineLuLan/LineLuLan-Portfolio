@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassCard } from '@/components/ui/GlassCard';
 import { DABMTags } from '@/components/projects/DABMTags';
 import type { Project } from '@/types';
 
@@ -15,14 +14,14 @@ export function DABMApplied({ project }: { project: Project }) {
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.3 }}
       >
-        <GlassCard className="p-6">
+        <div className="mt-6 border-t hairline pt-6">
           <DABMTags mapping={project.dabm} />
           {!project.dabm && (
-            <p className="font-mono text-xs text-text-tertiary">
+            <p className="text-base text-muted">
               No DABM mapping yet — project still classified.
             </p>
           )}
-        </GlassCard>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

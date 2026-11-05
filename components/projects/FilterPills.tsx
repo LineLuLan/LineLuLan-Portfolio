@@ -10,7 +10,7 @@ type Props = {
 
 export function FilterPills({ active, onChange }: Props) {
   return (
-    <div aria-label="Filter projects" className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+    <div aria-label="Filter projects" className="flex flex-wrap gap-2">
       {projectFilters.map((f) => {
         const isActive = active === f;
         return (
@@ -20,10 +20,10 @@ export function FilterPills({ active, onChange }: Props) {
             aria-pressed={isActive}
             onClick={() => onChange(f)}
             className={cn(
-              'rounded-sm border px-2.5 py-1 transition-colors',
+              'inline-flex min-h-11 items-center rounded-[var(--theme-control-radius)] border px-3 font-mono text-sm transition-colors',
               isActive
-                ? 'border-accent-magenta bg-accent-magenta/15 text-accent-pink'
-                : 'border-border-subtle text-text-secondary hover:border-accent-pink hover:text-accent-pink',
+                ? 'border-accent bg-accent text-on-accent'
+                : 'hairline text-ink hover:border-accent hover:text-accent',
             )}
           >
             {f}

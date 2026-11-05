@@ -9,20 +9,20 @@ type Props = {
 
 const LETTERS = ['D', 'A', 'B', 'M'] as const;
 
-export function DABMTags({ mapping, size = 'md', className }: Props) {
+export function DABMTags({ mapping, className }: Props) {
   return (
-    <ul className={cn('grid gap-1.5 font-mono', size === 'sm' ? 'text-xs' : 'text-sm', className)}>
+    <dl className={cn('grid gap-3', className)}>
       {LETTERS.map((letter) => {
         const text = mapping?.[letter];
         return (
-          <li key={letter} className="flex items-baseline gap-2">
-            <span className="text-accent-pink">[{letter}]</span>
-            <span className={cn('text-text-secondary', !text && 'text-text-tertiary')}>
+          <div key={letter} className="grid grid-cols-[40px_minmax(0,1fr)] items-baseline gap-2">
+            <dt className="font-mono text-sm text-accent">[{letter}]</dt>
+            <dd className="text-base text-ink [overflow-wrap:anywhere]">
               {text ?? '▓▓▓▓▓▓'}
-            </span>
-          </li>
+            </dd>
+          </div>
         );
       })}
-    </ul>
+    </dl>
   );
 }

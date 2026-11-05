@@ -10,12 +10,12 @@ type Props = {
 
 export function ApplyDropdown({ projects, selectedSlug, onChange }: Props) {
   return (
-    <label className="inline-flex items-center gap-3 font-mono text-sm">
-      <span className="text-text-tertiary">Applied to:</span>
+    <label className="block min-w-0">
+      <span className="eyebrow mb-3">apply to a project</span>
       <select
         value={selectedSlug}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-sm border border-border-subtle bg-card px-3 py-1 text-text-primary focus:border-accent-pink focus:outline-none"
+        className="min-h-11 w-full min-w-0 max-w-full bg-paper hairline border rounded-[var(--theme-control-radius)] px-3 font-mono text-sm text-ink focus:border-accent"
       >
         {projects.map((p) => (
           <option key={p.slug} value={p.slug}>

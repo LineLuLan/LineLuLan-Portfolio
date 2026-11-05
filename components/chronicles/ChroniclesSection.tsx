@@ -2,46 +2,21 @@
 
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
+import { formatChronicleDate } from '@/lib/dates';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { EventModal } from './EventModal';
 import { chronicles } from '@/content/chronicles';
 import { cn } from '@/lib/cn';
-import type { ChronicleEvent, ChronicleType } from '@/types';
-
-const ICON: Record<ChronicleType, string> = {
-  education: '●',
-  role: '◆',
-  award: '★',
-  event: '▲',
-  project: '✦',
-};
-
-const COLOR: Record<ChronicleType, string> = {
-  education: 'text-text-tertiary',
-  role: 'text-accent-purple',
-  award: 'text-accent-pink',
-  event: 'text-accent-magenta',
-  project: 'text-accent-pink',
-};
-
-const MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-function parseISO(s: string) {
-  const [y, m, d] = s.split('-').map((v) => Number(v));
-  return { y, mIdx: (m ?? 1) - 1, d: d ?? 1 };
-}
+import type { ChronicleEvent } from '@/types';
 
 function formatRange(e: ChronicleEvent) {
-  const a = parseISO(e.date);
-  const start = `${MONTH[a.mIdx]} ${a.y}`;
+  const start = formatChronicleDate(e.date);
   if (e.ongoing) return `${start} — Present`;
-  if (e.endDate) {
-    const b = parseISO(e.endDate);
-    return `${start} — ${MONTH[b.mIdx]} ${b.y}`;
-  }
-  return `${MONTH[a.mIdx]} ${String(a.d).padStart(2, '0')}, ${a.y}`;
+  if (e.endDate) return `${start} — ${formatChronicleDate(e.endDate)}`;
+  return start;
 }
 
 type BlockProps = {
@@ -54,57 +29,38 @@ function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
   if (events.length === 0) return null;
   return (
     <section className="mt-10 first:mt-0">
-      <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-text-tertiary">
+      <h3 className="eyebrow mb-4">
         {eyebrow}
-      </p>
-      <ul className="divide-y divide-rule-subtle border-t border-rule-subtle">
+      </h3>
+      <ul>
         {events.map((e, i) => {
           const interactive = Boolean(e.description || e.link);
           const Row = interactive ? 'button' : 'div';
           return (
             <motion.li
               key={e.id}
-              initial={{ opacity: 0, x: -8 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.03 }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.03 }}
               viewport={{ once: true, margin: '-40px' }}
             >
               <Row
                 {...(interactive ? { type: 'button' as const, onClick: () => onSelect(e) } : {})}
                 className={cn(
-                  'group grid w-full grid-cols-[18px_1fr_auto] items-baseline gap-4 px-1 py-3 text-left transition-colors',
+                  'group grid w-full grid-cols-[140px_1fr] md:grid-cols-[160px_1fr_auto] gap-4 py-4 border-t hairline items-baseline text-left transition-colors',
                   interactive
-                    ? 'cursor-pointer hover:bg-accent-pink/[0.03]'
+                    ? 'cursor-pointer hover:bg-surface'
                     : 'cursor-default',
                 )}
               >
-                <span
-                  aria-hidden
-                  className={cn('inline-block leading-none', COLOR[e.type])}
-                >
-                  {ICON[e.type]}
-                </span>
-                <span className="min-w-0">
-                  <span className="text-sm text-text-primary transition-colors group-hover:text-accent-pink">
-                    {e.title}
-                  </span>
+                <span className="font-mono text-sm text-muted">{formatRange(e)}</span>
+                <span className="min-w-0 [overflow-wrap:anywhere]">
+                  <span className="block text-base text-ink">{e.title}</span>
                   {e.org && (
-                    <span className="ml-2 font-mono text-[11px] text-text-tertiary">
-                      · {e.org}
-                    </span>
-                  )}
-                  {e.description && (
-                    <p className="mt-0.5 hidden text-xs text-text-secondary md:block">
-                      {e.description}
-                    </p>
+                    <span className="mt-1 block font-mono text-sm text-muted">{e.org}</span>
                   )}
                 </span>
-                <span
-                  className="font-mono text-[11px] text-text-tertiary"
-                  suppressHydrationWarning
-                >
-                  {formatRange(e)}
-                </span>
+                {interactive && <ArrowUpRight size={16} aria-hidden className="hidden text-muted md:block" />}
               </Row>
             </motion.li>
           );

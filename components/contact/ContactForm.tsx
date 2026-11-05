@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Send } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
 import { trackEvent } from '@/lib/analytics';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
@@ -83,20 +82,17 @@ export function ContactForm() {
 
   if (status === 'sent') {
     return (
-      <GlassCard className="border-success/40 p-5">
-        <p className="font-mono text-xs text-success">
-          &gt; packet transmitted · expect response in &lt; 24h
-        </p>
-      </GlassCard>
+      <div role="status" className="self-start bg-panel hairline border rounded-[var(--theme-radius)] p-5 text-base text-ink">
+        Sent. Expect a reply within 24 hours.
+      </div>
     );
   }
 
   return (
-    <GlassCard className="p-5">
-      <p className="font-mono text-xs uppercase tracking-widest text-accent-pink">$ send_packet</p>
+    <div className="min-w-0 self-start bg-panel hairline border rounded-[var(--theme-radius)] p-6">
       <form
         onSubmit={onSubmit}
-        className="mt-4 space-y-3 font-mono text-xs"
+        className="space-y-5"
         suppressHydrationWarning
       >
         <input
@@ -108,29 +104,29 @@ export function ContactForm() {
           aria-hidden
           suppressHydrationWarning
         />
-        <Field label="from" name="from" type="email" placeholder="your_email" required />
-        <Field label="subject" name="subject" placeholder="what's this about" required />
-        <Textarea label="message" name="message" placeholder="say hi..." required />
+        <Field label="from" name="from" type="email" placeholder="you@example.com" required />
+        <Field label="subject" name="subject" placeholder="What is this about?" required />
+        <Textarea label="message" name="message" placeholder="Say hi…" required />
         <button
           type="submit"
           disabled={status === 'sending'}
-          className="inline-flex items-center gap-2 rounded-sm border border-accent-pink/70 bg-accent-pink/10 px-3.5 py-2 text-accent-pink transition-colors hover:bg-accent-pink hover:text-void disabled:opacity-60"
+          className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:bg-accent-hover disabled:opacity-60"
         >
-          <Send size={12} aria-hidden />
-          {status === 'sending' ? 'transmitting...' : '▶ transmit'}
+          <Send size={16} aria-hidden />
+          {status === 'sending' ? 'Sending…' : 'Send message'}
         </button>
         {status === 'error' && (
-          <p className="text-[11px] text-accent-magenta">
+          <p role="alert" className="text-base text-accent">
             &gt; connection failed{errorMsg ? ` — ${errorMsg}` : ''} · try email directly
           </p>
         )}
       </form>
-    </GlassCard>
+    </div>
   );
 }
 
 const inputClass =
-  'mt-1 w-full rounded-sm border border-border-subtle bg-midnight px-3 py-2 text-text-primary placeholder:text-text-tertiary focus:border-accent-pink focus:outline-none';
+  'mt-2 min-h-11 w-full bg-paper hairline border rounded-[var(--theme-control-radius)] px-3 py-2 text-base text-ink placeholder:text-muted focus:border-accent';
 
 function Field({
   label,
@@ -147,7 +143,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-text-tertiary">&gt; {label}:</span>
+      <span className="eyebrow">{label}</span>
       <input
         type={type}
         name={name}
@@ -173,12 +169,12 @@ function Textarea({
 }) {
   return (
     <label className="block">
-      <span className="block text-text-tertiary">&gt; {label}:</span>
+      <span className="eyebrow">{label}</span>
       <textarea
         name={name}
         required={required}
         placeholder={placeholder}
-        rows={4}
+        rows={5}
         className={`${inputClass} resize-y`}
         suppressHydrationWarning
       />

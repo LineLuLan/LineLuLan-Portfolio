@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowRight, ExternalLink, Star } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { StatusDot } from '@/components/ui/StatusDot';
 import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
@@ -12,121 +13,69 @@ type Props = {
   onOpen?: (project: Project) => void;
 };
 
-const YEAR_HINT: Record<string, string> = {
-  'dengue-shock-prediction': '2026',
-};
+const TINT = ['bg-tint-a', 'bg-tint-c', 'bg-tint-b'] as const;
+const PLANET = ['jupiter', 'saturn', 'earth', 'neptune', 'mars'] as const;
 
 export function ProjectListItem({ index, project, onOpen }: Props) {
-  const isFeatured = Boolean(project.featured);
-  const externalHref = project.links?.demo ?? project.links?.github;
-  const year = YEAR_HINT[project.slug];
+  const externalHref = project.links?.demo ?? project.links?.github ?? project.links?.paper;
+  const externalLabel = project.links?.demo ? 'Visit' : project.links?.github ? 'GitHub' : 'Paper';
+  const role = project.role?.split(' · ')[0] || project.domains[0];
+  const position = index + 1;
 
   return (
-    <div
-      className={cn(
-        'group relative grid grid-cols-[56px_1fr_auto] items-start gap-4 border-t border-rule-subtle py-6 md:gap-6',
-        'transition-colors',
-      )}
-    >
-      {/* Number column */}
-      <span
-        aria-hidden
-        className="font-mono text-3xl font-semibold leading-none text-num-display/50 transition-colors group-hover:text-num-display md:text-4xl"
-      >
-        {String(index).padStart(2, '0')}
-      </span>
-
-      {/* Content column */}
+    <div className={cn(
+      'grid items-start gap-6 rounded-[var(--theme-radius)] border hairline p-6 transition-transform md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_auto] md:p-8 md:hover:translate-x-1',
+      TINT[index % 3],
+    )}>
       <div className="min-w-0">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h3 className="font-sans text-lg font-semibold text-text-primary md:text-xl">
-            {project.name}
-          </h3>
-          {isFeatured && (
-            <span className="inline-flex items-center gap-1 rounded-sm border border-accent-magenta/60 bg-accent-magenta/10 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-accent-pink">
-              <Star size={9} aria-hidden /> featured
-            </span>
-          )}
-          <span className="flex items-center gap-2 font-mono text-[11px] text-text-tertiary">
-            <span>{project.domains[0]}</span>
-            {year && (
-              <>
-                <span aria-hidden>·</span>
-                <span>{year}</span>
-              </>
-            )}
-          </span>
-          <StatusDot state={project.state} withLabel={false} className="ml-auto md:ml-0" />
+        <p className="eyebrow">{String(position).padStart(2, '0')} · {role}</p>
+        <div className="mt-3 flex items-start gap-3">
+          <PixelPlanet kind={PLANET[index % PLANET.length] ?? 'jupiter'} size={20} className="mt-1 shrink-0" />
+          <h3 className="min-w-0 break-words font-sans text-2xl font-bold text-ink md:text-3xl">{project.name}</h3>
         </div>
-
-        <p className="mt-2 max-w-2xl text-sm text-text-secondary text-balance">
-          {project.tagline}
-        </p>
-
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <StatusDot state={project.state} />
+          <span className="font-mono text-sm text-muted">{project.domains.join(' · ')}</span>
+          {project.featured && (
+            <span className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink">featured</span>
+          )}
+        </div>
+      </div>
+      <div className="min-w-0">
+        <p className="text-base text-ink">{project.tagline}</p>
         {project.tech && project.tech.length > 0 && (
-          <ul className="mt-3 flex flex-wrap gap-1.5">
-            {project.tech.slice(0, 6).map((t) => (
-              <li
-                key={t}
-                className="rounded-sm border border-border-subtle px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-text-secondary"
-              >
-                {t}
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {project.tech.slice(0, 6).map((tech) => (
+              <li key={tech} className="inline-flex min-h-9 max-w-full items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink [overflow-wrap:anywhere]">
+                {tech}
               </li>
             ))}
           </ul>
         )}
       </div>
-
-      {/* Action column */}
-      <div className="hidden flex-col items-end gap-2 self-center font-mono text-[11px] md:flex">
-        {onOpen && (
-          <button
-            type="button"
-            onClick={() => {
-              trackEvent('project_open', { slug: project.slug, index });
-              onOpen(project);
-            }}
-            className="inline-flex items-center gap-1.5 text-text-secondary transition-colors hover:text-accent-pink"
-          >
-            open <ArrowRight size={11} aria-hidden />
-          </button>
-        )}
+      <div className="flex flex-wrap items-center gap-2 md:flex-col md:items-end">
         {externalHref && (
           <a
             href={externalHref}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent('project_visit', { slug: project.slug, index })}
-            className="inline-flex items-center gap-1.5 text-text-tertiary transition-colors hover:text-accent-pink"
+            onClick={() => trackEvent('project_visit', { slug: project.slug, index: position })}
+            className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:bg-accent-hover"
           >
-            visit <ExternalLink size={11} aria-hidden />
+            {externalLabel} <ArrowUpRight size={16} aria-hidden />
           </a>
         )}
-      </div>
-
-      {/* Mobile actions */}
-      <div className="col-span-3 -mt-2 flex gap-3 font-mono text-[11px] md:hidden">
         {onOpen && (
           <button
             type="button"
             onClick={() => {
-              trackEvent('project_open', { slug: project.slug, index });
+              trackEvent('project_open', { slug: project.slug, index: position });
               onOpen(project);
             }}
-            className="inline-flex items-center gap-1.5 text-accent-pink"
+            className="inline-flex min-h-11 items-center gap-1 font-mono text-sm text-ink hover:text-accent"
           >
-            open <ArrowRight size={11} aria-hidden />
+            Details <ArrowRight size={16} aria-hidden />
           </button>
-        )}
-        {externalHref && (
-          <a
-            href={externalHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-text-tertiary"
-          >
-            visit <ExternalLink size={11} aria-hidden />
-          </a>
         )}
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ChronicleEvent } from '@/types';
+import { formatChronicleDate } from '@/lib/dates';
 
 type Props = {
   event: ChronicleEvent | null;
@@ -36,7 +37,8 @@ export function EventModal({ event, onClose }: Props) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={onClose}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-void/80 backdrop-blur p-4"
+          // Hex-valued theme tokens need color-mix for alpha in Tailwind 3.
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[color-mix(in_srgb,var(--color-ink)_40%,transparent)] p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="event-modal-title"
@@ -47,14 +49,17 @@ export function EventModal({ event, onClose }: Props) {
             exit={{ y: 20, opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
-            className="card-glass w-full max-w-md border border-border-glow p-6"
+            className="w-full bg-paper hairline border rounded-[var(--theme-radius)] max-h-[85dvh] overflow-y-auto p-6 md:p-8 max-w-3xl"
           >
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="font-mono text-xs text-text-tertiary">{event.date}</p>
-                <h2 id="event-modal-title" className="mt-1 text-lg text-text-primary">{event.title}</h2>
+              <div className="min-w-0 break-words">
+                <p className="font-mono text-sm text-muted">
+                  {formatChronicleDate(event.date)}
+                  {event.ongoing ? ' — Present' : event.endDate ? ` — ${formatChronicleDate(event.endDate)}` : ''}
+                </p>
+                <h2 id="event-modal-title" className="mt-1 font-sans text-3xl font-bold text-ink">{event.title}</h2>
                 {event.org && (
-                  <p className="mt-1 font-mono text-xs text-accent-pink">{event.org}</p>
+                  <p className="mt-1 font-mono text-sm text-muted">{event.org}</p>
                 )}
               </div>
               <button
@@ -62,22 +67,22 @@ export function EventModal({ event, onClose }: Props) {
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="rounded p-1 text-text-secondary hover:text-accent-pink"
+                className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-[var(--theme-control-radius)] text-muted hover:text-accent"
               >
                 <X size={18} aria-hidden />
               </button>
             </div>
             {event.description && (
-              <p className="mt-4 text-sm text-text-secondary">{event.description}</p>
+              <p className="mt-4 text-base text-ink">{event.description}</p>
             )}
             {event.link && (
               <a
                 href={event.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 font-mono text-xs text-accent-pink hover:underline"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline px-4 font-mono text-sm text-ink hover:border-accent hover:text-accent"
               >
-                <ExternalLink size={12} aria-hidden /> learn more
+                <ExternalLink size={16} aria-hidden /> learn more
               </a>
             )}
           </motion.div>

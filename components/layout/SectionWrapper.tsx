@@ -2,20 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/cn';
-
-type Width = 'sm' | 'md' | 'lg';
-
-const widthClass: Record<Width, string> = {
-  sm: 'max-w-2xl', // ~672px
-  md: 'max-w-4xl', // ~896px
-  lg: 'max-w-5xl', // ~1024px
-};
+import { trackEvent } from '@/lib/analytics';
 
 type Props = {
   id: string;
   ariaLabel?: string;
   className?: string;
-  width?: Width;
   withTopRule?: boolean;
   children: React.ReactNode;
 };
@@ -24,7 +16,6 @@ export function SectionWrapper({
   id,
   ariaLabel,
   className,
-  width = 'md',
   withTopRule = false,
   children,
 }: Props) {
@@ -32,21 +23,23 @@ export function SectionWrapper({
     <motion.section
       id={id}
       aria-label={ariaLabel}
-      initial={id === 'hero' ? false : { opacity: 0, y: 30 }}
+      initial={id === 'hero' ? false : { opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-80px' }}
       className={cn(
-        'relative scroll-mt-20 px-5 py-16 md:px-6 md:py-24',
-        'mx-auto',
-        widthClass[width],
+        'relative scroll-mt-20 py-16 md:py-24',
+        withTopRule && 'border-t hairline',
         className,
       )}
+      // Keep the hero server-rendered; its existing client boundary owns click tracking.
+      onClick={id === 'hero' ? (event) => {
+        if (event.target instanceof Element && event.target.closest('a[data-hero-cv]')) {
+          trackEvent('cv_open', { from: 'hero' });
+        }
+      } : undefined}
     >
-      {withTopRule && (
-        <hr aria-hidden className="section-rule absolute inset-x-5 top-0 md:inset-x-6" />
-      )}
-      {children}
+      <div className="container-x">{children}</div>
     </motion.section>
   );
 }

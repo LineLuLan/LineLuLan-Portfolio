@@ -1,12 +1,11 @@
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { profile } from '@/content/profile';
+import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { WhatIBring } from './WhatIBring';
 import { ExploringTags } from './ExploringTags';
 
-// Curated 2×2: based · status · role · open to.
-const IDENTITY_KEYS = ['location', 'status', 'building', 'open to'] as const;
-const IDENTITY_LABEL: Record<(typeof IDENTITY_KEYS)[number], string> = {
+const IDENTITY_LABEL: Record<string, string> = {
   location: 'based',
   status: 'studies',
   building: 'currently',
@@ -14,37 +13,23 @@ const IDENTITY_LABEL: Record<(typeof IDENTITY_KEYS)[number], string> = {
 };
 
 export function AboutSection() {
-  const identity = IDENTITY_KEYS.map((k) => {
-    const fact = profile.facts.find((f) => f.key === k);
-    return fact ? { key: IDENTITY_LABEL[k], value: fact.value } : null;
-  }).filter((x): x is { key: string; value: string } => x !== null);
-
   return (
-    <SectionWrapper id="about" ariaLabel="About" width="lg" withTopRule>
-      <SectionHeader index={2} slug="about" title="jack of all trades." />
+    <SectionWrapper id="about" ariaLabel="About" withTopRule>
+      <SectionHeader index={2} slug="about" title="jack of all trades." planet={SECTION_PLANET.about} />
 
-      <div className="grid gap-10 md:grid-cols-2 md:gap-12">
-        {/* Identity grid 2×2 */}
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-6 font-mono text-xs">
-          {identity.map((f) => (
-            <div key={f.key} className="border-t border-rule-subtle pt-3">
-              <dt className="text-[10px] uppercase tracking-[0.25em] text-text-tertiary">
-                {f.key}
-              </dt>
-              <dd className="mt-1.5 text-sm leading-snug text-text-primary">{f.value}</dd>
+      <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="max-w-[65ch] space-y-4">
+          <p className="text-lg leading-relaxed text-ink">{profile.narrative.intro}</p>
+          <p className="text-lg leading-relaxed text-ink">{profile.narrative.mission}</p>
+        </div>
+        <dl>
+          {profile.facts.map((fact) => (
+            <div key={fact.key} className="grid grid-cols-[120px_1fr] gap-4 border-t hairline py-3">
+              <dt className="eyebrow self-start">{IDENTITY_LABEL[fact.key] ?? fact.key}</dt>
+              <dd className="text-base text-ink">{fact.value}</dd>
             </div>
           ))}
         </dl>
-
-        {/* Narrative */}
-        <div className="space-y-4 text-text-secondary">
-          <p className="text-base leading-relaxed text-balance">
-            {profile.narrative.intro}
-          </p>
-          <p className="text-base leading-relaxed text-balance">
-            {profile.narrative.mission}
-          </p>
-        </div>
       </div>
 
       <WhatIBring items={profile.whatIBring} />

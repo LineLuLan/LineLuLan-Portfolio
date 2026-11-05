@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { DABMQuadrant } from './DABMQuadrant';
 import { ApplyDropdown } from './ApplyDropdown';
 import { DABMApplied } from './DABMApplied';
@@ -19,8 +20,8 @@ export function DABMSection() {
   const selected = eligible.find((p) => p.slug === slug) ?? eligible[0];
 
   return (
-    <SectionWrapper id="framework" ariaLabel="DABM Framework" width="lg" withTopRule>
-      <SectionHeader index={5} slug="framework" title="DABM." />
+    <SectionWrapper id="framework" ariaLabel="DABM Framework" withTopRule>
+      <SectionHeader index={5} slug="framework" title="DABM." planet={SECTION_PLANET.framework} />
 
       <div className="mb-6">
         <p className="font-mono text-base text-text-primary">

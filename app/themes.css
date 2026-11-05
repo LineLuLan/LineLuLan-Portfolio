@@ -1,0 +1,60 @@
+:root {
+  --color-paper: #F8F7F4;
+  --color-surface: #EFEDE8;
+  --color-panel: #FFFFFF;
+  --color-ink: #1A1726;
+  --color-muted: #5E5A6E;
+  --color-accent: #8F2D9A;
+  --color-accent-hover: #6F2278;
+  --color-on-accent: #FFFFFF;
+  --color-line: #D6D2DE;
+  --color-tint-a: #EFE6F6;
+  --color-tint-b: #F7E6EC;
+  --color-tint-c: #E8EAF2;
+  --color-selection: #E9D5F5;
+  --color-success: #2F6B4A;
+  --theme-radius: 6px;
+  --theme-control-radius: 4px;
+  --theme-shadow: 0 1px 0 var(--color-line);
+  --theme-duration: 180ms;
+  --theme-ease: cubic-bezier(0.2, 0, 0, 1);
+  --pixel: 4px;
+}
+
+html[data-theme="orbit"] {
+  --color-paper: #F8F7F4;
+  --color-surface: #EFEDE8;
+  --color-panel: #FFFFFF;
+  --color-ink: #1A1726;
+  --color-muted: #5E5A6E;
+  --color-accent: #8F2D9A;
+  --color-accent-hover: #6F2278;
+  --color-on-accent: #FFFFFF;
+  --color-line: #D6D2DE;
+  --color-tint-a: #EFE6F6;
+  --color-tint-b: #F7E6EC;
+  --color-tint-c: #E8EAF2;
+  --color-selection: #E9D5F5;
+  --color-success: #2F6B4A;
+  --theme-radius: 6px;
+  --theme-control-radius: 4px;
+  --theme-shadow: 0 1px 0 var(--color-line);
+  --theme-duration: 180ms;
+  --theme-ease: cubic-bezier(0.2, 0, 0, 1);
+  --pixel: 4px;
+}
+
+html[data-motion="off"],
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation: none !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+/* Disabling its dismissal animation must never leave the splash covering the page. */
+html[data-motion="off"] .boot-splash {
+  visibility: hidden;
+  pointer-events: none;
+}

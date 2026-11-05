@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 
 const FADE_IN = 500;
 const HOLD = 900;
@@ -37,10 +38,10 @@ export function BootSplash({ onDismiss }: Props) {
       onClick={onDismiss}
       role="dialog"
       aria-label="Loading"
-      className="boot-splash fixed inset-0 z-[100] flex items-center justify-center bg-void px-6"
+      className="boot-splash fixed inset-0 z-[100] flex items-center justify-center bg-paper px-6"
     >
-      <span className="boot-splash__text font-mono text-2xl font-medium tracking-tight text-text-primary md:text-3xl">
-        linelulan<span className="text-accent-pink">.</span>
+      <span className="boot-splash__text inline-flex items-baseline gap-1 font-sans text-2xl font-bold tracking-tight text-ink md:text-3xl">
+        linelulan<PixelPlanet kind="saturn" size={16} />
       </span>
     </div>
   );

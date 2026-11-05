@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { FilterPills } from './FilterPills';
 import { ProjectListItem } from './ProjectListItem';
 import { ClassifiedListItem } from './ClassifiedListItem';
@@ -27,8 +28,8 @@ export function ProjectsSection() {
   }, [filter]);
 
   return (
-    <SectionWrapper id="work" ariaLabel="Work" width="lg" withTopRule>
-      <SectionHeader index={4} slug="work" title="selected projects." />
+    <SectionWrapper id="work" ariaLabel="Work" withTopRule>
+      <SectionHeader index={4} slug="work" title="selected projects." planet={SECTION_PLANET.work} />
 
       <div className="mb-6">
         <FilterPills active={filter} onChange={setFilter} />

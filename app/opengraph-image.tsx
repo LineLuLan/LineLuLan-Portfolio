@@ -12,21 +12,21 @@ export default function OG() {
         style={{
           width: '100%',
           height: '100%',
-          background: '#000000',
+          background: '#F8F7F4',
           display: 'flex',
           flexDirection: 'column',
           padding: '64px',
-          color: '#ffffff',
+          color: '#1A1726',
           fontFamily: 'monospace',
         }}
       >
-        <div style={{ display: 'flex', color: '#e07b97', fontSize: 28, marginBottom: 24 }}>
+        <div style={{ display: 'flex', color: '#8F2D9A', fontSize: 28, marginBottom: 24 }}>
           $ ~/usr/line/whoami
         </div>
         <div style={{ display: 'flex', fontSize: 72, fontWeight: 600, lineHeight: 1.05 }}>
           Trần Nam Anh — Line
         </div>
-        <div style={{ display: 'flex', fontSize: 36, color: '#a3a3a3', marginTop: 16 }}>
+        <div style={{ display: 'flex', fontSize: 36, color: '#8F2D9A', marginTop: 16 }}>
           AI / Machine Learning Engineer
         </div>
         <div
@@ -36,11 +36,11 @@ export default function OG() {
             gap: 16,
             marginTop: 64,
             fontSize: 24,
-            color: '#e07b97',
+            color: '#8F2D9A',
           }}
         >
           <span>[ DABM ]</span>
-          <span style={{ color: '#a3a3a3' }}>Data · Agent · Behavioral · Modeling</span>
+          <span style={{ color: '#1A1726' }}>Data · Agent · Behavioral · Modeling</span>
         </div>
         <div
           style={{
@@ -49,7 +49,7 @@ export default function OG() {
             bottom: 64,
             right: 64,
             fontSize: 24,
-            color: '#6b6b6b',
+            color: '#1A1726',
           }}
         >
           linelulan.dev

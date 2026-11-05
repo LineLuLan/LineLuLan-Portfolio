@@ -1,15 +1,17 @@
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { ProfileLinks } from './ProfileLinks';
 import { ContactForm } from './ContactForm';
 import { CVDownload } from './CVDownload';
 
 export function ContactSection() {
   return (
-    <SectionWrapper id="contact" ariaLabel="Contact" width="md" withTopRule>
+    <SectionWrapper id="contact" ariaLabel="Contact" withTopRule>
       <SectionHeader
         index={7}
         slug="contact"
+        planet={SECTION_PLANET.contact}
         title="let's build something."
         sub="Got an opportunity, a question, or just want to compare notes on causal inference? Send a packet."
       />

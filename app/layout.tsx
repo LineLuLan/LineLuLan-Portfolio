@@ -1,20 +1,32 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Manrope, JetBrains_Mono, DM_Serif_Display } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SITE_URL, SOCIAL } from '@/lib/constants';
 import { BootSplashGate } from '@/components/ui/BootSplashGate';
 import { MotionProvider } from '@/components/layout/MotionProvider';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { themeInitScript } from '@/lib/themes';
 import './globals.css';
 
-const sans = Inter({
+const sans = Manrope({
   subsets: ['latin', 'latin-ext', 'vietnamese'],
+  weight: ['400', '500', '700', '800'],
   variable: '--font-sans',
   display: 'swap',
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ['latin', 'latin-ext', 'vietnamese'],
+  weight: ['400', '500'],
   variable: '--font-mono',
+  display: 'swap',
+});
+
+const serif = DM_Serif_Display({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['italic', 'normal'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -61,7 +73,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#000000',
+  themeColor: '#F8F7F4',
 };
 
 const personJsonLd = {
@@ -81,8 +93,9 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${sans.variable} ${jetbrains.variable} ${serif.variable}`} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <noscript>
           <style dangerouslySetInnerHTML={{ __html: '[style*="opacity:0"]{opacity:1!important;transform:none!important}' }} />
         </noscript>
@@ -91,16 +104,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body className="bg-void text-text-primary antialiased">
-        <a
-          href="#hero"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-accent-pink focus:px-3 focus:py-1 focus:text-void"
-        >
-          Skip to content
-        </a>
-        <BootSplashGate />
-        <MotionProvider>{children}</MotionProvider>
-        <Analytics />
+      <body className="bg-paper text-ink antialiased">
+        <ThemeProvider>
+          <MotionProvider>
+            <a
+              href="#hero"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-accent focus:px-3 focus:py-1 focus:text-on-accent"
+            >
+              Skip to content
+            </a>
+            <BootSplashGate />
+            {children}
+            <Analytics />
+          </MotionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

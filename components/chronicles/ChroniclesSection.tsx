@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { EventModal } from './EventModal';
 import { chronicles } from '@/content/chronicles';
 import { cn } from '@/lib/cn';
@@ -128,8 +129,8 @@ export function ChroniclesSection() {
   }, []);
 
   return (
-    <SectionWrapper id="record" ariaLabel="Record" width="lg" withTopRule>
-      <SectionHeader index={6} slug="record" title="experience." />
+    <SectionWrapper id="record" ariaLabel="Record" withTopRule>
+      <SectionHeader index={6} slug="record" title="experience." planet={SECTION_PLANET.record} />
 
       <RecordBlock eyebrow="organizations" events={organizations} onSelect={setOpen} />
       <RecordBlock eyebrow="education" events={education} onSelect={setOpen} />

@@ -1,6 +1,5 @@
 'use client';
 
-import { GlitchText } from '@/components/ui/GlitchText';
 import { StatusDot } from '@/components/ui/StatusDot';
 import type { Project } from '@/types';
 
@@ -21,10 +20,7 @@ export function ClassifiedListItem({ index, project }: Props) {
 
       <div className="min-w-0">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <GlitchText
-            text={project.codename ?? '████-██'}
-            className="font-sans text-lg font-semibold tracking-widest text-text-secondary md:text-xl"
-          />
+          <span className="font-mono text-muted">{project.codename ?? '████-██'}</span>
           <span className="inline-flex items-center rounded-sm border border-accent-magenta/40 bg-accent-magenta/5 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.25em] text-accent-magenta">
             classified
           </span>

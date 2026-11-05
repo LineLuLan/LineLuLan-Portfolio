@@ -12,7 +12,7 @@ export const SOCIAL: SocialLinks = {
 
 export const CV_PATH = '/line-cv';
 export const CV_FILE = '/cv/tran-nam-anh-cv.pdf';
-export const AVATAR_PATH = '/avatar.png';
+export const AVATAR_PATH = '/avatar-pixel.png';
 
 // Section anchors + breadcrumb labels (editorial 7-section structure).
 // Key is the breadcrumb token; `id` is the DOM anchor used by `getElementById`.

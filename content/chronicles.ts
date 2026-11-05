@@ -79,9 +79,9 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'twohearts-de',
-    date: '2026-01-01',
+    date: '2026-07-01',
     type: 'role',
-    title: 'Data Engineer',
+    title: 'Data Engineer · Twohearts Technologies',
     org: 'Twohearts Technologies',
     ongoing: true,
     description: 'Data validation and normalization for AI-powered ordering; LLM eval harness; end-to-end testing with Gherkin and property-based tests.',

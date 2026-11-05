@@ -98,6 +98,8 @@ export function CareerPath({ events, today }: { events: ChronicleEvent[]; today:
       </div>
       <ul aria-label="Milestone types" className="mt-2 flex flex-wrap justify-center gap-x-5 gap-y-2">
         {Object.entries(TYPES).map(([type, { label, planet }]) => <li key={type} className="flex items-center gap-2 text-xs text-muted"><PixelPlanet kind={planet} size={20} />{label}</li>)}
+        <li className="flex items-center gap-2 text-xs text-muted"><span className="career-legend-dot" data-kind="active" aria-hidden />Active now</li>
+        <li className="flex items-center gap-2 text-xs text-muted"><span className="career-legend-dot" data-kind="award" aria-hidden />Awards &amp; wins</li>
       </ul>
       <noscript><style>{`.career-marker-wrap { transform: none !important; } .career-road-travelled { stroke-dasharray: none !important; }`}</style></noscript>
     </div>

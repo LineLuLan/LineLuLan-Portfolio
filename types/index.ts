@@ -1,3 +1,5 @@
+import type { StackIconKey } from '@/lib/stack-icons';
+
 // Single source of truth for content shapes. Edit content/*.ts against these types.
 
 export type ProjectState = 'live' | 'wip' | 'classified' | 'paused';
@@ -57,17 +59,14 @@ export type ChronicleEvent = {
   ongoing?: boolean;
 };
 
-export type SkillTier = {
-  id: 'core' | 'llm' | 'working' | 'exploring';
-  command: string; // e.g. "cat core_stack.log"
-  label: string; // e.g. "CORE STACK"
-  caption: string; // e.g. "daily reach"
-  rows: SkillRow[];
-};
+export type StackItem = { name: string; icon?: StackIconKey };
 
-export type SkillRow = {
-  category: string; // e.g. "Languages"
-  items: string[]; // e.g. ["Python", "SQL", "TypeScript"]
+export type SkillTier = {
+  id: string;
+  label: string;
+  caption: string;
+  items: StackItem[];
+  practices?: string[];
 };
 
 export type DABMQuadrant = {
@@ -94,6 +93,7 @@ export type ProfileStat = {
 export type WhatIBringItem = {
   title: string;
   description: string;
+  proof: string;
 };
 
 export type ProfileNarrative = {

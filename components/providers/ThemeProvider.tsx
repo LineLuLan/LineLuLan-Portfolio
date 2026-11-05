@@ -1,5 +1,7 @@
 'use client';
 
+// Intent: share effective motion and preserve explicit user choices over OS settings.
+// Status: R2. Next: browser checks. Blockers: none. Confidence: pre-paint regression matrix.
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import {
   DEFAULT_THEME,
@@ -15,6 +17,7 @@ type ThemeContextValue = {
   theme: ThemeId;
   setTheme: (theme: ThemeId) => void;
   motion: MotionPreference;
+  motionSource: 'user' | 'system';
   setMotion: (motion: MotionPreference) => void;
   reducedMotion: boolean;
 };
@@ -30,7 +33,7 @@ function applyTheme(theme: ThemeId) {
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, updateTheme] = useState<ThemeId>(DEFAULT_THEME);
   const [motion, updateMotion] = useState<MotionPreference>('on');
-  const [systemReducedMotion, setSystemReducedMotion] = useState(false);
+  const [motionSource, updateMotionSource] = useState<'user' | 'system'>('system');
 
   const setTheme = useCallback((next: ThemeId) => {
     if (!isTheme(next)) return;
@@ -41,7 +44,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setMotion = useCallback((next: MotionPreference) => {
     document.documentElement.dataset.motion = next;
+    document.documentElement.dataset.motionSource = 'user';
     updateMotion(next);
+    updateMotionSource('user');
     try { localStorage.setItem(MOTION_STORAGE_KEY, next); } catch { /* Storage is optional. */ }
   }, []);
 
@@ -50,14 +55,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Status: P1. Next: additional registry themes. Blockers: none. Confidence: tested storage paths.
     const root = document.documentElement;
     const initialTheme = isTheme(root.dataset.theme) ? root.dataset.theme : DEFAULT_THEME;
-    const initialMotion = root.dataset.motion === 'off' ? 'off' : 'on';
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const initialSource = root.dataset.motionSource === 'user' ? 'user' : 'system';
+    const initialMotion = initialSource === 'system' ? (preference.matches ? 'off' : 'on') : (root.dataset.motion === 'off' ? 'off' : 'on');
+    updateMotionSource(initialSource);
+    root.dataset.motionSource = initialSource;
     updateTheme(initialTheme);
     updateMotion(initialMotion);
     applyTheme(initialTheme);
     root.dataset.motion = initialMotion;
 
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const syncSystemMotion = () => setSystemReducedMotion(preference.matches);
+    const syncSystemMotion = () => {
+      if (root.dataset.motionSource === 'user') return;
+      const next = preference.matches ? 'off' : 'on';
+      updateMotion(next);
+      root.dataset.motion = next;
+    };
     syncSystemMotion();
     preference.addEventListener('change', syncSystemMotion);
 
@@ -71,9 +84,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         applyTheme(next);
       }
       if (event.key === MOTION_STORAGE_KEY || event.key === null) {
-        const next = event.newValue === 'off' ? 'off' : 'on';
+        const explicit = event.newValue === 'on' || event.newValue === 'off';
+        const source = explicit ? 'user' : 'system';
+        const next = explicit ? event.newValue as MotionPreference : preference.matches ? 'off' : 'on';
         updateMotion(next);
+        updateMotionSource(source);
         root.dataset.motion = next;
+        root.dataset.motionSource = source;
       }
     };
     window.addEventListener('storage', syncStorage);
@@ -84,7 +101,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, motion, setMotion, reducedMotion: motion === 'off' || systemReducedMotion }}>
+    <ThemeContext.Provider value={{ theme, setTheme, motion, motionSource, setMotion, reducedMotion: motion === 'off' }}>
       {children}
     </ThemeContext.Provider>
   );

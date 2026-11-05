@@ -10,10 +10,10 @@ const colorMap: Record<ProjectState | 'default', string> = {
 };
 
 const labelMap: Record<ProjectState | 'default', string> = {
-  live: 'live',
-  wip: 'modeling',
-  classified: 'classified',
-  paused: 'paused',
+  live: 'Live',
+  wip: 'Modeling',
+  classified: 'Classified',
+  paused: 'Paused',
   default: '',
 };
 

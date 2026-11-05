@@ -5,7 +5,7 @@ export function InOrbitList({ projects }: { projects: Project[] }) {
 
   return (
     <div className="mt-8">
-      <p className="eyebrow mb-3">in orbit</p>
+      <p className="eyebrow mb-3">In orbit</p>
       <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm text-muted">
         {projects.map((project) => (
           <li key={project.slug}>{project.codename} · {project.name}</li>

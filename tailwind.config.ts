@@ -25,7 +25,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)', 'Manrope', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
-        serif: ['var(--font-serif)', 'DM Serif Display', 'Georgia', 'serif'],
+        display: ['var(--font-display)', 'Space Grotesk', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         xs: ['12px', { lineHeight: '1.5' }],

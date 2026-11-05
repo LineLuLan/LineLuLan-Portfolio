@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { capitalize } from '@/lib/cn';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { SECTION_PLANET } from '@/lib/pixel-planets';
@@ -29,8 +30,8 @@ export function OrbitCompanion() {
 
   const planet = SECTION_PLANET[active];
   return (
-    <div aria-hidden className="pointer-events-none fixed bottom-4 right-4 z-40 hidden min-[480px]:block">
+    <a href={`#${SECTIONS[active].id}`} aria-label={`Go to ${capitalize(SECTIONS[active].label)}`} className="fixed bottom-4 right-4 z-40 hidden h-11 w-11 items-center justify-center rounded-full min-[480px]:flex">
       <PixelPlanet key={planet} kind={planet} size={32} className="companion-hop" />
-    </div>
+    </a>
   );
 }

@@ -3,11 +3,11 @@
   --color-surface: #EFEDE8;
   --color-panel: #FFFFFF;
   --color-ink: #1A1726;
-  --color-muted: #5E5A6E;
+  --color-muted: #45414F;
   --color-accent: #8F2D9A;
   --color-accent-hover: #6F2278;
   --color-on-accent: #FFFFFF;
-  --color-line: #D6D2DE;
+  --color-line: #CBC6D4;
   --color-tint-a: #EFE6F6;
   --color-tint-b: #F7E6EC;
   --color-tint-c: #E8EAF2;
@@ -26,11 +26,11 @@ html[data-theme="orbit"] {
   --color-surface: #EFEDE8;
   --color-panel: #FFFFFF;
   --color-ink: #1A1726;
-  --color-muted: #5E5A6E;
+  --color-muted: #45414F;
   --color-accent: #8F2D9A;
   --color-accent-hover: #6F2278;
   --color-on-accent: #FFFFFF;
-  --color-line: #D6D2DE;
+  --color-line: #CBC6D4;
   --color-tint-a: #EFE6F6;
   --color-tint-b: #F7E6EC;
   --color-tint-c: #E8EAF2;

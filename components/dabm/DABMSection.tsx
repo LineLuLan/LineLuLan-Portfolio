@@ -20,11 +20,11 @@ export function DABMSection() {
 
   return (
     <SectionWrapper id="framework" ariaLabel="DABM Framework" withTopRule>
-      <SectionHeader index={5} slug="framework" title="DABM." planet={SECTION_PLANET.framework} />
+      <SectionHeader index={5} slug="framework" title="The DABM framework." planet={SECTION_PLANET.framework} />
 
       <div className="mb-8">
         <p className="font-mono text-base text-accent">Data · Agent · Behavioral · Modeling</p>
-        <p className="mt-2 max-w-[65ch] text-lg text-muted">{dabmIntro}</p>
+        <p className="mt-2 max-w-[65ch] text-lg text-ink">{dabmIntro}</p>
       </div>
 
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">

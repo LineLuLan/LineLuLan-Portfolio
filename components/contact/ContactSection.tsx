@@ -17,7 +17,7 @@ export function ContactSection() {
             index={7}
             slug="contact"
             planet={SECTION_PLANET.contact}
-            title="let's build something."
+            title="Let's build something."
             sub="Got an opportunity, a question, or just want to compare notes on causal inference? Send a packet."
           />
           <a href={`mailto:${SOCIAL.email}`} className="inline-flex min-h-11 max-w-full items-center break-all font-sans text-2xl font-bold text-ink hover:text-accent md:text-3xl">

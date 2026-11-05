@@ -1,0 +1,36 @@
+/* Intent: CSS motion over static SVG positioning, with synchronized inverse rotation.
+   Status: R2. Next: visual review. Blockers: none. Confidence: shared geometry checker. */
+.orbit-figure { width: 100%; margin: 0; }
+.orbit-system { display: block; width: 100%; height: auto; overflow: visible; }
+.orbit-revolve,
+.orbit-counter-revolve,
+.orbit-sprite {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+.orbit-revolve { animation: orbit-revolve var(--orbit-period) linear infinite; }
+.orbit-counter-revolve { animation: orbit-counter-revolve var(--orbit-period) linear infinite; }
+@keyframes orbit-revolve { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbit-counter-revolve { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+.orbit-figure:hover .orbit-revolve,
+.orbit-figure:hover .orbit-counter-revolve,
+.orbit-system:focus-within .orbit-revolve,
+.orbit-system:focus-within .orbit-counter-revolve { animation-play-state: paused; }
+.orbit-planet-link { cursor: pointer; outline: none; }
+.orbit-sprite { transition: transform 180ms ease; pointer-events: none; }
+.orbit-focus-ring { opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
+.orbit-label { opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
+.orbit-track { transition: stroke 180ms ease; }
+.orbit-planet-link:is(:hover, :focus-visible) .orbit-sprite { transform: scale(var(--orbit-hover-scale)); }
+.orbit-planet-link:is(:hover, :focus-visible) .orbit-focus-ring,
+.orbit-planet-link:is(:hover, :focus-visible) .orbit-label { opacity: 1; }
+.orbit-system:has(.orbit-planet-link[data-ring="0"]:is(:hover, :focus-visible)) .orbit-track[data-ring="0"],
+.orbit-system:has(.orbit-planet-link[data-ring="1"]:is(:hover, :focus-visible)) .orbit-track[data-ring="1"],
+.orbit-system:has(.orbit-planet-link[data-ring="2"]:is(:hover, :focus-visible)) .orbit-track[data-ring="2"] { stroke: var(--color-accent); }
+.orbit-caption { margin-top: 0.25rem; color: var(--color-muted); font-family: var(--font-mono), monospace; font-size: 13px; text-align: center; }
+[data-motion="off"] .orbit-revolve,
+[data-motion="off"] .orbit-counter-revolve { animation: none; }
+[data-motion="off"] .orbit-sprite,
+[data-motion="off"] .orbit-label,
+[data-motion="off"] .orbit-focus-ring,
+[data-motion="off"] .orbit-track { transition: none; }

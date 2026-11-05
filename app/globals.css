@@ -1,5 +1,8 @@
 @import './themes.css';
+@import './orbit.css';
 
+/* Intent: share R2 typography and motion while keeping no-JS content readable.
+   Status: implemented. Next: supervisor screenshots. Blockers: none. Confidence: static review and contrast gate. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +11,7 @@
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    --header-height: 81px;
   }
 
   body {
@@ -49,10 +53,10 @@
     align-items: center;
     gap: 0.75rem;
     font-family: var(--font-mono), 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.5;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-weight: 500;
     color: var(--color-ink);
   }
 
@@ -61,21 +65,16 @@
   }
 
   .editorial-h2 {
-    font-family: var(--font-sans), 'Manrope', system-ui, sans-serif;
-    font-size: clamp(2rem, 3.6vw, 3rem);
-    line-height: 1.15;
-    font-weight: 500;
+    font-family: var(--font-display), 'Space Grotesk', system-ui, sans-serif;
+    font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+    line-height: 1.1;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--color-ink);
     text-wrap: balance;
   }
 
-  .serif-accent {
-    font-family: var(--font-serif), Georgia, serif;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--color-accent);
-  }
+
 }
 
 @layer utilities {
@@ -86,8 +85,8 @@
   .ring-accent\/40 { --tw-ring-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
   .pixel-grid-bg {
     background-image:
-      linear-gradient(to right, color-mix(in srgb, var(--color-line) 35%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 35%, transparent) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in srgb, var(--color-line) 22%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 22%, transparent) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 }
@@ -123,64 +122,6 @@
   animation-delay: var(--reveal-delay, 0ms);
 }
 
-@keyframes orbit-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes orbit-spin-reverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.orbit-rings {
-  transform-origin: 280px 280px;
-  animation: orbit-spin 160s linear infinite;
-}
-
-.orbit-rings .orbit-planet {
-  transform-origin: 0 0;
-  animation: orbit-spin-reverse 160s linear infinite;
-}
-
-.orbit-system .orbit-label {
-  opacity: 0;
-  transition: opacity 160ms var(--theme-ease);
-  pointer-events: none;
-}
-
-.orbit-planet-link:hover .orbit-label,
-.orbit-planet-link:focus-visible .orbit-label {
-  opacity: 1;
-}
-
-.orbit-planet-link .orbit-sprite {
-  transition: transform 160ms var(--theme-ease);
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.orbit-planet-link:hover .orbit-sprite,
-.orbit-planet-link:focus-visible .orbit-sprite {
-  transform: scale(1.12);
-}
-
-/* Pause both rotations together so focused labels and sprites remain upright. */
-.orbit-system:hover .orbit-rings,
-.orbit-system:focus-within .orbit-rings,
-.orbit-system:hover .orbit-planet,
-.orbit-system:focus-within .orbit-planet {
-  animation-play-state: paused;
-}
-
-.orbit-planet-link:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.orbit-focus-ring { opacity: 0; }
-.orbit-planet-link:focus-visible .orbit-focus-ring { opacity: 1; }
-
 @keyframes companion-hop {
   from { transform: translateY(-6px); }
   to { transform: translateY(0); }
@@ -192,12 +133,47 @@
 
 /* Reduced-motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion]),
+  html:not([data-motion]) *,
+  html:not([data-motion]) *::before,
+  html:not([data-motion]) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
+
+/* Header fallback matches the two-row navigation between nav and xl breakpoints. */
+@media (min-width: 900px) and (max-width: 1279px) {
+  html { --header-height: 121px; }
+}
+@media (max-width: 359px) {
+  html { --header-height: 121px; }
+}
+@layer base {
+  h1, h2, h3, h4, h5, h6 { font-family: var(--font-display), system-ui, sans-serif; }
+  em, i { font-style: normal; }
+}
+.hero-heading {
+  font-size: clamp(2.5rem, 1.5rem + 3vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+@keyframes pixel-twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.pixel-star { animation: pixel-twinkle 4s ease-in-out infinite; }
+@keyframes section-reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+[data-reveal][data-revealed="true"] {
+  animation: section-reveal 400ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+html[data-motion="on"] :is(a, button).bg-accent,
+.stack-tool { transition: transform var(--theme-duration) var(--theme-ease), border-color var(--theme-duration) var(--theme-ease); }
+html[data-motion="on"] :is(a, button).bg-accent:hover,
+html[data-motion="on"] .stack-tool:hover { transform: translateY(-2px); }

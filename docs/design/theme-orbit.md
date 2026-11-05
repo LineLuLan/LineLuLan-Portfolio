@@ -1,6 +1,6 @@
 # Design brief — Theme 01 "Orbit"
 
-Status: implemented v1 · 2026-11-05
+Status: R2 implemented · 2026-11-06; browser/build acceptance pending supervisor review
 This file is the brief every implementation packet reads. Reference: tamir39.com (Swiss / Editorial art direction, theme dock, wide project rows). The implementation is original; nothing is copied from that repository.
 
 ## 1. Goals
@@ -29,11 +29,11 @@ Non-goals: dark appearance (phase 2), interactive playground (phase 2), cursor d
 | `--color-surface` | `#EFEDE8` | section bands, inputs |
 | `--color-panel` | `#FFFFFF` | cards |
 | `--color-ink` | `#1A1726` | headings, body |
-| `--color-muted` | `#5E5A6E` | secondary text (contrast 6.9:1 on paper) |
+| `--color-muted` | `#45414F` | secondary text (contrast 9.24:1 on paper) |
 | `--color-accent` | `#8F2D9A` | links, accent line, buttons (6.5:1 on paper) |
 | `--color-accent-hover` | `#6F2278` | hover |
 | `--color-on-accent` | `#FFFFFF` | text on accent |
-| `--color-line` | `#D6D2DE` | hairlines, borders |
+| `--color-line` | `#CBC6D4` | hairlines, borders |
 | `--color-tint-a` | `#EFE6F6` | lavender tint (project rows, contact band) |
 | `--color-tint-b` | `#F7E6EC` | blush tint |
 | `--color-tint-c` | `#E8EAF2` | mist tint |
@@ -46,18 +46,17 @@ Non-goals: dark appearance (phase 2), interactive playground (phase 2), cursor d
 | `--theme-ease` | `cubic-bezier(0.2, 0, 0, 1)` | transitions |
 | `--pixel` | `4px` | pixel-art cell size |
 
-Rules: no inline hex in components. No glow, blur, grain, scanline, or glass. One accent only; pink `#E07B97` appears only inside pixel art and tints, never as text.
+Rules: no inline hex in components. Only the orbit avatar uses a soft tint-a glow; no blur, grain, scanline, or glass. One accent only; pink `#E07B97` appears only inside pixel art and tints, never as text.
 
 ## 4. Typography
 
-- `--font-sans`: Manrope (next/font/google, weights 400 500 700 800, `display: swap`).
-- `--font-mono`: JetBrains Mono (400 500) for eyebrows, labels, dates, chips.
-- `--font-serif`: DM Serif Display (400, italic) for the accent line in the hero and section headings only.
-- Scale (Tailwind `fontSize`): `xs 12/1.5`, `sm 14/1.55`, `base 16/1.65`, `lg 18/1.6`, `xl 22/1.4`, `2xl 28/1.25`, `3xl 36/1.15`, `4xl 48/1.08`, `display clamp(2.8rem, 6.4vw, 6rem)/1.05`.
-- Hero H1: sans 800, letter-spacing `-0.06em`; the second line is serif italic in accent.
-- Section H2: sans 500, `-0.03em`, 36–48px, with the final word in serif italic accent when it reads naturally.
-- Eyebrow: mono 11px uppercase, letter-spacing `0.22em`, muted, preceded by `NN /` index.
-- Body max width `65ch`. Minimum body size 16px on all breakpoints.
+- `--font-sans`: Manrope, weights 400/500/700/800, for body text and tool chips.
+- `--font-display`: Space Grotesk, weights 500/700, for all headings. Both fonts use Latin, Latin-ext and Vietnamese subsets with `display: swap`.
+- `--font-mono`: JetBrains Mono 400/500 for metadata, eyebrows and dates.
+- Hero H1: upright display 700, `clamp(2.5rem, 1.5rem + 3vw, 4.25rem)`, line-height 1.02, tracking -0.035em. “Build things that survive” is ink; “contact with reality.” is accent.
+- Section H2: upright display 700, `clamp(2rem, 1.4rem + 2.2vw, 3rem)`, line-height 1.1, tracking -0.03em. Only the final period is accent.
+- Eyebrow: mono 14px/1.5, weight 500, tracking 0.02em, ink. Section format: planet, muted two-digit index, then a capitalized label.
+- Labels use sentence case, retaining official brand capitalization. Body paragraphs use ink; metadata uses muted. No italic styles.
 
 ## 5. Pixel planet system
 
@@ -75,31 +74,40 @@ Planet set (`lib/pixel-planets.ts`), one per section plus extras:
 | 06 record | Moon (crescent) | |
 | 07 contact | Comet (streak) | |
 
-Hero artwork (`components/hero/OrbitArtwork.tsx`): three concentric hairline ellipses on the right half of the hero on desktop, each carrying one pixel planet; the ring group rotates slowly (120 s linear) with CSS; static under reduced motion or `data-motion="off"`; hidden under 1024px (the hero becomes content-first on phones). A faint 24px grid (`--color-line` at 35%) sits behind the hero only.
+Hero artwork (`components/hero/OrbitSystem.tsx`): exactly three ellipses tilted -12 degrees, ry/rx 0.62, rx 140/215/310. The outer radius was tuned from 290 within the approved +20 bound. Shared constants live in `lib/orbit-layout.json`.
 
-Companion (`components/pixel/OrbitCompanion.tsx`, phase 4): a 32px pixel satellite fixed at bottom-right that swaps to the active section's planet with a 160ms hop. No roaming, no speech. Hidden on phones under 480px wide.
+- Ring 1: Earth 36px at 0 degrees and Moon 32px at 180 degrees, 60-second revolution.
+- Ring 2: Mars 40px at 90 degrees and Neptune 44px at 270 degrees, 90-second revolution.
+- Ring 3: Saturn 52px at 30 degrees, Jupiter 52px at 150 degrees and Comet 44px at 270 degrees, 130-second revolution.
+- The center avatar has radius 56px, a 2px accent ring and a soft tint-a radial glow. Ring strokes are 1.5px line color.
+- Nested static SVG transforms define the ellipse; CSS rotates each planet and counter-rotates its sprite, maintaining upright, unsquashed artwork without JS. Hover/focus pauses every ring. Planet hover/focus scales to 1.12, highlights its ring and reveals a panel label in mono 14px ink.
+- The calculated viewBox includes the full orbit, hit targets, labels, hover scaling and 16px padding. Caption: “Hover a planet · click to jump”, mono 13px muted.
+- `pnpm check:orbit` reads the same layout JSON and actual painted sprite cells. It sweeps 2340 seconds at 0.25-second intervals (9361 samples), requiring at least 8px clearance from the avatar and between planets, including the entire hover-scale range. Labels are excluded because motion pauses while they are shown.
+- The hero grid uses line color at 22%. Pixel stars twinkle between opacity 0.35 and 1 over staggered 3–6-second cycles.
+
+Companion (`components/pixel/OrbitCompanion.tsx`): a 32px active-section planet in a 44px section link at bottom-right, with a 160ms hop. Hidden below 480px.
 
 ## 6. Layout and sections
 
 Container: `max-w-[1200px]`, side padding 24px (phones) / 40px / 64px. Sections are separated by a full-width hairline, not by cards. Vertical rhythm: 96px desktop, 64px phones.
 
 ### Header (`components/layout/Header.tsx`)
-Sticky top, paper background with a bottom hairline. Left: pixel Saturn mark + `Line`. Center/right: links `about · stack · work · framework · record · contact` (mono, lowercase). Right: `Open CV` outline button + 36px round pixel avatar. Under 900px: links collapse into a disclosure button (`aria-expanded`), Escape closes and returns focus. Header hides on scroll down and reappears on scroll up (desktop, fine pointer only).
+Sticky top, paper background with a bottom hairline. Left: pixel Saturn mark + `Line`. Center/right: links `About · Stack · Work · Framework · Record · Contact`. Right: `Open CV` outline button + 36px round pixel avatar. Under 900px: links collapse into a disclosure button (`aria-expanded`), Escape closes and returns focus. The header stays fully visible at every scroll position.
 
 ### 01 whoami (Hero)
-Desktop grid: left 1.25fr, right 1fr. Left: eyebrow `01 / 07 · AI / ML ENGINEER · DATA ENGINEERING · 2026`, H1 two lines (copy in section 8), then a profile row: 64px pixel avatar, name `Trần Nam Anh`, alias + title in mono, positioning sentence (max 42ch), action row `Open CV` (filled accent) · `Let's connect` (outline) · `GitHub` · `LinkedIn` (text links with arrow). Right: `OrbitArtwork`. Below both: stats row (4 cells, hairline top, numbers sans 700 40px, labels mono uppercase). Boot splash stays but restyled: paper background, ink `linelulan` with an accent pixel Saturn as the dot; same CSS-driven behavior as today (visible in SSR, self-dismissing, reduced-motion safe). No typewriter, no stars, no sparks.
+Desktop hero: text and orbit in a 1.5:1 grid, with stats below. At >=1024px its minimum height is `100svh - --header-height`, and the full content group is vertically centered. The eyebrow is `01 AI / ML Engineer · Data Engineering`. The profile row contains name and title; the avatar remains in the header and orbit. Positioning is ink, 18px/22px. All four actions remain: Open CV, Let's connect, GitHub and LinkedIn. Stats use sentence-case labels. Hero text uses CSS reveals and is server-rendered; the splash dismisses even without JS.
 
 ### 02 about
-Two columns on desktop: left `narrative.intro` + `narrative.mission` as two paragraphs (18px); right a definition list from `profile.facts` (mono keys, ink values, hairlines between rows). Below: `What I bring` as a 4-up grid of panels (pixel planet 24px top-left, title sans 700, one-line description), then `Currently exploring` chips (mono, outline, hover accent).
+Two columns on desktop: left `narrative.intro` + `narrative.mission` as two paragraphs (18px); right a definition list from `profile.facts` (mono keys, ink values, hairlines between rows). Below: `What I bring` uses a 2×2 grid of panels with 28px padding, 32px pixel planets, display 22px titles, ink 17px/28px descriptions and accent 13px proof rows. `Currently exploring` uses 15px sans chips.
 
 ### 03 stack
-Four tiers in order core / llm / working / exploring. Each tier: eyebrow with index and the tier caption, then rows `category (mono, muted, 160px column) · chips`. Chips: 13px mono, outline `--color-line`, radius control, hover accent border. No terminal `cat x.log` commands.
+Six groups: Languages; ML & modeling; LLM & agents; Data engineering; Backend & MLOps; Cloud & web. Cards form one/two/three columns by breakpoint, with 24px padding, display 20px titles and 15px captions. Named simple-icons imports supply 20px logos. Brands below 2:1 against white use ink; missing logos use monograms. Tool chips are sans 15px with 40px minimum height. Practices and the full-width Methods row are separate text chips; no Exploring tier.
 
 ### 04 work
-Eyebrow + H2 `selected projects.` + one-sentence intro right-aligned on desktop. Filter pills (`aria-pressed`). Project list: wide rows (full container width, tinted backgrounds cycling tint-a / tint-c / tint-b, radius `--theme-radius`, hairline border). Row grid on desktop: left (role eyebrow mono, pixel planet 20px + name sans 700 32px, state dot + domains), middle (tagline + 3–6 tech chips), right (`Visit ↗` filled when demo/github/paper exists; `Details` text link opens the existing modal). On phones the row stacks. Classified slots render after the live rows as a compact muted list `In orbit · LGL-██ · WLD-██ · EDU-██ · STU-██` with no interaction. The modal (`ProjectModal`) is restyled: panel on paper, hairlines, same sections, focus handling kept.
+Eyebrow + H2 `Selected projects.` + one-sentence intro right-aligned on desktop. Filter pills (`aria-pressed`). Project list: wide rows (full container width, tinted backgrounds cycling tint-a / tint-c / tint-b, radius `--theme-radius`, hairline border). Row grid on desktop: left (role eyebrow mono, pixel planet 20px + name display 700 32px, state dot + domains), middle (tagline + 3–6 tech chips), right (`Visit ↗` filled when demo/github/paper exists; `Details` text link opens the existing modal). On phones the row stacks. Classified slots render after the live rows as a compact muted list `In orbit · LGL-██ · WLD-██ · EDU-██ · STU-██` with no interaction. The modal (`ProjectModal`) is restyled: panel on paper, hairlines, same sections, focus handling kept.
 
 ### 05 framework (DABM)
-Eyebrow + H2 `DABM.` + sub `Data · Agent · Behavioral · Modeling` in mono accent. 2×2 quadrant panels, each with a pixel planet glyph, letter in mono accent, label, body. Right of the grid on wide screens: `Apply to a project` dropdown + the DABM tags for the chosen project (existing logic untouched).
+Eyebrow + H2 `The DABM framework.` + sub `Data · Agent · Behavioral · Modeling` in mono accent. 2×2 quadrant panels, each with a pixel planet glyph, letter in mono accent, label, body. Right of the grid on wide screens: `Apply to a project` dropdown + the DABM tags for the chosen project (existing logic untouched).
 
 ### 06 record
 Three sub-blocks (organizations / education / achievements), each: eyebrow, then rows `date range (mono, 140px column) · title (ink) · org (muted)`. Interactive rows are buttons that open the existing `EventModal`; the others are plain rows. Ongoing shows `— Present`. Placeholder days (`-01`) display month + year only.
@@ -107,20 +115,22 @@ Three sub-blocks (organizations / education / achievements), each: eyebrow, then
 ### 07 contact
 A full-width tint-a band. Left: H2 `Let's build something.`, one sentence, email as a large link, GitHub / LinkedIn / Kaggle links with arrows, `Open CV`. Right: the existing form restyled (labels above inputs, inputs on paper with hairline, accent submit). Footer line under the band: `© 2026 Trần Nam Anh (Line) · Built with intention.` and `theme 01 · orbit` in mono.
 
-## 7. Motion and accessibility
+## 7. Motion, navigation and accessibility
 
-- `<MotionConfig reducedMotion="user">` stays. Scroll reveals: opacity + 12px rise, 400ms, once. Nothing above the fold depends on JS to be visible (keep the SSR-visible hero and the noscript fallback).
-- `html[data-motion="off"]` disables all animation and transition durations.
-- Contrast: every text/background pair ≥ 4.5:1; a script `scripts/check-contrast.mjs` reads `app/themes.css` and fails the build locally if a pair drops below.
-- Focus ring: 2px accent, 2px offset, on every interactive element. Skip link stays. Modals keep focus capture and return.
-- Headings form a single outline: one H1 (hero), H2 per section, H3 inside.
-- Touch targets ≥ 44px. No hover-only information.
+- Motion is explicit-or-system. Stored `line.motion=on|off` wins; absence/invalid values follow `prefers-reduced-motion`, including live changes. The pre-paint script sets effective `data-motion` and `data-motion-source=user|system`. Cross-tab storage changes stay synchronized.
+- The dock says “Motion · On” or “Motion · Off”, appending “ (system)” when applicable. Its switch state reflects the effective value.
+- MotionConfig uses `always` when off and `never` when on. Framer opacity transitions also receive zero durations when off. The OS CSS fallback applies only to `html:not([data-motion])`, so explicit On works on Line’s Windows installation.
+- `html[data-motion="off"]` disables CSS animations and transitions. Section eyebrows and titles reveal once with a 24px rise and 60ms stagger; cards and Stack groups stagger by 50ms. Primary buttons lift 2px on hover when motion is on.
+- `AnchorScroll` handles same-page anchors globally. Hero goes to zero. Short sections center in the available viewport below the measured sticky header; taller sections align immediately below it. Navigation pushes the hash, closes the mobile menu, and focuses the section without another scroll. Hash loads wait for load/fonts/layout; browser history uses the same rule. Modifier clicks retain native behavior. CSS scroll margin uses the header-height variable as a no-JS fallback.
+- Contrast: all checked text/background pairs reach 4.5:1 or better in both token blocks.
+- Focus: 2px accent ring on interactive elements; destination sections are programmatically focusable without a visible section outline. Skip link and modal focus handling remain.
+- Headings: one H1, section H2s, card/subsection H3s. CSS and noscript fallbacks keep content available without JS.
 
 ## 8. Copy decisions (Line confirms)
 
 Hero H1 options: (A) `Build things that survive` / `contact with reality.` · (B) `Data in.` / `Decisions out.` · (C) `Models you can defend.` / `Pipelines you can trust.` Default A (it is already Line's own line from the narrative).
 
-Section headings: `01 whoami` · `02 about — jack of all trades.` · `03 stack — tools of the trade.` · `04 work — selected projects.` · `05 framework — DABM.` · `06 record — experience.` · `07 contact — let's build something.` (unchanged, now rendered as eyebrow + H2 with the trailing phrase in serif italic accent).
+Section headings: “Where research meets production.” · “Tools I ship with.” · “Selected projects.” · “The DABM framework.” · “Experience and milestones.” · “Let's build something.”
 
 ## 9. Phases (one worker packet each)
 

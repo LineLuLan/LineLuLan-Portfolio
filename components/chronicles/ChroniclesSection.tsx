@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { formatChronicleDate } from '@/lib/dates';
@@ -26,10 +27,11 @@ type BlockProps = {
 };
 
 function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
+  const { reducedMotion } = useTheme();
   if (events.length === 0) return null;
   return (
     <section className="mt-10 first:mt-0">
-      <h3 className="eyebrow mb-4">
+      <h3 className="mb-4 font-display text-[20px] font-bold">
         {eyebrow}
       </h3>
       <ul>
@@ -39,9 +41,9 @@ function RecordBlock({ eyebrow, events, onSelect }: BlockProps) {
           return (
             <motion.li
               key={e.id}
-              initial={{ opacity: 0, y: 12 }}
+              initial={reducedMotion ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.03 }}
+              transition={reducedMotion ? { duration: 0, delay: 0 } : { duration: 0.4, delay: i * 0.05 }}
               viewport={{ once: true, margin: '-40px' }}
             >
               <Row
@@ -86,11 +88,11 @@ export function ChroniclesSection() {
 
   return (
     <SectionWrapper id="record" ariaLabel="Record" withTopRule>
-      <SectionHeader index={6} slug="record" title="experience." planet={SECTION_PLANET.record} />
+      <SectionHeader index={6} slug="record" title="Experience and milestones." planet={SECTION_PLANET.record} />
 
-      <RecordBlock eyebrow="organizations" events={organizations} onSelect={setOpen} />
-      <RecordBlock eyebrow="education" events={education} onSelect={setOpen} />
-      <RecordBlock eyebrow="achievements" events={achievements} onSelect={setOpen} />
+      <RecordBlock eyebrow="Organizations" events={organizations} onSelect={setOpen} />
+      <RecordBlock eyebrow="Education" events={education} onSelect={setOpen} />
+      <RecordBlock eyebrow="Achievements" events={achievements} onSelect={setOpen} />
 
       <EventModal event={open} onClose={() => setOpen(null)} />
     </SectionWrapper>

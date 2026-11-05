@@ -1,0 +1,22 @@
+{
+  "tilt": -12,
+  "ratio": 0.62,
+  "avatarRadius": 56,
+  "clearance": 8,
+  "hoverScale": 1.12,
+  "padding": 16,
+  "rings": [
+    { "rx": 140, "period": 60 },
+    { "rx": 215, "period": 90 },
+    { "rx": 310, "period": 130 }
+  ],
+  "planets": {
+    "about": { "kind": "earth", "ring": 0, "phase": 0, "size": 36 },
+    "record": { "kind": "moon", "ring": 0, "phase": 180, "size": 32 },
+    "stack": { "kind": "mars", "ring": 1, "phase": 90, "size": 40 },
+    "framework": { "kind": "neptune", "ring": 1, "phase": 270, "size": 44 },
+    "whoami": { "kind": "saturn", "ring": 2, "phase": 30, "size": 52 },
+    "work": { "kind": "jupiter", "ring": 2, "phase": 150, "size": 52 },
+    "contact": { "kind": "comet", "ring": 2, "phase": 270, "size": 44 }
+  }
+}

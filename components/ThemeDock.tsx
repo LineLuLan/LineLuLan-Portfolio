@@ -5,7 +5,7 @@ import { useTheme } from '@/components/providers/ThemeProvider';
 import { themes } from '@/lib/themes';
 
 export function ThemeDock() {
-  const { theme, setTheme, motion, setMotion } = useTheme();
+  const { theme, setTheme, motion, motionSource, setMotion } = useTheme();
   const [open, setOpen] = useState(false);
   const dock = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -63,7 +63,7 @@ export function ThemeDock() {
             onClick={() => setMotion(motion === 'on' ? 'off' : 'on')}
             className="hairline min-h-11 rounded-[var(--theme-control-radius)] border px-3 hover:border-accent"
           >
-            Motion <span aria-hidden>· {motion}</span>
+            Motion · {motion === 'on' ? 'On' : 'Off'}{motionSource === 'system' ? ' (system)' : ''}
           </button>
         </div>
       )}

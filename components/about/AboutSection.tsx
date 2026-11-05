@@ -6,16 +6,18 @@ import { WhatIBring } from './WhatIBring';
 import { ExploringTags } from './ExploringTags';
 
 const IDENTITY_LABEL: Record<string, string> = {
-  location: 'based',
-  status: 'studies',
-  building: 'currently',
-  'open to': 'open to',
+  location: 'Based in',
+  status: 'Studying',
+  gpa: 'GPA',
+  research: 'Research',
+  building: 'Currently',
+  'open to': 'Open to',
 };
 
 export function AboutSection() {
   return (
     <SectionWrapper id="about" ariaLabel="About" withTopRule>
-      <SectionHeader index={2} slug="about" title="jack of all trades." planet={SECTION_PLANET.about} />
+      <SectionHeader index={2} slug="about" title="Where research meets production." planet={SECTION_PLANET.about} />
 
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="max-w-[65ch] space-y-4">
@@ -24,7 +26,7 @@ export function AboutSection() {
         </div>
         <dl>
           {profile.facts.map((fact) => (
-            <div key={fact.key} className="grid grid-cols-[120px_1fr] gap-4 border-t hairline py-3">
+            <div key={fact.key} className="grid grid-cols-[100px_minmax(0,1fr)] gap-4 border-t hairline py-3">
               <dt className="eyebrow self-start">{IDENTITY_LABEL[fact.key] ?? fact.key}</dt>
               <dd className="text-base text-ink">{fact.value}</dd>
             </div>

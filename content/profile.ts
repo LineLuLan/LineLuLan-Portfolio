@@ -1,3 +1,5 @@
+// Intent: present Line's supplied R2 narrative and evidence without changing project records.
+// Status: R2. Next: supervisor copy review. Blockers: none. Confidence: supplied task packet.
 import type { Profile } from '@/types';
 
 export const profile: Profile = {
@@ -5,7 +7,7 @@ export const profile: Profile = {
   alias: 'Line',
   title: 'AI / Machine Learning Engineer',
   positioning:
-    'Working at the intersection of ML, LLMs, and algorithmic reasoning — and I care that each thing I ship has its own shape.',
+    'Researcher by training, engineer by habit. I turn ideas from papers into ML and LLM systems that hold up in production.',
   framework: {
     short: 'DABM',
     long: 'Data · Agent · Behavioral · Modeling',
@@ -16,57 +18,55 @@ export const profile: Profile = {
     { key: 'location', value: 'Ho Chi Minh City, VN' },
     { key: 'status', value: '4th year · BSc Data Science @ IU VNU-HCM' },
     { key: 'gpa', value: '3.56 / 4.0' },
-    { key: 'research', value: 'clinical ML with HTD HCMC · first author' },
+    { key: 'research', value: 'Clinical ML with HTD HCMC · first author' },
     { key: 'building', value: 'Twohearts Technologies · Data Engineer' },
     { key: 'open to', value: 'AI / ML Engineer · Data Engineering roles' },
   ],
   location: 'Ho Chi Minh City, VN',
   status: '4th year · BSc Data Science @ IU VNU-HCM',
   gpa: '3.56 / 4.0',
-  research: 'clinical ML with HTD HCMC · first author',
+  research: 'Clinical ML with HTD HCMC · first author',
   building: 'Twohearts Technologies · Data Engineer',
   openTo: 'AI / ML Engineer · Data Engineering roles',
   availability: 'Open to AI / ML & Data roles · HCMC',
   stats: [
-    { value: 4, suffix: '+', label: 'years in tech' },
-    { value: 1, suffix: '+', label: 'year in industry' },
-    { value: 3.56, suffix: '/4.0', label: 'current GPA', decimals: 2 },
-    { value: 6, suffix: '+', label: 'projects shipped' },
+    { value: 4, suffix: '+', label: 'Years in tech' },
+    { value: 1, suffix: '+', label: 'Year in industry' },
+    { value: 3.56, suffix: '/4.0', label: 'Current GPA', decimals: 2 },
+    { value: 6, suffix: '+', label: 'Projects shipped' },
   ],
   whatIBring: [
     {
-      title: 'ML Engineering',
-      description:
-        'Benchmarking XGBoost, LightGBM, and permutation-invariant nets (Deep Sets, Set Transformer) under nested patient-grouped validation. Numbers I can defend, not just a leaderboard.',
+      title: 'ML modeling & evaluation',
+      description: 'Gradient boosting and set-based neural models, validated with nested, patient-grouped cross-validation so the numbers hold outside the notebook.',
+      proof: 'Clinical ML · first author',
     },
     {
-      title: 'Data Engineering',
-      description:
-        'Deterministic pipelines that extract, harmonize, and validate 3.71M+ lab records under strict privacy constraints. Data quality first, models second.',
+      title: 'Data engineering',
+      description: 'Reproducible pipelines that extract, harmonize and validate clinical lab data under strict privacy rules. Data quality first, models second.',
+      proof: '3.71M+ lab records',
     },
     {
-      title: 'LLM Systems',
-      description:
-        'Multi-provider routing (OpenAI, Gemini, Groq, Cerebras), eval harnesses, and tool-use validation for Vietnamese–English agent workflows that run in production.',
+      title: 'LLM & agent systems',
+      description: 'Multi-provider routing, tool-use validation and eval harnesses for Vietnamese–English ordering agents running in production.',
+      proof: 'Live at Twohearts',
     },
     {
-      title: 'Research',
-      description:
-        'Co-developed GoiBERT, compact Vietnamese encoders distilled on 328.6M tokens that beat PhoBERT-v2 at a quarter of the size. First author on clinical ML with HTD HCMC.',
+      title: 'Applied NLP research',
+      description: 'Co-developed GoiBERT, compact Vietnamese encoders distilled on 328.6M tokens that beat PhoBERT-v2 at a quarter of the size.',
+      proof: 'GoiBERT · arXiv',
     },
   ],
   exploring: [
-    'Multi-agent Systems',
-    'Knowledge Distillation',
+    'Multi-agent systems',
+    'Knowledge distillation',
     'Vietnamese NLP',
     'Clinical ML',
-    'Causal Inference',
+    'Causal inference',
     'MLOps',
   ],
   narrative: {
-    intro:
-      'I\'m a Vietnamese AI/ML engineer whose work spans machine learning research, data engineering, and LLM-based application development. I build data pipelines, evaluation frameworks, and benchmarks for models on large-scale clinical datasets, with an emphasis on data quality and system reliability.',
-    mission:
-      'Right now I\'m a Data Engineer at Twohearts Technologies building validation and evaluation workflows for AI-powered ordering systems, first author on a clinical ML study with the Hospital for Tropical Diseases HCMC, and Vice Lead of GDGoC HCMIU. The thread tying it together: build things that survive contact with reality.',
+    intro: "I'm Line (Trần Nam Anh), an AI / ML engineer based in Ho Chi Minh City. I work across the whole life of a model: cleaning and validating the data, building and benchmarking the model, then shipping it inside a system people actually use.",
+    mission: "Right now I'm a Data Engineer at Twohearts Technologies, building validation and evaluation workflows for AI ordering agents. I'm also first author on a clinical ML study with the Hospital for Tropical Diseases HCMC, and Vice Lead of GDGoC HCMIU.",
   },
 };

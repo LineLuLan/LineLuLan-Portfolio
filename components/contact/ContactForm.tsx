@@ -73,7 +73,7 @@ export function ContactForm() {
       setStatus('sent');
       trackEvent('contact_form_submit', { ok: true });
     } catch (err) {
-      const errMsg = err instanceof Error ? err.message : 'unknown error';
+      const errMsg = err instanceof Error ? err.message : 'Unknown error';
       setStatus('error');
       setErrorMsg(errMsg);
       trackEvent('contact_form_submit', { ok: false });
@@ -104,9 +104,9 @@ export function ContactForm() {
           aria-hidden
           suppressHydrationWarning
         />
-        <Field label="from" name="from" type="email" placeholder="you@example.com" required />
-        <Field label="subject" name="subject" placeholder="What is this about?" required />
-        <Textarea label="message" name="message" placeholder="Say hi…" required />
+        <Field label="From" name="from" type="email" placeholder="you@example.com" required />
+        <Field label="Subject" name="subject" placeholder="What is this about?" required />
+        <Textarea label="Message" name="message" placeholder="Say hi…" required />
         <button
           type="submit"
           disabled={status === 'sending'}
@@ -117,7 +117,7 @@ export function ContactForm() {
         </button>
         {status === 'error' && (
           <p role="alert" className="text-base text-accent">
-            &gt; connection failed{errorMsg ? ` — ${errorMsg}` : ''} · try email directly
+            &gt; Connection failed{errorMsg ? ` — ${errorMsg}` : ''} · Try email directly
           </p>
         )}
       </form>

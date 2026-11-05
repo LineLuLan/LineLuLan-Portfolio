@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { X, ExternalLink } from 'lucide-react';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ChronicleEvent } from '@/types';
 import { formatChronicleDate } from '@/lib/dates';
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function EventModal({ event, onClose }: Props) {
+  const { reducedMotion } = useTheme();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -32,10 +34,10 @@ export function EventModal({ event, onClose }: Props) {
     <AnimatePresence>
       {event && (
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={reducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={reducedMotion ? { duration: 0, delay: 0 } : { duration: 0.2 }}
           onClick={onClose}
           // Hex-valued theme tokens need color-mix for alpha in Tailwind 3.
           className="fixed inset-0 z-50 flex items-center justify-center bg-[color-mix(in_srgb,var(--color-ink)_40%,transparent)] p-4"
@@ -44,10 +46,10 @@ export function EventModal({ event, onClose }: Props) {
           aria-labelledby="event-modal-title"
         >
           <motion.div
-            initial={{ y: 20, opacity: 0 }}
+            initial={reducedMotion ? false : { y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={reducedMotion ? { duration: 0, delay: 0 } : { duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
             className="w-full bg-paper hairline border rounded-[var(--theme-radius)] max-h-[85dvh] overflow-y-auto p-6 md:p-8 max-w-3xl"
           >
@@ -57,7 +59,7 @@ export function EventModal({ event, onClose }: Props) {
                   {formatChronicleDate(event.date)}
                   {event.ongoing ? ' — Present' : event.endDate ? ` — ${formatChronicleDate(event.endDate)}` : ''}
                 </p>
-                <h2 id="event-modal-title" className="mt-1 font-sans text-3xl font-bold text-ink">{event.title}</h2>
+                <h2 id="event-modal-title" className="mt-1 font-display text-3xl font-bold text-ink">{event.title}</h2>
                 {event.org && (
                   <p className="mt-1 font-mono text-sm text-muted">{event.org}</p>
                 )}
@@ -82,7 +84,7 @@ export function EventModal({ event, onClose }: Props) {
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline px-4 font-mono text-sm text-ink hover:border-accent hover:text-accent"
               >
-                <ExternalLink size={16} aria-hidden /> learn more
+                <ExternalLink size={16} aria-hidden /> Learn more
               </a>
             )}
           </motion.div>

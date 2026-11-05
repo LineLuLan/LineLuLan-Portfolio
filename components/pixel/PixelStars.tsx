@@ -28,8 +28,8 @@ const STARS = [
 export function PixelStars() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      {STARS.map(({ x, y, size, tone }) => (
-        <span key={`${x}-${y}`} className={`absolute ${tone}`} style={{ left: `${x}%`, top: `${y}%`, width: size, height: size }} />
+      {STARS.map(({ x, y, size, tone }, index) => (
+        <span key={`${x}-${y}`} className={`pixel-star absolute ${tone}`} style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, animationDuration: `${3 + index % 4}s`, animationDelay: `${-index * 0.37}s` }} />
       ))}
     </div>
   );

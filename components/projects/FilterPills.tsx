@@ -1,7 +1,7 @@
 'use client';
 
 import { projectFilters, type ProjectFilter } from '@/content/projects';
-import { cn } from '@/lib/cn';
+import { capitalize, cn } from '@/lib/cn';
 
 type Props = {
   active: ProjectFilter;
@@ -26,7 +26,7 @@ export function FilterPills({ active, onChange }: Props) {
                 : 'hairline text-ink hover:border-accent hover:text-accent',
             )}
           >
-            {f}
+            {capitalize(f)}
           </button>
         );
       })}

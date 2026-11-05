@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import { X, Github, ExternalLink } from 'lucide-react';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DABMTags } from './DABMTags';
+import { capitalize } from '@/lib/cn';
 import { StatusDot } from '@/components/ui/StatusDot';
 import type { Project } from '@/types';
 
@@ -13,6 +15,7 @@ type Props = {
 };
 
 export function ProjectModal({ project, onClose }: Props) {
+  const { reducedMotion } = useTheme();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -33,10 +36,10 @@ export function ProjectModal({ project, onClose }: Props) {
     <AnimatePresence>
       {project && (
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={reducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={reducedMotion ? { duration: 0, delay: 0 } : { duration: 0.2 }}
           // Hex-valued theme tokens need color-mix for alpha in Tailwind 3.
           className="fixed inset-0 z-50 flex items-center justify-center bg-[color-mix(in_srgb,var(--color-ink)_40%,transparent)] p-4"
           onClick={onClose}
@@ -45,23 +48,23 @@ export function ProjectModal({ project, onClose }: Props) {
           aria-labelledby="project-modal-title"
         >
           <motion.div
-            initial={{ y: 30, opacity: 0 }}
+            initial={reducedMotion ? false : { y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 30, opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={reducedMotion ? { duration: 0, delay: 0 } : { duration: 0.25 }}
             onClick={(e) => e.stopPropagation()}
             className="w-full bg-paper hairline border rounded-[var(--theme-radius)] max-h-[85dvh] overflow-y-auto p-6 md:p-8 max-w-3xl"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 break-words">
-                <h2 id="project-modal-title" className="font-sans text-3xl font-bold text-ink">
+                <h2 id="project-modal-title" className="font-display text-3xl font-bold text-ink">
                   {project.name}
                 </h2>
                 <div className="mt-3 flex flex-wrap items-center gap-2 font-mono text-sm">
                   <StatusDot state={project.state} />
                   {project.domains.map((d) => (
-                    <span key={d} className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 text-ink">
-                      {d}
+                    <span key={capitalize(d)} className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 text-ink">
+                      {capitalize(d)}
                     </span>
                   ))}
                 </div>
@@ -79,17 +82,17 @@ export function ProjectModal({ project, onClose }: Props) {
 
             <dl>
               {project.problem && (
-                <Section title="problem">{project.problem}</Section>
+                <Section title="Problem">{project.problem}</Section>
               )}
-              {project.dataset && <Section title="dataset">{project.dataset}</Section>}
-              {project.method && <Section title="method">{project.method}</Section>}
-              {project.results && <Section title="results">{project.results}</Section>}
+              {project.dataset && <Section title="Dataset">{project.dataset}</Section>}
+              {project.method && <Section title="Method">{project.method}</Section>}
+              {project.results && <Section title="Results">{project.results}</Section>}
               {project.tech && (
-                <Section title="tech stack">{project.tech.join(' · ')}</Section>
+                <Section title="Tech stack">{project.tech.join(' · ')}</Section>
               )}
-              {project.role && <Section title="role">{project.role}</Section>}
+              {project.role && <Section title="Role">{project.role}</Section>}
               {project.collaborators && project.collaborators.length > 0 && (
-                <Section title="collaborators">
+                <Section title="Collaborators">
                   <ul className="space-y-1">
                     {project.collaborators.map((c) => (
                       <li key={c.name}>
@@ -100,7 +103,7 @@ export function ProjectModal({ project, onClose }: Props) {
                   </ul>
                 </Section>
               )}
-              {project.why && <Section title="why">{project.why}</Section>}
+              {project.why && <Section title="Why">{project.why}</Section>}
             </dl>
             {project.dabm && (
               <div className="mt-6 border-t hairline pt-6">

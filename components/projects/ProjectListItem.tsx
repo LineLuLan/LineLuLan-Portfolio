@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { StatusDot } from '@/components/ui/StatusDot';
 import { trackEvent } from '@/lib/analytics';
-import { cn } from '@/lib/cn';
+import { capitalize, cn } from '@/lib/cn';
 import type { Project } from '@/types';
 
 type Props = {
@@ -28,16 +28,16 @@ export function ProjectListItem({ index, project, onOpen }: Props) {
       TINT[index % 3],
     )}>
       <div className="min-w-0">
-        <p className="eyebrow">{String(position).padStart(2, '0')} · {role}</p>
+        <p className="eyebrow">{String(position).padStart(2, '0')} · {capitalize(role ?? '')}</p>
         <div className="mt-3 flex items-start gap-3">
           <PixelPlanet kind={PLANET[index % PLANET.length] ?? 'jupiter'} size={20} className="mt-1 shrink-0" />
-          <h3 className="min-w-0 break-words font-sans text-2xl font-bold text-ink md:text-3xl">{project.name}</h3>
+          <h3 className="min-w-0 break-words font-display text-2xl font-bold text-ink md:text-3xl">{project.name}</h3>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusDot state={project.state} />
-          <span className="font-mono text-sm text-muted">{project.domains.join(' · ')}</span>
+          <span className="font-mono text-sm text-muted">{project.domains.map(capitalize).join(' · ')}</span>
           {project.featured && (
-            <span className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink">featured</span>
+            <span className="inline-flex min-h-9 items-center rounded-[var(--theme-control-radius)] border hairline px-3 font-mono text-sm text-ink">Featured</span>
           )}
         </div>
       </div>

@@ -11,7 +11,7 @@ type Props = {
 export function ApplyDropdown({ projects, selectedSlug, onChange }: Props) {
   return (
     <label className="block min-w-0">
-      <span className="eyebrow mb-3">apply to a project</span>
+      <span className="eyebrow mb-3">Apply to a project</span>
       <select
         value={selectedSlug}
         onChange={(e) => onChange(e.target.value)}

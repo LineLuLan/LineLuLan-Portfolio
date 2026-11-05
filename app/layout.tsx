@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Manrope, JetBrains_Mono, DM_Serif_Display } from 'next/font/google';
+import { Manrope, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SITE_URL, SOCIAL } from '@/lib/constants';
 import { BootSplashGate } from '@/components/ui/BootSplashGate';
+import { AnchorScroll } from '@/components/layout/AnchorScroll';
 import { MotionProvider } from '@/components/layout/MotionProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { themeInitScript } from '@/lib/themes';
@@ -22,11 +23,10 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 });
 
-const serif = DM_Serif_Display({
-  subsets: ['latin'],
-  weight: '400',
-  style: ['italic', 'normal'],
-  variable: '--font-serif',
+const display = Space_Grotesk({
+  subsets: ['latin', 'latin-ext', 'vietnamese'],
+  weight: ['500', '700'],
+  variable: '--font-display',
   display: 'swap',
 });
 
@@ -93,7 +93,7 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${jetbrains.variable} ${serif.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${jetbrains.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <noscript>
@@ -113,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             >
               Skip to content
             </a>
+            <AnchorScroll />
             <BootSplashGate />
             {children}
             <Analytics />

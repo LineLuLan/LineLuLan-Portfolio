@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+// Intent: expose stable, focusable section boxes for header-aware anchor navigation.
+// Status: R2. Next: browser checks. Blockers: none. Confidence: shared scroll regression cases.
 import { cn } from '@/lib/cn';
 import { trackEvent } from '@/lib/analytics';
 
@@ -20,16 +21,13 @@ export function SectionWrapper({
   children,
 }: Props) {
   return (
-    <motion.section
+    <section
       id={id}
       aria-label={ariaLabel}
-      initial={id === 'hero' ? false : { opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      viewport={{ once: true, margin: '-80px' }}
+      tabIndex={-1}
       className={cn(
-        'relative scroll-mt-20 nav:scroll-mt-32 xl:scroll-mt-20',
-        id === 'hero' ? 'pt-8 pb-16 md:pt-12 md:pb-20' : 'py-16 md:py-24',
+        'relative scroll-mt-[var(--header-height)] focus:outline-none',
+        id === 'hero' ? 'hero-section py-8 lg:py-6 lg:flex lg:min-h-[calc(100svh-var(--header-height))] lg:items-center' : 'py-16 md:py-24',
         withTopRule && 'border-t hairline',
         className,
       )}
@@ -40,7 +38,7 @@ export function SectionWrapper({
         }
       } : undefined}
     >
-      <div className="container-x">{children}</div>
-    </motion.section>
+      <div className="container-x w-full">{children}</div>
+    </section>
   );
 }

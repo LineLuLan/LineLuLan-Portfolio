@@ -20,7 +20,6 @@ export function isTheme(value: unknown): value is ThemeId {
   return themes.some((theme) => theme.id === value);
 }
 
-// Intent: apply persisted preferences before paint, including when storage is blocked.
-// Status: P1 foundation. Next: add themes through the registry. Blockers: none.
-// Confidence: covered by stored, invalid, and denied-storage checks.
-export const themeInitScript = `(function(){var r=document.documentElement,t=${JSON.stringify(DEFAULT_THEME)},m='on';try{var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(${JSON.stringify(themes.map((theme) => theme.id))}.indexOf(s)>-1)t=s;if(localStorage.getItem(${JSON.stringify(MOTION_STORAGE_KEY)})==='off')m='off';}catch(e){}r.dataset.theme=t;r.dataset.motion=m;})();`;
+// Intent: honor explicit choices, otherwise follow the OS before first paint.
+// Status: R2. Next: browser checks. Blockers: none. Confidence: storage/system regression matrix.
+export const themeInitScript = `(function(){var r=document.documentElement,t=${JSON.stringify(DEFAULT_THEME)},m=window.matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on',source='system';try{var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(${JSON.stringify(themes.map((theme) => theme.id))}.indexOf(s)>-1)t=s;var choice=localStorage.getItem(${JSON.stringify(MOTION_STORAGE_KEY)});if(choice==='on'||choice==='off'){m=choice;source='user';}}catch(e){}r.dataset.theme=t;r.dataset.motion=m;r.dataset.motionSource=source;})();`;

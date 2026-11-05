@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'framer-motion';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import type { ProfileStat } from '@/types';
 
 type Props = {
@@ -22,7 +22,7 @@ function format(value: number, decimals = 0, pad = 0) {
 }
 
 function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
-  const reduce = useReducedMotion();
+  const { reducedMotion: reduce } = useTheme();
   const [display, setDisplay] = useState(stat.value);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <span className="flex flex-wrap items-baseline justify-center gap-x-1 gap-y-2 font-sans text-5xl font-extrabold leading-none text-ink md:text-[56px]">
+      <span className="flex flex-wrap items-baseline justify-center gap-x-0 gap-y-2 font-sans text-[40px] font-extrabold leading-none text-ink md:text-[44px]">
         <span>{format(display, stat.decimals ?? 0, stat.pad ?? 0)}</span>
         {stat.suffix && (
           <span className="text-accent">{stat.suffix}</span>
@@ -66,7 +66,7 @@ export function StatsCounters({ stats }: Props) {
   return (
     <div
       ref={ref}
-      className="reveal-up mt-12 grid grid-cols-2 gap-x-4 gap-y-10 border-t hairline pt-8 md:grid-cols-4 md:gap-x-10"
+      className="reveal-up mt-6 grid grid-cols-2 gap-x-4 gap-y-6 border-t hairline pt-4 md:grid-cols-4 md:gap-x-10"
       role="list"
       aria-label="Quick stats"
     >

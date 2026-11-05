@@ -3,9 +3,11 @@
 // Intent: centralize anchor navigation, layout measurement, focus and history.
 // Status: R2. Next: browser coverage. Blockers: none. Confidence: shared offset regression cases.
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { scrollToSection } from '@/lib/scroll-to-section';
 
 export function AnchorScroll() {
+  const pathname = usePathname();
   useEffect(() => {
     const root = document.documentElement;
     const header = document.querySelector<HTMLElement>('[data-site-header]');
@@ -77,6 +79,6 @@ export function AnchorScroll() {
       window.removeEventListener('popstate', onHistory);
       window.removeEventListener('hashchange', onHistory);
     };
-  }, []);
+  }, [pathname]);
   return null;
 }

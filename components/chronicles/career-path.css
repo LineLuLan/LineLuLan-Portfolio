@@ -1,0 +1,43 @@
+/* Intent: share one accessible list between a desktop S road and a narrow vertical path.
+   Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: bounded label widths. */
+
+.career-stage { position: relative; height: var(--mobile-height); }
+.career-road { position: absolute; width: 100%; height: 100%; overflow: visible; fill: none; stroke-width: 3; }
+/* No non-scaling-stroke: it makes the drawn pathLength shorter than the scaled road. */
+.career-road-desktop { display: none; }
+.career-road-base, .career-road-next { stroke: var(--color-line); }
+.career-road-next { stroke-dasharray: 6 7; }
+.career-road-travelled { stroke: var(--color-accent); }
+.career-nodes { list-style: none; margin: 0; padding: 0; }
+.career-nodes > li { position: absolute; inset: 0 0 auto; }
+.career-nodes > li[data-open="true"] { z-index: 10; }
+.career-node { position: absolute; left: var(--mx); top: var(--my); width: 44px; height: 44px; transform: translate(-50%, -50%); border-radius: 50%; }
+.career-marker-wrap { display: flex; position: relative; width: 44px; height: 44px; align-items: center; justify-content: center; }
+.career-marker { display: block; width: 18px; height: 18px; border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-accent); }
+[data-type="education"] .career-marker { background: var(--color-ink); border-color: var(--color-tint-c); }
+[data-type="award"] .career-marker { background: var(--color-success); border-color: var(--color-success); }
+[data-type="event"] .career-marker { background: var(--color-muted); border-color: var(--color-muted); }
+[data-type="project"] .career-marker { background: var(--color-paper); }
+.career-marker[data-ongoing="true"] { animation: career-pulse 2.8s ease-in-out infinite; }
+.career-glyph { position: absolute; top: -3px; right: -2px; }
+.career-label { position: absolute; width: min(190px, 28vw); top: 50%; right: 48px; transform: translateY(-50%); text-align: right; overflow-wrap: anywhere; }
+[data-side="right"] .career-label { right: auto; left: 48px; text-align: left; }
+.career-date { display: block; color: var(--color-muted); font: 12px/18px var(--font-mono), monospace; }
+.career-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--color-ink); font-size: 14px; line-height: 20px; margin-top: 3px; }
+.career-detail { position: absolute; top: calc(var(--my) + 22px); left: 0; width: 100%; padding: 16px; border: 1px solid var(--color-line); border-radius: var(--theme-radius); background: var(--color-panel); box-shadow: 0 12px 32px color-mix(in srgb, var(--color-ink) 16%, transparent); overflow-wrap: anywhere; }
+.career-nodes > li:last-child .career-detail { top: auto; bottom: calc(22px - var(--my)); }
+@keyframes career-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 18%, transparent); } }
+html[data-motion="off"] .career-marker-wrap { transform: none !important; }
+html[data-motion="off"] .career-road-travelled { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+@media (min-width: 1024px) {
+  .career-stage { height: 580px; }
+  .career-road-desktop { display: block; }
+  .career-road-mobile { display: none; }
+  .career-node { left: var(--x); top: var(--y); }
+  .career-label, [data-side="right"] .career-label { left: 50%; right: auto; top: auto; bottom: 48px; width: min(190px, 15vw); transform: translateX(-50%); text-align: center; }
+  /* Desktop: every label sits above its own node; edge labels shift inward, clear of the row turns. */
+  [data-column="0"] .career-label { width: 150px; transform: translateX(calc(-50% + 30px)); text-align: left; }
+  [data-column="4"] .career-label { width: 150px; transform: translateX(calc(-50% - 30px)); text-align: right; }
+  .career-detail { top: calc(var(--y) + 22px); left: clamp(0px, calc(var(--x) - 170px), calc(100% - 340px)); width: 340px; }
+  [data-bottom="true"] .career-detail, .career-nodes > li:last-child .career-detail { top: auto; bottom: calc(22px - var(--y)); }
+}

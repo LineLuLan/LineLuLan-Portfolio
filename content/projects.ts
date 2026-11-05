@@ -2,37 +2,10 @@ import type { Project } from '@/types';
 
 export const projects: Project[] = [
   {
-    slug: 'dengue-shock-prediction',
-    name: 'Dengue Shock Prediction',
-    tagline:
-      'Predicting clinical deterioration in dengue patients from 3.71M+ lab records, with HTD HCMC.',
-    domains: ['research', 'ML'],
-    state: 'wip',
-    featured: true,
-    problem:
-      'Predicting post-fever shock progression in dengue patients from routine laboratory data — in collaboration with Hospital for Tropical Diseases HCMC.',
-    dataset: '3.71M+ laboratory records across ~40,900 patient encounters · deterministic pipeline for extraction, unit harmonization, and validation under strict privacy constraints.',
-    method:
-      'XGBoost and LightGBM benchmarked against permutation-invariant architectures (Deep Sets, Set Transformer) with 5×3 nested patient-grouped validation; count-only, availability-only, and value-shuffled negative controls probe informative missingness.',
-    results: '0.798 AUPRC · 0.952 AUROC in predictive modeling experiments. Paper in preparation.',
-    tech: ['Python', 'XGBoost', 'LightGBM', 'PyTorch', 'Pandas', 'Scikit-learn'],
-    role: 'First author · lead AI researcher',
-    collaborators: [
-      { name: 'Hospital for Tropical Diseases HCMC', role: '2 senior physicians' },
-      { name: 'IU Data Science Dept.', role: '2 senior researchers' },
-      { name: 'Dr. Nguyễn Thị Thúy Loan', role: 'advisor · Head of DS Dept., IU' },
-    ],
-    dabm: {
-      D: 'hospital lab records · 3.71M+ rows · ~40.9k encounters',
-      A: 'physicians making triage decisions',
-      B: 'lab ordering patterns · informative missingness',
-      M: 'gradient boosting vs set-based nets · nested CV',
-    },
-    eta: '2027',
-    why: 'Early warning systems for dengue can save lives in tropical regions where the disease is endemic.',
-  },
-  {
     slug: 'goibert-m',
+    planet: 'saturn',
+    year: '2026',
+    lead: true,
     name: 'GoiBERT-M',
     tagline: 'Compact Vietnamese language encoders trained by two-stage knowledge distillation.',
     domains: ['research', 'LLM'],
@@ -57,6 +30,8 @@ export const projects: Project[] = [
   },
   {
     slug: 'enstudy-hub',
+    planet: 'earth',
+    year: '2026',
     name: 'EnStudy-Hub',
     tagline: 'FSRS-powered vocabulary trainer for Vietnamese English learners.',
     domains: ['EdTech'],
@@ -78,7 +53,6 @@ export const projects: Project[] = [
       { name: 'Lê Thành Danh', role: 'contributor' },
     ],
     links: {
-      github: 'https://github.com/LineLuLan/EnStudy-Hub',
       demo: 'https://en-study-hub.vercel.app',
     },
     dabm: {
@@ -91,6 +65,8 @@ export const projects: Project[] = [
   },
   {
     slug: 'ezidatic',
+    planet: 'neptune',
+    year: '2026',
     name: 'Ezidatic',
     tagline: 'AI data analyst platform — instant EDA, AutoML, and an agent that talks to your data.',
     domains: ['LLM', 'ML'],
@@ -119,7 +95,10 @@ export const projects: Project[] = [
   },
   {
     slug: 'panic-hub',
+    planet: 'jupiter',
+    year: '2026',
     name: 'Panic Hub',
+    links: { video: 'https://youtu.be/Vw9_MV7uf-c' },
     tagline: 'Real-time agentic AI simulation game with 50+ concurrent LLM-driven agents.',
     domains: ['LLM', 'ML'],
     state: 'live',
@@ -137,42 +116,36 @@ export const projects: Project[] = [
     why: 'Proves I can keep a large multi-agent LLM system structured, fast, and cheap under real-time load.',
   },
   {
-    slug: 'slot-02',
-    name: 'LegalLLM',
-    codename: 'LGL-██',
-    tagline: '[CLASSIFIED]',
-    domains: ['LLM', 'EdTech'],
-    state: 'classified',
-    eta: 'TBD',
-  },
-  {
-    slug: 'slot-04',
-    name: 'Worldforesight',
-    codename: 'WLD-██',
-    tagline: '[CLASSIFIED]',
-    domains: ['ML'],
-    state: 'classified',
-    eta: 'TBD',
-  },
-  {
-    slug: 'slot-05',
-    name: 'Educata',
-    codename: 'EDU-██',
-    tagline: '[CLASSIFIED]',
-    domains: ['EdTech'],
-    state: 'classified',
-    eta: 'TBD',
-  },
-  {
-    slug: 'slot-06',
-    name: '100B Studio',
-    codename: 'STU-██',
-    tagline: '[CLASSIFIED]',
-    domains: ['creative'],
-    state: 'classified',
-    eta: 'TBD',
+    slug: 'dengue-shock-prediction',
+    planet: 'mars',
+    year: '2026',
+    listed: false,
+    name: 'Dengue Shock Prediction',
+    tagline:
+      'Predicting clinical deterioration in dengue patients from 3.71M+ lab records, with HTD HCMC.',
+    domains: ['research', 'ML'],
+    state: 'wip',
+    featured: true,
+    problem:
+      'Predicting post-fever shock progression in dengue patients from routine laboratory data — in collaboration with Hospital for Tropical Diseases HCMC.',
+    dataset: '3.71M+ laboratory records across ~40,900 patient encounters · deterministic pipeline for extraction, unit harmonization, and validation under strict privacy constraints.',
+    method:
+      'XGBoost and LightGBM benchmarked against permutation-invariant architectures (Deep Sets, Set Transformer) with 5×3 nested patient-grouped validation; count-only, availability-only, and value-shuffled negative controls probe informative missingness.',
+    results: '0.798 AUPRC · 0.952 AUROC in predictive modeling experiments. Paper in preparation.',
+    tech: ['Python', 'XGBoost', 'LightGBM', 'PyTorch', 'Pandas', 'Scikit-learn'],
+    role: 'First author · lead AI researcher',
+    collaborators: [
+      { name: 'Hospital for Tropical Diseases HCMC', role: '2 senior physicians' },
+      { name: 'IU Data Science Dept.', role: '2 senior researchers' },
+      { name: 'Dr. Nguyễn Thị Thúy Loan', role: 'advisor · Head of DS Dept., IU' },
+    ],
+    dabm: {
+      D: 'hospital lab records · 3.71M+ rows · ~40.9k encounters',
+      A: 'physicians making triage decisions',
+      B: 'lab ordering patterns · informative missingness',
+      M: 'gradient boosting vs set-based nets · nested CV',
+    },
+    eta: '2027',
+    why: 'Early warning systems for dengue can save lives in tropical regions where the disease is endemic.',
   },
 ];
-
-export const projectFilters = ['all', 'research', 'LLM', 'ML', 'EdTech', 'creative'] as const;
-export type ProjectFilter = (typeof projectFilters)[number];

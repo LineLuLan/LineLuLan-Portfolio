@@ -20,54 +20,64 @@ assert.equal(sectionScrollTop('work', 1000, 121), 879);
 assert.equal(sectionScrollTop('about', 50, 80), 0);
 assert.equal(sectionScrollTop('contact', 4000, 81), 3919);
 
-// Exercise Record's date partition and keyboard policy independently of the DOM.
+// Exercise chronological road geometry and the moving calendar boundary before rendering.
 const { chronicles } = load('../content/chronicles.ts');
-const { recordTabs, nextRecordTab } = load('../components/chronicles/ChroniclesSection.tsx', { require: () => ({}) });
-const tabs = recordTabs(chronicles, new Date(2026, 10, 6));
-assert.deepEqual(Array.from(tabs, (tab) => tab.id), ['upcoming', '2026', '2025', '2024', 'earlier']);
-assert.deepEqual(Array.from(tabs, (tab) => tab.events.length), [1, 9, 5, 1, 4]);
-assert.equal(new Set(tabs.flatMap((tab) => tab.events.map((event) => event.id))).size, chronicles.length);
-const boundary = recordTabs([
-  { id: 'today', date: '2026-11-06' },
+const { careerLayout } = load('../components/chronicles/career-layout.ts');
+const layout = careerLayout(chronicles, '2026-11-06');
+assert.equal(layout.nodes.length, 20);
+assert.equal(new Set(layout.nodes.map(({ event }) => event.id)).size, 20);
+assert.ok(layout.nodes.every((node, i, nodes) => !i || nodes[i - 1].event.date <= node.event.date));
+assert.deepEqual(Array.from(layout.nodes.filter((node) => node.future), ({ event }) => event.id), ['iu-grad']);
+assert.equal(layout.nodes.at(-1).future, true);
+for (let row = 0; row < 4; row++) {
+  const nodes = layout.nodes.slice(row * 5, row * 5 + 5);
+  assert.equal(new Set(nodes.map((node) => node.y)).size, 1);
+  assert.equal(nodes[1].x - nodes[0].x, row % 2 ? -200 : 200);
+}
+assert.equal((layout.desktop.full.match(/ A /g) ?? []).length, 3);
+assert.ok(layout.desktop.future.endsWith('L 100 520'));
+assert.ok(layout.desktop.travelled.endsWith('L 300 520'));
+assert.equal(layout.mobile.full.split(' C ').length - 1, 19);
+const boundary = careerLayout([
   { id: 'tomorrow', date: '2026-11-07' },
+  { id: 'today', date: '2026-11-06' },
   { id: 'past', date: '2023-12-31' },
-], new Date(2026, 10, 6, 12));
-assert.deepEqual(Array.from(boundary[0].events, (event) => event.id), ['tomorrow']);
-assert.deepEqual(Array.from(boundary[1].events, (event) => event.id), ['today']);
-assert.equal(nextRecordTab('ArrowRight', 4, 5), 0);
-assert.equal(nextRecordTab('ArrowLeft', 0, 5), 4);
-assert.equal(nextRecordTab('Home', 3, 5), 0);
-assert.equal(nextRecordTab('End', 1, 5), 4);
-assert.equal(nextRecordTab('Tab', 1, 5), null);
+], '2026-11-06');
+assert.deepEqual(Array.from(boundary.nodes, (node) => node.future), [false, false, true]);
+assert.equal(careerLayout(chronicles, '2030-01-01').desktop.future, '');
+assert.equal(careerLayout(chronicles, '2019-01-01').desktop.travelled, '');
+assert.equal(careerLayout([], '2026-11-06').nodes.length, 0);
 
 const require = createRequire(import.meta.url);
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
-const { ChroniclesSection } = load('../components/chronicles/ChroniclesSection.tsx', {
+const { CareerPath } = load('../components/chronicles/CareerPath.tsx', {
   require(id) {
     if (id === 'react' || id === 'react/jsx-runtime') return require(id);
     const modules = {
       '@/components/providers/ThemeProvider': { useTheme: () => ({ reducedMotion: true }) },
-      'framer-motion': { motion: { li: ({ children }) => React.createElement('li', null, children) } },
+      'framer-motion': { motion: {
+        path: ({ initial, whileInView, viewport, transition, ...props }) => React.createElement('path', props),
+        span: ({ initial, whileInView, viewport, transition, ...props }) => React.createElement('span', props),
+      } },
       '@/lib/dates': { formatChronicleDate: (date) => date },
-      '@/components/layout/SectionWrapper': { SectionWrapper: ({ children }) => React.createElement('section', null, children) },
-      '@/components/ui/SectionHeader': { SectionHeader: () => null },
-      '@/lib/pixel-planets': { SECTION_PLANET: { record: 'moon' } },
-      './EventModal': { EventModal: () => null },
-      '@/content/chronicles': { chronicles },
-      '@/lib/cn': { cn: (...classes) => classes.filter(Boolean).join(' '), capitalize: (text) => text },
+      '@/components/pixel/PixelPlanet': { PixelPlanet: () => null },
+      './career-layout': { careerLayout },
+      './career-path.css': {},
     };
     assert.ok(id in modules, `Unexpected Record dependency: ${id}`);
     return modules[id];
   },
 });
-const recordHTML = renderToStaticMarkup(React.createElement(ChroniclesSection));
+const recordHTML = renderToStaticMarkup(React.createElement(CareerPath, { events: chronicles, today: '2026-11-06' }));
 for (const event of chronicles) {
   const escapedTitle = renderToStaticMarkup(React.createElement('span', null, event.title)).slice(6, -7);
   assert.ok(recordHTML.includes(escapedTitle), `SSR must preserve milestone: ${event.id}`);
 }
-assert.match(recordHTML, /<noscript>/);
-assert.equal((recordHTML.match(/aria-selected="true"/g) ?? []).length, 1);
+assert.equal((recordHTML.match(/data-milestone=/g) ?? []).length, 20);
+assert.equal((recordHTML.match(/aria-expanded="false"/g) ?? []).length, 20);
+assert.match(recordHTML, />Next</);
+assert.ok(!recordHTML.includes('role="tab"'));
 
 for (const motion of ['on', 'off']) {
   let scroll;
@@ -106,4 +116,26 @@ for (const reduced of [false, true]) {
     assert.equal(root.dataset.motionSource, explicit ? 'user' : 'system');
   }
 }
-console.log('PASS: 5 section offsets, Record date partitions, 5 keyboard cases, all 20 SSR milestones, 2 scroll/focus behaviors and 10 motion preference cases.');
+let appearanceCases = 0;
+for (const dark of [false, true]) {
+  for (const mode of [null, 'light', 'dark', 'invalid', 'denied']) {
+    for (const accent of [null, 'kafka', 'nebula', 'aurora', 'mars', 'rose', 'invalid']) {
+      const root = { dataset: {} };
+      vm.runInNewContext(themeInitScript, {
+        document: { documentElement: root },
+        window: { matchMedia: (query) => ({ matches: query.includes('color-scheme') && dark }) },
+        localStorage: { getItem(key) {
+          if (mode === 'denied') throw new Error('Denied');
+          return { 'line.mode': mode, 'line.accent': accent }[key] ?? null;
+        } },
+      });
+      const explicit = mode === 'light' || mode === 'dark';
+      assert.equal(root.dataset.theme, 'orbit');
+      assert.equal(root.dataset.mode, explicit ? mode : dark ? 'dark' : 'light');
+      assert.equal(root.dataset.modeSource, explicit ? 'user' : 'system');
+      assert.equal(root.dataset.accent, mode !== 'denied' && ['kafka', 'nebula', 'aurora', 'mars', 'rose'].includes(accent) ? accent : 'kafka');
+      appearanceCases++;
+    }
+  }
+}
+console.log(`PASS: section offsets, Record chronology/road geometry/20 SSR milestones, scroll/focus, 10 motion preferences and ${appearanceCases} pre-paint appearance cases.`);

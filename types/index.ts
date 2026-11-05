@@ -1,4 +1,5 @@
 import type { StackIconKey } from '@/lib/stack-icons';
+import type { PlanetKind } from '@/lib/pixel-planets';
 
 // Single source of truth for content shapes. Edit content/*.ts against these types.
 
@@ -21,6 +22,10 @@ export type Project = {
   domains: ProjectDomain[];
   state: ProjectState;
   featured?: boolean;
+  listed?: boolean;
+  lead?: boolean;
+  planet: PlanetKind;
+  year: string;
   // story
   problem?: string;
   dataset?: string;
@@ -34,6 +39,7 @@ export type Project = {
     github?: string;
     demo?: string;
     paper?: string;
+    video?: string;
   };
   // DABM
   dabm?: DABMMapping;
@@ -69,9 +75,10 @@ export type SkillTier = {
   practices?: string[];
 };
 
-export type DABMQuadrant = {
+export type DABMStep = {
   letter: 'D' | 'A' | 'B' | 'M';
-  label: string; // "DATA", "AGENT", ...
+  label: string;
+  planet: PlanetKind;
   body: string;
 };
 

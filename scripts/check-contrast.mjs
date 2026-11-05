@@ -13,8 +13,14 @@ function readTokens(block) {
 
 const defaults = readTokens(root);
 const palettes = new Map([[':root', defaults]]);
-for (const [, , name, block] of css.matchAll(/html\[data-theme=(["'])([^"']+)\1\]\s*\{([^}]*)\}/g)) {
-  palettes.set(name, { ...defaults, ...palettes.get(name), ...readTokens(block) });
+for (const mode of ['light', 'dark']) {
+  const base = css.match(new RegExp(`html\\[data-mode="${mode}"\\]\\s*\\{([^}]+)\\}`))?.[1];
+  if (!base) throw new Error(`Missing ${mode} base palette`);
+  for (const accent of ['kafka', 'nebula', 'aurora', 'mars', 'rose']) {
+    const block = css.match(new RegExp(`html\\[data-mode="${mode}"\\]\\[data-accent="${accent}"\\]\\s*\\{([^}]+)\\}`))?.[1];
+    if (!block) throw new Error(`Missing ${mode}/${accent} palette`);
+    palettes.set(`${mode}/${accent}`, { ...defaults, ...readTokens(base), ...readTokens(block) });
+  }
 }
 
 function luminance(hex) {
@@ -29,12 +35,12 @@ function luminance(hex) {
 const pairs = [
   ['ink', 'paper'], ['ink', 'surface'], ['ink', 'panel'],
   ['ink', 'tint-a'], ['ink', 'tint-b'], ['ink', 'tint-c'],
-  ['muted', 'paper'], ['muted', 'surface'],
+  ['muted', 'paper'], ['muted', 'surface'], ['muted', 'panel'],
   ['accent', 'paper'], ['accent', 'panel'], ['on-accent', 'accent'],
 ];
 
-// Intent: gate every theme, including partial overrides. Status: P4 complete.
-// Next: run for each new palette. Blockers: none. Confidence: passing/failing override checks.
+// Intent: gate every mode/accent cascade and the no-JS palette. Status: implemented.
+// Next: maintain with palette changes. Blockers: none. Confidence: computed WCAG ratios.
 let failed = false;
 for (const [name, tokens] of palettes) {
   const results = pairs.map(([foreground, background]) => {

@@ -1,49 +1,37 @@
 'use client';
 
-import { ArrowUpRight } from 'lucide-react';
+// Intent: center Line's invitation and form around a quiet, themed planet scene.
+// Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: unchanged form behavior.
+import { Linkedin, ArrowUpRight } from 'lucide-react';
+import { siGithub, siKaggle } from 'simple-icons';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { CV_PATH, SOCIAL } from '@/lib/constants';
 import { trackEvent } from '@/lib/analytics';
 import { ContactForm } from './ContactForm';
+import { ContactScene } from './ContactScene';
+import { CopyEmail } from './CopyEmail';
+
+const socialClass = 'inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline bg-panel px-3 text-sm text-ink hover:border-accent hover:text-accent';
 
 export function ContactSection() {
   return (
-    <SectionWrapper id="contact" ariaLabel="Contact" withTopRule className="bg-tint-a">
-      <div className="grid gap-12 lg:grid-cols-[1fr_1fr]">
+    <SectionWrapper id="contact" ariaLabel="Contact" withTopRule className="bg-tint-a lg:flex lg:items-center">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
         <div className="min-w-0">
-          <SectionHeader
-            index={7}
-            slug="contact"
-            planet={SECTION_PLANET.contact}
-            title="Let's build something."
-            sub="Got an opportunity, a question, or just want to compare notes on causal inference? Send a packet."
-          />
-          <a href={`mailto:${SOCIAL.email}`} className="inline-flex min-h-11 max-w-full items-center break-all font-sans text-2xl font-bold text-ink hover:text-accent md:text-3xl">
-            {SOCIAL.email}
-          </a>
-          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-            {(['github', 'linkedin', 'kaggle'] as const).map((key) => (
-              <li key={key}>
-                <a href={SOCIAL[key]} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 font-mono text-sm text-ink hover:text-accent">
-                  {{ github: 'GitHub', linkedin: 'LinkedIn', kaggle: 'Kaggle' }[key]}
-                  <ArrowUpRight size={16} aria-hidden />
-                </a>
-              </li>
-            ))}
+          <ContactScene />
+          <SectionHeader index={7} slug="contact" planet={SECTION_PLANET.contact} title="Let's build something." className="mb-3 md:mb-3" />
+          <p className="text-[17px] leading-7 text-ink">Hiring for an AI / ML or data role, or have a research idea worth testing? My inbox is open.</p>
+          <CopyEmail email={SOCIAL.email} />
+          <ul className="mt-4 flex flex-wrap gap-2">
+            <li><a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className={socialClass}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d={siGithub.path} /></svg>GitHub</a></li>
+            <li><a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className={socialClass}><Linkedin size={18} aria-hidden />LinkedIn</a></li>
+            <li><a href={SOCIAL.kaggle} target="_blank" rel="noopener noreferrer" className={socialClass}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d={siKaggle.path} /></svg>Kaggle</a></li>
+            <li><a href={CV_PATH} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('cv_open', { from: 'contact_section' })} className={socialClass}>Open CV<ArrowUpRight size={16} aria-hidden /></a></li>
           </ul>
-          <a
-            href={CV_PATH}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent('cv_open', { from: 'contact_section' })}
-            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] border hairline px-4 font-mono text-sm text-ink hover:border-accent hover:text-accent"
-          >
-            Open CV
-          </a>
         </div>
-        <ContactForm />
+        <div className="min-w-0"><ContactForm /></div>
       </div>
     </SectionWrapper>
   );

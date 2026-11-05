@@ -2,14 +2,17 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { themes } from '@/lib/themes';
+import { accents, modes } from '@/lib/themes';
+
+// Intent: expose independent appearance choices without changing section geometry.
+// Status: implemented. Next: browser acceptance. Blockers: none. Confidence: semantic buttons and shared tokens.
 
 export function ThemeDock() {
-  const { theme, setTheme, motion, motionSource, setMotion } = useTheme();
+  const { mode, setMode, accent, setAccent, motion, motionSource, setMotion } = useTheme();
   const [open, setOpen] = useState(false);
   const dock = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
-  const active = themes.find((entry) => entry.id === theme)!;
+  const active = accents.find((entry) => entry.id === accent)!;
 
   useEffect(() => {
     if (!open) return;
@@ -35,27 +38,38 @@ export function ThemeDock() {
       <button
         ref={trigger}
         type="button"
-        aria-label={`Appearance, current theme: ${active.name}`}
+        aria-label={`Appearance, current mode: ${mode}, accent: ${active.label}`}
         aria-expanded={open}
         aria-controls="theme-dock-panel"
         onClick={() => setOpen((value) => !value)}
         className="hairline grid h-11 w-11 place-items-center rounded-full border bg-panel text-xl text-accent hover:border-accent"
       >
-        <span aria-hidden>{active.symbol}</span>
+        <span aria-hidden>◐</span>
       </button>
       {open && (
-        <div id="theme-dock-panel" role="group" aria-label="Theme" className="hairline absolute bottom-14 left-0 flex w-max max-w-[calc(100vw-2rem)] flex-wrap gap-2 rounded-[var(--theme-radius)] border bg-panel p-3 font-mono text-xs text-ink">
-          {themes.map((entry) => (
-            <button
-              key={entry.id}
-              type="button"
-              aria-pressed={theme === entry.id}
-              onClick={() => setTheme(entry.id)}
-              className="hairline min-h-11 rounded-[var(--theme-control-radius)] border px-3 hover:border-accent aria-pressed:bg-selection"
-            >
-              {entry.number} · {entry.symbol} · {entry.name}
-            </button>
-          ))}
+        <div id="theme-dock-panel" role="group" aria-label="Appearance" className="hairline absolute bottom-14 left-0 flex w-max max-w-[calc(100vw-2rem)] flex-col gap-3 rounded-[var(--theme-radius)] border bg-panel p-3 font-mono text-xs text-ink">
+          <div role="group" aria-label="Mode">
+            <p className="mb-2 text-muted">Mode</p>
+            <div className="flex gap-1">
+              {modes.map((entry) => (
+                <button key={entry} type="button" aria-pressed={mode === entry} onClick={() => setMode(entry)} className="hairline min-h-11 flex-1 rounded-[var(--theme-control-radius)] border px-3 hover:border-accent aria-pressed:bg-selection">
+                  {entry === 'light' ? 'Light' : 'Dark'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div role="group" aria-label="Accent">
+            <p className="mb-2 text-muted">Accent</p>
+            <div className="flex gap-1">
+              {accents.map((entry) => (
+                <button key={entry.id} type="button" aria-label={`Accent: ${entry.label}`} aria-pressed={accent === entry.id} onClick={() => setAccent(entry.id)} className="grid h-11 w-11 place-items-center rounded-full text-on-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+                  <span className="grid h-8 w-8 place-items-center rounded-full" style={{ backgroundColor: `var(--swatch-${entry.id})` }}>
+                    {accent === entry.id && <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m5 12 4 4L19 6" /></svg>}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
           <button
             type="button"
             role="switch"

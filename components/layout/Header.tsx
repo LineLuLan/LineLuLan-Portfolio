@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { capitalize, cn } from '@/lib/cn';
@@ -13,6 +14,7 @@ import { capitalize, cn } from '@/lib/cn';
 const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
 
 export function Header() {
+  const home = usePathname() === '/';
   const [active, setActive] = useState<SectionId>('whoami');
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -57,7 +59,7 @@ export function Header() {
   const links = navigation.map((id) => (
     <li key={id}>
       <Link
-        href={`#${SECTIONS[id].id}`}
+        href={`${home ? '' : '/'}#${SECTIONS[id].id}`}
         aria-current={active === id ? 'location' : undefined}
         onClick={() => setOpen(false)}
         className={cn(
@@ -76,7 +78,7 @@ export function Header() {
       className="hairline sticky top-0 z-40 border-b bg-paper"
     >
       <div className="container-x flex min-h-20 flex-wrap items-center justify-between gap-2 py-3">
-        <Link href="#hero" aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2">
+        <Link href={home ? '#hero' : '/'} aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2">
           <PixelPlanet kind="saturn" size={28} />
           <span className="font-sans text-xl font-bold text-ink">Line</span>
           <span className="hidden font-mono text-sm text-muted nav:inline">linelulan.vercel.app</span>

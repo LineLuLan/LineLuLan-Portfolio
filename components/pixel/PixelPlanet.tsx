@@ -4,7 +4,7 @@ const LEGEND: Record<string, string> = {
   i: 'var(--color-ink)',
   a: 'var(--color-accent)',
   h: 'var(--color-accent-hover)',
-  p: '#E07B97',
+  p: 'var(--planet-pink)',
   l: 'var(--color-tint-a)',
   b: 'var(--color-tint-b)',
   m: 'var(--color-tint-c)',

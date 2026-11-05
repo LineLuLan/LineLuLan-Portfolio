@@ -1,4 +1,8 @@
+/* Intent: provide ten semantic palettes with a light Kafka no-JS fallback.
+   Status: implemented. Next: browser acceptance. Blockers: none. Confidence: contrast gate. */
 :root {
+  color-scheme: light;
+  --planet-pink: #E07B97;
   --color-paper: #F8F7F4;
   --color-surface: #EFEDE8;
   --color-panel: #FFFFFF;
@@ -21,28 +25,119 @@
   --pixel: 4px;
 }
 
-html[data-theme="orbit"] {
+html[data-mode="light"] {
+  color-scheme: light;
   --color-paper: #F8F7F4;
   --color-surface: #EFEDE8;
   --color-panel: #FFFFFF;
   --color-ink: #1A1726;
   --color-muted: #45414F;
-  --color-accent: #8F2D9A;
-  --color-accent-hover: #6F2278;
-  --color-on-accent: #FFFFFF;
   --color-line: #CBC6D4;
-  --color-tint-a: #EFE6F6;
   --color-tint-b: #F7E6EC;
   --color-tint-c: #E8EAF2;
-  --color-selection: #E9D5F5;
   --color-success: #2F6B4A;
-  --theme-radius: 6px;
-  --theme-control-radius: 4px;
-  --theme-shadow: 0 1px 0 var(--color-line);
-  --theme-duration: 180ms;
-  --theme-ease: cubic-bezier(0.2, 0, 0, 1);
-  --pixel: 4px;
+  --color-on-accent: #FFFFFF;
+  --planet-pink: #E07B97;
+  --swatch-kafka: #8F2D9A;
+  --swatch-nebula: #2952CC;
+  --swatch-aurora: #1F7A5A;
+  --swatch-mars: #B4471F;
+  --swatch-rose: #B8306A;
 }
+
+html[data-mode="light"][data-accent="kafka"] {
+  --color-accent: #8F2D9A;
+  --color-accent-hover: #6F2278;
+  --color-tint-a: #EFE6F6;
+  --color-selection: #E9D5F5;
+}
+
+html[data-mode="light"][data-accent="nebula"] {
+  --color-accent: #2952CC;
+  --color-accent-hover: #1F3FA3;
+  --color-tint-a: #E4EAFB;
+  --color-selection: #D3DDF9;
+}
+
+html[data-mode="light"][data-accent="aurora"] {
+  --color-accent: #1F7A5A;
+  --color-accent-hover: #175E45;
+  --color-tint-a: #E2F2EB;
+  --color-selection: #CDEBDD;
+}
+
+html[data-mode="light"][data-accent="mars"] {
+  --color-accent: #B4471F;
+  --color-accent-hover: #8F3818;
+  --color-tint-a: #F8E7DF;
+  --color-selection: #F3D3C4;
+}
+
+html[data-mode="light"][data-accent="rose"] {
+  --color-accent: #B8306A;
+  --color-accent-hover: #922553;
+  --color-tint-a: #F7E3EC;
+  --color-selection: #F1CCDC;
+}
+
+html[data-mode="dark"] {
+  color-scheme: dark;
+  --color-paper: #0F0D17;
+  --color-surface: #161322;
+  --color-panel: #1C1929;
+  --color-ink: #EEEBF5;
+  --color-muted: #B4AFC4;
+  --color-line: #3A3550;
+  --color-tint-b: #2A1B26;
+  --color-tint-c: #1B1E2E;
+  --color-success: #6FD3A8;
+  --color-on-accent: #14111E;
+  --planet-pink: #F4A1BC;
+  --swatch-kafka: #D08BE0;
+  --swatch-nebula: #8FA8FF;
+  --swatch-aurora: #6FD3A8;
+  --swatch-mars: #FF9A6B;
+  --swatch-rose: #F28BB4;
+}
+
+html[data-mode="dark"][data-accent="kafka"] {
+  --color-accent: #D08BE0;
+  --color-accent-hover: #E3B0EE;
+  --color-tint-a: #2A1F38;
+  --color-selection: #4A2D5A;
+}
+
+html[data-mode="dark"][data-accent="nebula"] {
+  --color-accent: #8FA8FF;
+  --color-accent-hover: #B5C6FF;
+  --color-tint-a: #1C2340;
+  --color-selection: #2E3A6B;
+}
+
+html[data-mode="dark"][data-accent="aurora"] {
+  --color-accent: #6FD3A8;
+  --color-accent-hover: #9BE3C4;
+  --color-tint-a: #16302A;
+  --color-selection: #22503F;
+}
+
+html[data-mode="dark"][data-accent="mars"] {
+  --color-accent: #FF9A6B;
+  --color-accent-hover: #FFBA97;
+  --color-tint-a: #33201A;
+  --color-selection: #5A3324;
+}
+
+html[data-mode="dark"][data-accent="rose"] {
+  --color-accent: #F28BB4;
+  --color-accent-hover: #F7B2CE;
+  --color-tint-a: #331A26;
+  --color-selection: #5A2B40;
+}
+
+/* Brand colors are evaluated once against each panel; CSS selects the active mode. */
+.stack-icon-path { fill: var(--icon-light); }
+html[data-mode="dark"] .stack-icon-path { fill: var(--icon-dark); }
 
 html[data-motion="off"],
 html[data-motion="off"] *,

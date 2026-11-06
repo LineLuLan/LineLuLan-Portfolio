@@ -132,6 +132,7 @@ export type SocialLinks = {
 
 export type ProfileStat = {
   value: number;
+  href?: string;
   suffix?: string;
   label: string;
   decimals?: number;

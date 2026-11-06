@@ -85,7 +85,7 @@ export const chronicles: ChronicleEvent[] = [
     title: 'Lead AI Researcher · Clinical ML',
     org: 'HTD HCMC × IU',
     ongoing: true,
-    description: '3.71M+ lab records · first author · advisor Dr. Nguyễn Thị Thúy Loan.',
+    description: 'Leakage-audited clinical pipeline · tens of thousands of de-identified encounters · two manuscripts in preparation · first author · advisor Dr. Nguyễn Thị Thúy Loan.',
   },
   {
     id: 'iu-ta',

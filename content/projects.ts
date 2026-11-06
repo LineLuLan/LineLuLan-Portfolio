@@ -123,16 +123,16 @@ export const projects: Project[] = [
     listed: false,
     name: 'Dengue Shock Prediction',
     tagline:
-      'Predicting clinical deterioration in dengue patients from 3.71M+ lab records, with HTD HCMC.',
+      'Leakage-audited clinical prediction from routine dengue lab data, with HTD HCMC.',
     domains: ['research', 'ML'],
     state: 'wip',
     featured: true,
     problem:
       'Predicting post-fever shock progression in dengue patients from routine laboratory data — in collaboration with Hospital for Tropical Diseases HCMC.',
-    dataset: '3.71M+ laboratory records across ~40,900 patient encounters · deterministic pipeline for extraction, unit harmonization, and validation under strict privacy constraints.',
+    dataset: 'Tens of thousands of de-identified encounters from 2018–2024; 240 lab codes mapped with 97% row coverage. Deterministic extraction, unit harmonization, and validation under strict privacy constraints.',
     method:
-      'XGBoost and LightGBM benchmarked against permutation-invariant architectures (Deep Sets, Set Transformer) with 5×3 nested patient-grouped validation; count-only, availability-only, and value-shuffled negative controls probe informative missingness.',
-    results: '0.798 AUPRC · 0.952 AUROC in predictive modeling experiments. Paper in preparation.',
+      'Calibrated LightGBM with nested patient-grouped validation and a five-member MLP deep ensemble evaluated under four win gates; leakage audits and 250+ automated tests support the pipeline.',
+    results: 'Calibrated LightGBM nested AUPRC 0.65 (95% CI 0.64–0.66; prevalence ≈ 0.1), Brier 0.061, ECE 0.016. Five-member MLP deep ensemble +0.034 AUPRC over the tree champion (0.683 vs 0.649) under four win gates. Two manuscripts in preparation.',
     tech: ['Python', 'XGBoost', 'LightGBM', 'PyTorch', 'Pandas', 'Scikit-learn'],
     role: 'First author · lead AI researcher',
     collaborators: [
@@ -141,10 +141,10 @@ export const projects: Project[] = [
       { name: 'Dr. Nguyễn Thị Thúy Loan', role: 'advisor · Head of DS Dept., IU' },
     ],
     dabm: {
-      D: 'hospital lab records · 3.71M+ rows · ~40.9k encounters',
+      D: 'tens of thousands of de-identified encounters · 2018–2024 · 240 lab codes · 97% row coverage',
       A: 'physicians making triage decisions',
       B: 'lab ordering patterns · informative missingness',
-      M: 'gradient boosting vs set-based nets · nested CV',
+      M: 'calibrated LightGBM · five-member MLP deep ensemble · nested CV',
     },
     eta: '2027',
     why: 'Early warning systems for dengue can save lives in tropical regions where the disease is endemic.',

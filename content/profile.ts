@@ -30,10 +30,10 @@ export const profile: Profile = {
   openTo: 'AI / ML Engineer · Data Engineering roles',
   availability: 'Open to AI / ML & Data roles · HCMC',
   stats: [
-    { value: 4, suffix: '+', label: 'Years in tech' },
-    { value: 1, suffix: '+', label: 'Year in industry' },
-    { value: 3.56, suffix: '/4.0', label: 'Current GPA', decimals: 2 },
-    { value: 6, suffix: '+', label: 'Projects shipped' },
+    { value: 4, suffix: '+', label: 'Years in tech', href: '#record' },
+    { value: 1, suffix: '+', label: 'Year in industry', href: '#experience' },
+    { value: 3.56, suffix: '/4.0', label: 'Current GPA', decimals: 2, href: '/transcript' },
+    { value: 6, suffix: '+', label: 'Projects shipped', href: '#work' },
   ],
   whatIBring: [
     {
@@ -44,7 +44,7 @@ export const profile: Profile = {
     {
       title: 'Data engineering',
       description: 'Reproducible pipelines that extract, harmonize and validate clinical lab data under strict privacy rules.',
-      proof: '3.71M+ lab records',
+      proof: 'Leakage-audited clinical pipeline',
     },
     {
       title: 'LLM & agent systems',

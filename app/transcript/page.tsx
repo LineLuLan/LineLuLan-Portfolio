@@ -41,7 +41,14 @@ export default function TranscriptPage() {
               <dd>{displayScore(latest?.cumulativeGpa4, 2)} <span>/ 4.0</span></dd>
             </div>
             <div><dt>Cumulative score</dt><dd>{displayScore(latest?.cumulativeGpa10, 1)} <span>/ 100</span></dd></div>
-            <div><dt>Credits earned</dt><dd>{displayScore(latest?.creditsCumulative)}</dd></div>
+            <div>
+              <dt>Credits earned</dt>
+              <dd>
+                {displayScore(latest?.creditsCumulative)} <span>/ {transcript.creditsRequired}</span>
+                <progress className="transcript-credit-progress" value={latest?.creditsCumulative ?? undefined} max={transcript.creditsRequired}
+                  aria-label="Credits earned toward degree" />
+              </dd>
+            </div>
           </dl>
           <p className="transcript-updated">Last updated <time dateTime={transcript.updated}>{updated}</time></p>
         </header>

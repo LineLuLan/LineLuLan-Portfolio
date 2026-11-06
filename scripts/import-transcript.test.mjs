@@ -7,6 +7,11 @@ import { parseTranscript } from './import-transcript.mjs';
 
 const source = readFileSync(new URL('../.transcript-source/DiemSinhVien.xls', import.meta.url));
 const result = parseTranscript(source);
+assert.equal(result.creditsRequired, 135, 'Default degree requirement');
+assert.equal(parseTranscript(source, { creditsRequired: 140 }).creditsRequired, 140, 'Preserve the configured degree requirement on re-import');
+assert.equal(parseTranscript(source, {}).creditsRequired, 135, 'Default older transcripts without a degree requirement');
+const published = JSON.parse(readFileSync(new URL('../content/transcript.json', import.meta.url), 'utf8'));
+assert.equal(published.creditsRequired, 135, 'Published degree requirement');
 assert.equal(result.semesters.length, 7);
 const courses = result.semesters.flatMap((semester) => semester.courses);
 assert.equal(courses.length, 29);

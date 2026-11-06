@@ -35,7 +35,7 @@ function number(value, label) {
   return parsed;
 }
 
-export function parseTranscript(source) {
+export function parseTranscript(source, existing = {}) {
   if (source[0] !== 0xff || source[1] !== 0xfe) throw new Error('Expected a BOM-prefixed UTF-16LE HTML grade export');
   const html = new TextDecoder('utf-16le', { fatal: true }).decode(source);
   const semesters = [];
@@ -99,13 +99,22 @@ export function parseTranscript(source) {
   const today = new Date();
   return {
     updated: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`,
-    program: 'BSc Data Science', school: 'International University, VNU-HCM', semesters: published,
+    program: 'BSc Data Science', school: 'International University, VNU-HCM',
+    creditsRequired: existing.creditsRequired ?? 135, semesters: published,
   };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const input = process.argv[2] ? resolve(process.argv[2]) : new URL('../.transcript-source/DiemSinhVien.xls', import.meta.url);
-  const transcript = parseTranscript(readFileSync(input));
-  writeFileSync(new URL('../content/transcript.json', import.meta.url), `${JSON.stringify(transcript, null, 2)}\n`);
+  // The portal export has no degree requirement; retain Line's configured total on refresh.
+  const output = new URL('../content/transcript.json', import.meta.url);
+  let existing = {};
+  try {
+    existing = JSON.parse(readFileSync(output, 'utf8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  const transcript = parseTranscript(readFileSync(input), existing);
+  writeFileSync(output, `${JSON.stringify(transcript, null, 2)}\n`);
   console.log(`Imported ${transcript.semesters.reduce((sum, semester) => sum + semester.courses.length, 0)} courses across ${transcript.semesters.length} semesters into content/transcript.json`);
 }

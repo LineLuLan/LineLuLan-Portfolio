@@ -2,6 +2,7 @@
   "updated": "2026-11-07",
   "program": "BSc Data Science",
   "school": "International University, VNU-HCM",
+  "creditsRequired": 135,
   "semesters": [
     {
       "id": "2023-2024-1",

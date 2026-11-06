@@ -39,10 +39,8 @@ html[data-motion="off"] .career-road-travelled { stroke-dasharray: none !importa
   .career-road-desktop { display: block; }
   .career-road-mobile { display: none; }
   .career-node { left: var(--x); top: var(--y); }
-  .career-label, [data-side="right"] .career-label { left: 50%; right: auto; top: auto; bottom: 48px; width: min(168px, 13vw); transform: translateX(-50%); text-align: center; }
-  /* Desktop: every label sits above its own node; edge labels shift inward, clear of the row turns. */
-  [data-column="0"] .career-label { width: 150px; transform: translateX(calc(-50% + 30px)); text-align: left; }
-  [data-column="5"] .career-label { width: 150px; transform: translateX(calc(-50% - 30px)); text-align: right; }
+  /* Keep every label inside its own column, including the 1024px desktop boundary. */
+  .career-label, [data-side="right"] .career-label { left: 50%; right: auto; top: auto; bottom: 48px; width: min(156px, calc(14.5vw - 11.6px)); transform: translateX(-50%); text-align: center; }
   .career-detail { top: calc(var(--y) + 22px); left: clamp(0px, calc(var(--x) - 170px), calc(100% - 340px)); width: 340px; }
   [data-bottom="true"] .career-detail, .career-nodes > li:last-child .career-detail { top: auto; bottom: calc(22px - var(--y)); }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useInView } from 'framer-motion';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import type { ProfileStat } from '@/types';
@@ -46,13 +46,13 @@ function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <span className="flex flex-wrap items-baseline justify-center gap-x-0 gap-y-2 font-sans text-[40px] font-extrabold leading-none text-ink md:text-[44px]">
+      <span className="flex items-baseline justify-center font-sans text-[36px] font-extrabold leading-none tabular-nums text-ink lg:text-[44px]">
         <span>{format(display, stat.decimals ?? 0, stat.pad ?? 0)}</span>
         {stat.suffix && (
-          <span className="text-accent">{stat.suffix}</span>
+          <span className="text-[0.6em] text-accent">{stat.suffix}</span>
         )}
       </span>
-      <span className="eyebrow">
+      <span className="eyebrow text-center leading-5">
         {stat.label}
       </span>
     </div>
@@ -66,12 +66,13 @@ export function StatsCounters({ stats }: Props) {
   return (
     <div
       ref={ref}
-      className="reveal-up mt-6 grid grid-cols-2 gap-x-4 gap-y-6 border-t hairline pt-4 md:grid-cols-4 md:gap-x-10"
+      data-reveal="stats"
+      className="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 border-t hairline pt-6 md:grid-cols-4 md:gap-x-6 lg:gap-x-10"
       role="list"
       aria-label="Quick stats"
     >
-      {stats.map((s) => (
-        <div key={s.label} role="listitem">
+      {stats.map((s, index) => (
+        <div key={s.label} role="listitem" data-reveal-child style={{ '--reveal-order': index } as CSSProperties}>
           <Counter stat={s} start={inView} />
         </div>
       ))}

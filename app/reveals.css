@@ -1,0 +1,145 @@
+/* Content stays visible until JS arms an offscreen block. All entrances run once. */
+[data-reveal] {
+  --reveal-start: clamp(0ms, var(--reveal-delay, 0ms), 120ms);
+  --reveal-duration: 600ms;
+  --reveal-x: 0px;
+  --reveal-y: 20px;
+  --reveal-tilt: 0deg;
+  --reveal-scale: 1;
+  --reveal-blur: 2px;
+  --reveal-clip: none;
+  --reveal-clip-end: none;
+  --reveal-child-x: 0px;
+  --reveal-child-y: 12px;
+  --reveal-child-scale: 0.94;
+}
+[data-reveal="depth"] {
+  --reveal-duration: 680ms;
+  --reveal-y: 32px;
+  --reveal-tilt: 8deg;
+  --reveal-scale: 0.96;
+  --reveal-blur: 2.5px;
+  transform-origin: center bottom;
+}
+[data-reveal="slide"] {
+  --reveal-duration: 660ms;
+  --reveal-x: 28px;
+  --reveal-y: 8px;
+  --reveal-child-x: 18px;
+  --reveal-child-y: 0px;
+  --reveal-child-scale: 1;
+}
+[data-reveal="showcase"] {
+  --reveal-duration: 700ms;
+  --reveal-y: 28px;
+  --reveal-scale: 0.97;
+  --reveal-blur: 3px;
+  --reveal-clip: inset(7% 0 0 round var(--theme-radius));
+  --reveal-clip-end: inset(-16px round var(--theme-radius));
+}
+[data-reveal="stats"] {
+  --reveal-y: 24px;
+  --reveal-scale: 0.98;
+  --reveal-child-y: 16px;
+  --reveal-child-scale: 0.86;
+}
+
+@keyframes component-reveal {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) translate3d(var(--reveal-x), var(--reveal-y), 0) rotateX(var(--reveal-tilt)) scale(var(--reveal-scale));
+    filter: blur(var(--reveal-blur));
+    clip-path: var(--reveal-clip);
+  }
+  45% { filter: blur(0); }
+  72% { opacity: 1; clip-path: var(--reveal-clip-end); }
+  to { opacity: 1; transform: none; filter: blur(0); clip-path: var(--reveal-clip-end); }
+}
+@keyframes component-child-reveal {
+  from { opacity: 0; transform: translate3d(var(--reveal-child-x), var(--reveal-child-y), 0) scale(var(--reveal-child-scale)); filter: blur(2px); }
+  55% { filter: blur(0); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes component-sheen {
+  0% { background-position: 130% 0; opacity: 0; }
+  22% { opacity: 1; }
+  100% { background-position: -30% 0; opacity: 0; }
+}
+
+html[data-motion="on"] [data-reveal-state="pending"]:not([data-reveal="words"]) {
+  opacity: 0;
+  transform: perspective(1000px) translate3d(var(--reveal-x), var(--reveal-y), 0) rotateX(var(--reveal-tilt)) scale(var(--reveal-scale));
+  filter: blur(var(--reveal-blur));
+  clip-path: var(--reveal-clip);
+}
+html[data-motion="on"] [data-reveal-state="entering"]:not([data-reveal="words"]) {
+  animation: component-reveal var(--reveal-duration) var(--ease-settle) both;
+  animation-delay: var(--reveal-start);
+}
+
+html[data-motion="on"] [data-reveal-state="pending"] [data-reveal-child] {
+  opacity: 0;
+  transform: translate3d(var(--reveal-child-x), var(--reveal-child-y), 0) scale(var(--reveal-child-scale));
+}
+html[data-motion="on"] [data-reveal-state="entering"] [data-reveal-child] {
+  animation: component-child-reveal 420ms var(--ease-settle) both;
+  animation-delay: calc(var(--reveal-start) + 80ms + clamp(0ms, calc(var(--reveal-order, 0) * 45ms), 250ms));
+}
+
+/* A brief accent sweep stays inside each card's painted box. */
+html[data-motion="on"] .surface-card[data-reveal="depth"][data-reveal-state="entering"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, color-mix(in srgb, var(--color-accent) 18%, transparent) 49%, transparent 63%);
+  background-size: 260% 100%;
+  animation: component-sheen 700ms ease-out both;
+  animation-delay: var(--reveal-start);
+}
+
+html[data-motion="on"] [data-reveal="words"][data-reveal-state="pending"] .reveal-word {
+  opacity: 0;
+  transform: translateY(112%) rotateX(-70deg) rotateZ(4deg);
+  filter: blur(3px);
+}
+html[data-motion="on"] [data-reveal="words"][data-reveal-state="entering"] .reveal-word {
+  animation: word-rise 600ms var(--ease-settle) both;
+  animation-delay: clamp(0ms, calc(40ms + var(--word-index, 0) * 55ms), 180ms);
+}
+
+@media (max-width: 767px) {
+  [data-reveal] { --reveal-y: 14px; --reveal-blur: 1.5px; --reveal-child-y: 8px; }
+  [data-reveal="depth"] { --reveal-y: 22px; --reveal-tilt: 4deg; --reveal-scale: 0.98; }
+  [data-reveal="slide"] { --reveal-x: 14px; --reveal-y: 6px; --reveal-child-x: 10px; --reveal-child-y: 0px; }
+  [data-reveal="showcase"] { --reveal-y: 18px; --reveal-scale: 0.985; --reveal-clip: inset(3% 0 0 round var(--theme-radius)); }
+  [data-reveal="stats"] { --reveal-child-scale: 0.94; }
+}
+
+/* Focus must be immediately legible, including in the frame before the JS listener. */
+html[data-motion="on"] [data-reveal]:focus-within,
+html[data-motion="on"] [data-reveal]:focus-within .reveal-word,
+html[data-motion="on"] [data-reveal]:focus-within [data-reveal-child] {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: none;
+}
+html[data-motion="on"] .surface-card[data-reveal="depth"]:focus-within::after { animation: none; opacity: 0; }
+
+/* Motion Off also works before the preference observer clears any pending states. */
+html[data-motion="off"] [data-reveal-state],
+html[data-motion="off"] [data-reveal="words"] .reveal-word,
+html[data-motion="off"] [data-reveal-child] {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: none;
+}
+
+@media (forced-colors: active) {
+  html[data-motion="on"] .surface-card[data-reveal="depth"][data-reveal-state="entering"]::after { display: none; }
+}

@@ -32,8 +32,8 @@ export function VietnamTime() {
 
   if (!time) return null;
   return (
-    <span className="block text-muted sm:inline">
-      <span aria-hidden className="hidden sm:inline"> · </span>
+    <span className="whitespace-nowrap text-muted">
+      <span aria-hidden> · </span>
       <time aria-label={`Local time in Vietnam: ${time}`}>{time}</time> GMT+7
     </span>
   );

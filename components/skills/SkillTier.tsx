@@ -6,14 +6,14 @@ import type { SkillTier as SkillTierType } from '@/types';
 
 export function SkillTier({ tier, index }: { tier: SkillTierType; index: number }) {
   return (
-    <section data-reveal style={{ '--reveal-delay': `${index * 50}ms` } as CSSProperties} aria-labelledby={`stack-${tier.id}`} className="min-w-0 rounded-[var(--theme-radius)] border hairline bg-panel p-5">
+    <section data-reveal="depth" style={{ '--reveal-delay': `${(index % 3) * 80}ms` } as CSSProperties} aria-labelledby={`stack-${tier.id}`} className="surface-card min-w-0 rounded-[var(--theme-radius)] border hairline bg-panel p-5">
       <h3 id={`stack-${tier.id}`} className="font-display text-[18px] font-bold text-ink">{tier.label}</h3>
       <p className="mt-1 text-[14px] text-muted">{tier.caption}</p>
       <ul className="mt-3 flex flex-wrap gap-1.5">
-        {tier.items.map((item) => {
+        {tier.items.map((item, itemIndex) => {
           const icon = getStackIcon(item.name, item.icon);
           return (
-            <li key={item.name} className="stack-tool inline-flex min-h-9 max-w-full items-center gap-2 rounded border hairline bg-paper px-2 font-sans text-[14px] text-ink hover:border-accent">
+            <li key={item.name} data-reveal-child style={{ '--reveal-order': itemIndex } as CSSProperties} className="stack-tool inline-flex min-h-9 max-w-full items-center gap-2 rounded border hairline bg-paper px-2 font-sans text-[14px] text-ink hover:border-accent">
               {icon && (
                 <svg width="18" height="18" viewBox={icon.viewBox} aria-hidden="true" className="shrink-0" focusable="false">
                   {icon.paths.map((path, pathIndex) => (
@@ -31,7 +31,7 @@ export function SkillTier({ tier, index }: { tier: SkillTierType; index: number 
       </ul>
       {tier.practices && (
         <ul className="mt-3 flex flex-wrap gap-1.5">
-          {tier.practices.map((practice) => <li key={practice} className="rounded bg-tint-c px-2 py-1 font-sans text-[13px] text-ink">{practice}</li>)}
+          {tier.practices.map((practice, practiceIndex) => <li key={practice} data-reveal-child style={{ '--reveal-order': tier.items.length + practiceIndex } as CSSProperties} className="rounded bg-tint-c px-2 py-1 font-sans text-[13px] text-ink">{practice}</li>)}
         </ul>
       )}
     </section>

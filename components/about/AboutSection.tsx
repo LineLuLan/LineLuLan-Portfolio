@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { profile } from '@/content/profile';
@@ -20,17 +21,17 @@ const IDENTITY_LABEL: Record<string, string> = {
 export function AboutSection() {
   return (
     <SectionWrapper id="about" ariaLabel="About" withTopRule>
-      <SectionHeader index={2} slug="about" title="Where research meets production." planet={SECTION_PLANET.about} className="mb-6 md:mb-6" />
+      <SectionHeader index={2} slug="about" title="Where research meets production." planet={SECTION_PLANET.about} />
 
       <div className="grid gap-8 lg:grid-cols-[1.55fr_1fr]">
         <div className="min-w-0">
-          <p className="text-[17px] leading-7 text-ink">{profile.narrative.intro}</p>
-          <p className="mt-3 text-[17px] leading-7 text-ink">{profile.narrative.mission}</p>
+          <p data-reveal className="text-[17px] leading-7 text-ink">{profile.narrative.intro}</p>
+          <p data-reveal className="mt-4 text-[17px] leading-7 text-ink [--reveal-delay:60ms]">{profile.narrative.mission}</p>
           <ExploringTags tags={profile.exploring} />
         </div>
-        <dl>
-          {profile.facts.map((fact) => (
-            <div key={fact.key} className="grid min-h-11 grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 border-t hairline py-2">
+        <dl data-reveal="slide" className="[--reveal-delay:80ms]">
+          {profile.facts.map((fact, index) => (
+            <div key={fact.key} data-reveal-child style={{ '--reveal-order': index } as CSSProperties} className="grid min-h-11 grid-cols-[84px_minmax(0,1fr)] items-baseline gap-3 border-t hairline py-2 sm:grid-cols-[100px_minmax(0,1fr)]">
               <dt className="eyebrow self-start">{IDENTITY_LABEL[fact.key] ?? fact.key}</dt>
               <dd className="text-[15px] leading-7 text-ink">{fact.value}</dd>
             </div>

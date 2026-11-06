@@ -15,7 +15,7 @@ try {
   await page.locator('.career-node').first().waitFor();
   await page.waitForFunction(() => document.documentElement.dataset.motion === 'off');
   await page.evaluate(() => document.fonts.ready);
-  assert.equal(await page.locator('.career-node').count(), 20);
+  assert.equal(await page.locator('.career-node').count(), 21);
   for (const id of ['record', 'contact']) {
     const sizes = await page.locator(`#${id}`).evaluate((element) => {
       const rect = element.getBoundingClientRect();
@@ -81,6 +81,13 @@ try {
     await page.setViewportSize({ width, height: 900 });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     assert.equal(overflow, false, `Page overflows at ${width}px`);
+    if (width >= 1024) {
+      const overlaps = await page.locator('.career-label').evaluateAll((elements) => {
+        const boxes = elements.map((element) => element.getBoundingClientRect());
+        return boxes.some((a, i) => boxes.slice(i + 1).some((b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top));
+      });
+      assert.equal(overlaps, false, `Milestone labels overlap at ${width}px`);
+    }
     for (const id of ['record', 'contact']) {
       const outside = await page.locator(`#${id}`).evaluate((section) => [...section.querySelectorAll('.career-label, .career-node, a, input, textarea')].some((element) => { const rect = element.getBoundingClientRect(); return rect.width && (rect.left < -1 || rect.right > innerWidth + 1); }));
       assert.equal(outside, false, `${id} child overflows at ${width}px`);
@@ -101,7 +108,7 @@ try {
   // Test actual server HTML with JavaScript disabled, beyond the unit-level SSR harness.
   const noJS = await browser.newPage({ javaScriptEnabled: false });
   await noJS.goto('http://127.0.0.1:3000/');
-  assert.equal(await noJS.locator('.career-title').count(), 20);
+  assert.equal(await noJS.locator('.career-title').count(), 21);
   assert.ok((await noJS.locator('.career-title').allTextContents()).every((title) => title.length > 0));
   await noJS.close();
   const animated = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -111,7 +118,7 @@ try {
   await animated.locator('#record').scrollIntoViewIfNeeded();
   await animated.waitForFunction(() => document.querySelector('.career-road-desktop .career-road-travelled').getAttribute('stroke-dasharray') === '1px 1px');
   assert.notEqual(await animated.locator('.contact-saturn').evaluate((element) => getComputedStyle(element).animationName), 'none');
-  assert.equal(await animated.locator('.career-road-travelled').first().evaluate((element) => getComputedStyle(element).stroke), await animated.locator('.career-marker').nth(2).evaluate((element) => getComputedStyle(element).backgroundColor));
+  assert.equal(await animated.locator('.career-road-travelled').first().evaluate((element) => getComputedStyle(element).stroke), await animated.locator('#record .editorial-h2 .text-accent').evaluate((element) => getComputedStyle(element).color));
   await animated.close();
   assert.deepEqual(errors, []);
   console.log('PASS: Record keyboard/hover/touch, label geometry, Contact centering/copy/fallback, motion on/off, dark tokens, no-JS SSR, 320–1920px overflow.');

@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { capitalize, cn } from '@/lib/cn';
+import { ReadingProgress } from './ReadingProgress';
 
 // The brand is the whoami link; the brief reserves navigation for the six later sections.
 const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
@@ -63,8 +64,8 @@ export function Header() {
         aria-current={active === id ? 'location' : undefined}
         onClick={() => setOpen(false)}
         className={cn(
-          'flex min-h-11 items-center border-b-2 px-3 font-sans text-[15px] font-medium hover:text-accent',
-          active === id ? 'border-accent text-accent' : 'border-transparent text-ink',
+          'nav-link relative flex min-h-11 items-center border-b-2 border-transparent px-3 font-sans text-[15px] font-medium hover:text-accent',
+          active === id ? 'text-accent' : 'text-ink',
         )}
       >
         {capitalize(SECTIONS[id].label)}
@@ -97,7 +98,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-navigation"
             onClick={() => setOpen((value) => !value)}
-            className="hairline min-h-11 rounded-[var(--theme-control-radius)] border px-2 font-mono text-sm text-ink hover:border-accent nav:hidden"
+            className="motion-control hairline min-h-11 rounded-[var(--theme-control-radius)] border px-2 font-mono text-sm text-ink hover:border-accent nav:hidden"
           >
             Menu
           </button>
@@ -106,6 +107,7 @@ export function Header() {
       <nav id="mobile-navigation" aria-label="Mobile sections" hidden={!open} className="hairline border-t nav:hidden">
         <ul className="container-x flex flex-col py-2">{links}</ul>
       </nav>
+      <ReadingProgress />
     </header>
   );
 }

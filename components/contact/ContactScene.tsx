@@ -5,14 +5,14 @@ import { PixelStars } from '@/components/pixel/PixelStars';
 
 export function ContactScene() {
   return (
-    <div aria-hidden="true" className="contact-scene pointer-events-none relative mb-4 h-[196px] overflow-hidden">
+    <div aria-hidden="true" className="contact-scene pointer-events-none relative mb-4 h-40 overflow-hidden md:h-[196px]">
       <PixelStars />
       <div className="contact-orbit absolute left-1/2 top-1/2 h-[100px] w-[260px] rounded-[50%] border hairline">
         <PixelPlanet kind="moon" size={28} className="absolute -left-2 top-8" />
         <PixelPlanet kind="moon" size={20} className="absolute -right-1 top-9" />
       </div>
-      <div className="contact-saturn absolute left-1/2 top-2 -ml-[90px]">
-        <PixelPlanet kind="saturn" size={180} />
+      <div className="contact-saturn absolute left-1/2 top-2 -ml-[72px] md:-ml-[90px]">
+        <PixelPlanet kind="saturn" size={180} className="size-36 md:size-[180px]" />
       </div>
       <div className="contact-comet absolute right-[8%] top-4 flex items-center gap-2">
         <span className="h-1 w-1 bg-accent opacity-20" />

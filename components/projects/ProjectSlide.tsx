@@ -5,15 +5,16 @@ import { ArrowRight } from 'lucide-react';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { ProjectTech } from './ProjectTech';
 import { ProjectLinks } from './ProjectLinks';
+import { ProjectSurface } from './ProjectSurface';
 import type { Project } from '@/types';
 
 const tints = ['bg-tint-a', 'bg-tint-c', 'bg-tint-b'] as const;
 
-export function ProjectSlide({ project, index }: { project: Project; index: number }) {
+export function ProjectSlide({ project, index, active }: { project: Project; index: number; active: boolean }) {
   return (
-    <article className={`flex h-full min-w-0 flex-col rounded-[var(--theme-radius)] border hairline p-8 ${tints[index % tints.length]}`}>
+    <ProjectSurface active={active} className={`surface-card project-card flex h-full min-w-0 flex-col rounded-[var(--theme-radius)] border hairline p-5 sm:p-8 ${tints[index % tints.length]}`}>
       <div className="mb-3 flex min-h-[4.5rem] items-center justify-between gap-4">
-        <PixelPlanet kind={project.planet} size={72} className="shrink-0" />
+        <span className="card-planet"><PixelPlanet kind={project.planet} size={72} /></span>
         {project.lead && <span className="rounded-[var(--theme-control-radius)] bg-paper px-3 py-1 font-mono text-sm text-accent">Featured project</span>}
       </div>
       <p className="font-mono text-sm text-muted">{String(index + 1).padStart(2, '0')} · {project.role?.split(' · ')[0]}</p>
@@ -24,9 +25,9 @@ export function ProjectSlide({ project, index }: { project: Project; index: numb
         <ProjectLinks links={project.links} />
         <Link href={`/projects/${project.slug}`} draggable={false}
           className="inline-flex min-h-11 items-center gap-2 rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:underline">
-          Open project <ArrowRight size={16} aria-hidden="true" />
+          Open project <ArrowRight size={16} aria-hidden="true" className="action-arrow" />
         </Link>
       </div>
-    </article>
+    </ProjectSurface>
   );
 }

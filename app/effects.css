@@ -1,0 +1,162 @@
+/* Local depth and responsive motion for Orbit. All colors follow the active palette. */
+:root {
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-raised: 0 2px 4px color-mix(in srgb, var(--color-ink) 3%, transparent),
+    0 12px 28px color-mix(in srgb, var(--color-ink) 6%, transparent);
+}
+
+.constellation-field {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, black 80%, transparent);
+}
+html[data-motion="off"] .constellation-field { visibility: hidden; }
+
+/* Clipped words retain their natural text, wrapping, and no-JS readability. */
+.word-clip { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; perspective: 700px; }
+.reveal-word { display: inline-block; transform-origin: center bottom; }
+@keyframes word-rise {
+  from { transform: translate3d(0, 112%, 0) rotateX(-70deg) rotateZ(4deg); filter: blur(3px); opacity: 0; }
+  65% { filter: blur(0); opacity: 1; }
+  to { transform: none; filter: blur(0); opacity: 1; }
+}
+html[data-motion="on"] .kinetic-heading .reveal-word {
+  animation: word-rise 750ms var(--ease-settle) both;
+  animation-delay: calc(850ms + var(--word-index) * 85ms);
+}
+
+.mobile-orbit { pointer-events: none; }
+.mobile-orbit__pulse { transform-origin: 170px 87px; }
+html[data-motion="on"] .mobile-orbit__pulse { animation: orbit-pulse 4s ease-in-out infinite; }
+@keyframes orbit-pulse { 50% { transform: scale(1.16); opacity: 0.4; } }
+
+/* The stationary outer wrapper supplies pointer coordinates; the card supplies depth. */
+.project-card { isolation: isolate; transform-style: preserve-3d; }
+.project-card__light { position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; }
+html[data-motion="off"] .project-card { transform: none !important; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-motion="on"] .project-card:hover .card-planet { transform: translate3d(0, -6px, 32px) rotate(-8deg); }
+}
+
+/* Progressive enhancement: unsupported browsers still change the theme immediately. */
+::view-transition-group(root) { animation: none; }
+::view-transition-old(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) {
+  animation: appearance-reveal 600ms var(--ease-settle) both;
+  mix-blend-mode: normal;
+}
+::view-transition { pointer-events: none; }
+@keyframes appearance-reveal {
+  from { clip-path: circle(0 at var(--appearance-x) var(--appearance-y)); }
+  to { clip-path: circle(var(--appearance-radius) at var(--appearance-x) var(--appearance-y)); }
+}
+html[data-motion="off"]::view-transition-new(root) { animation: none; }
+
+.hero-atmosphere { position: absolute; inset: 0; z-index: -10; overflow: hidden; pointer-events: none; }
+.hero-atmosphere::before, .hero-atmosphere::after {
+  content: '';
+  position: absolute;
+  width: min(70vw, 800px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 68%);
+}
+.hero-atmosphere::before { right: -10%; top: -30%; }
+.hero-atmosphere::after { left: -20%; bottom: -60%; opacity: 0.6; }
+@keyframes atmosphere-drift { to { transform: translate3d(-24px, 24px, 0) scale(1.06); } }
+@media (min-width: 768px) {
+  html[data-motion="on"] .hero-atmosphere::before { animation: atmosphere-drift 18s ease-in-out infinite alternate; }
+  html[data-motion="on"] .hero-atmosphere::after { animation: atmosphere-drift 22s ease-in-out -8s infinite alternate-reverse; }
+}
+
+.orbit-stage { position: relative; isolation: isolate; }
+.orbit-stage__halo {
+  position: absolute;
+  inset: 12% 5%;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 68%);
+  opacity: 0.5;
+  transition: opacity 250ms ease-out;
+}
+.orbit-stage:is(:hover, :focus-within) .orbit-stage__halo { opacity: 1; }
+html[data-motion="off"] .orbit-stage__art { transform: none !important; }
+
+.reading-progress {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  background: var(--color-accent);
+  transform-origin: left;
+  pointer-events: none;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  inset: auto 12px -2px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms var(--ease-settle);
+}
+.nav-link:is([aria-current="location"], :hover, :focus-visible)::after { transform: scaleX(1); }
+
+.surface-card {
+  position: relative;
+  transition: border-color 180ms ease-out, box-shadow 220ms ease-out, translate 250ms var(--ease-settle);
+}
+.surface-card:is(:hover, :focus-within) {
+  border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-line));
+  box-shadow: var(--shadow-raised);
+}
+.card-planet { display: inline-flex; flex-shrink: 0; transition: transform 300ms var(--ease-settle); }
+.project-card { box-shadow: 0 2px 0 color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.project-card:is(:hover, :focus-within) { border-color: var(--color-accent); }
+
+:is(a, button).bg-accent, .motion-control {
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out,
+    box-shadow 180ms ease-out, translate 180ms var(--ease-settle), scale 150ms ease-out;
+}
+:is(a, button).bg-accent:is(:hover, :focus-visible) {
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+html[data-motion="on"] :is(a, button).bg-accent:active,
+html[data-motion="on"] .motion-control:active { scale: 0.96; }
+.action-arrow { transition: transform 180ms var(--ease-settle); }
+html[data-motion="on"] a:is(:hover, :focus-visible) .action-arrow { transform: translateX(3px); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-motion="on"] .surface-card:hover { translate: 0 -3px; }
+  html[data-motion="on"] .surface-card:not(.project-card):hover .card-planet { transform: translateY(-3px) rotate(-6deg); }
+  html[data-motion="on"] :is(a, button).bg-accent:hover { translate: 0 -2px; }
+}
+.stack-tool { transition: border-color 150ms ease-out, background-color 150ms ease-out; }
+.stack-tool:hover { background: var(--color-tint-a); }
+
+.dock-trigger { box-shadow: var(--shadow-raised); }
+.dock-trigger > span { transition: transform 300ms var(--ease-settle); }
+html[data-motion="on"] .dock-trigger[aria-expanded="true"] > span { transform: rotate(180deg); }
+.dock-panel { transform-origin: bottom left; box-shadow: var(--shadow-raised); }
+.dock-swatch { transition: scale 180ms var(--ease-settle), box-shadow 180ms ease-out; }
+.dock-swatch[aria-pressed="true"] > span { box-shadow: 0 0 0 2px var(--color-panel), 0 0 0 3px var(--color-accent); }
+html[data-motion="on"] .dock-swatch:hover { scale: 1.06; }
+
+@keyframes disclosure-enter {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: none; }
+}
+html[data-motion="on"] #mobile-navigation:not([hidden]) > ul { animation: disclosure-enter 180ms var(--ease-settle); }
+html[data-motion="on"] .career-detail { animation: disclosure-enter 180ms var(--ease-settle); }
+.career-node .career-marker { transition: box-shadow 180ms ease-out, scale 180ms var(--ease-settle); }
+.career-node:is(:hover, :focus-visible) .career-marker { box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent) 16%, transparent); }
+html[data-motion="on"] .career-node:is(:hover, :focus-visible) .career-marker { scale: 1.15; }
+
+@media (forced-colors: active) {
+  .hero-atmosphere, .orbit-stage__halo, .constellation-field, .project-card__light { display: none; }
+  .reading-progress, .nav-link::after { background: Highlight; }
+}

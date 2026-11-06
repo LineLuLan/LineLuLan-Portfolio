@@ -7,20 +7,20 @@ const CARD_PLANETS = ['earth', 'mars', 'jupiter', 'neptune'] as const;
 
 export function WhatIBring({ items }: { items: WhatIBringItem[] }) {
   return (
-    <div className="mt-6">
-      <p className="eyebrow mb-3">What I bring</p>
+    <div className="mt-8 lg:mt-6">
+      <p data-reveal className="eyebrow mb-4">What I bring</p>
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {items.map((item, i) => (
           <li
             key={item.title}
-            data-reveal
-            style={{ '--reveal-delay': `${i * 50}ms` } as React.CSSProperties}
-            className="min-w-0 rounded-[var(--theme-radius)] border hairline bg-panel p-4 flex flex-col items-start"
+            data-reveal="depth"
+            style={{ '--reveal-delay': `${i * 80}ms` } as React.CSSProperties}
+            className="surface-card min-w-0 rounded-[var(--theme-radius)] border hairline bg-panel p-4 flex flex-col items-start"
           >
-            <PixelPlanet kind={CARD_PLANETS[i % CARD_PLANETS.length] ?? 'earth'} size={24} />
-            <h3 className="mt-2 font-display text-[18px] font-bold leading-6 text-ink">{item.title}</h3>
-            <p className="mt-2 text-[15px] leading-6 text-ink">{item.description}</p>
-            <p className="mt-auto flex items-center gap-2 pt-3 font-mono text-[13px] leading-5 text-accent">
+            <span data-reveal-child className="card-planet"><PixelPlanet kind={CARD_PLANETS[i % CARD_PLANETS.length] ?? 'earth'} size={24} /></span>
+            <h3 data-reveal-child className="mt-2 font-display text-[18px] font-bold leading-6 text-ink [--reveal-order:1]">{item.title}</h3>
+            <p data-reveal-child className="mt-2 text-[15px] leading-6 text-ink [--reveal-order:2]">{item.description}</p>
+            <p data-reveal-child className="mt-auto flex items-center gap-2 pt-3 font-mono text-[13px] leading-5 text-accent [--reveal-order:3]">
               <span aria-hidden className="h-1.5 w-1.5 shrink-0 bg-accent" />{item.proof}
             </p>
           </li>

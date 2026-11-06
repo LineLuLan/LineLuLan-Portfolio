@@ -41,7 +41,7 @@ Non-goals: interactive playground (phase 2), cursor decorations, roaming AI masc
 | `--color-success` | `#2F6B4A` | form success |
 | `--theme-radius` | `6px` | cards |
 | `--theme-control-radius` | `4px` | buttons, chips |
-| `--theme-shadow` | `0 1px 0 var(--color-line)` | flat; no glows |
+| `--theme-shadow` | `0 1px 0 var(--color-line)` | base surface; local hover elevation lives in effects.css |
 | `--theme-duration` | `180ms` | transitions |
 | `--theme-ease` | `cubic-bezier(0.2, 0, 0, 1)` | transitions |
 | `--pixel` | `4px` | pixel-art cell size |
@@ -121,11 +121,11 @@ Companion (`components/pixel/OrbitCompanion.tsx`): a 32px active-section planet 
 
 ## 6. Layout and sections
 
-Container: `max-w-[1200px]`, widened to 1440px for About, Stack, Work and Record; side padding 24px (phones) / 40px / 64px. Sections retain the full-width hairline.
+Container: `max-w-[1200px]`; side padding 24px (phones) / 40px / 64px. Sections retain the full-width hairline. Shared headings leave 24px before the following content, with compact 16px Record and 12px Contact compositions.
 
-Desktop slide layout (2026-11-06): one media query, `(min-width: 1024px) and (min-height: 720px)`, gives every non-hero section `min-height: calc(100svh - var(--header-h))`, border-box sizing and 40px top/bottom padding. Content stays top-aligned. Outside that query, padding is 56px top/bottom with no minimum height. Minimum height lets smaller screens or enlarged text grow naturally instead of clipping. The hero retains its own layout. `AnchorScroll` measures the sticky header with ResizeObserver into `--header-h`; the default is 81px, with existing narrow-header fallbacks. `--header-height` aliases it for the unchanged hero.
+Desktop slide layout: one media query, `(min-width: 1024px) and (min-height: 720px)`, gives every non-hero section `min-height: calc(100svh - var(--header-h))`, border-box sizing and 32px top/bottom padding. Content stays top-aligned; Contact centers its content and shares the final screen with the footer. Outside that query, padding is 56px top/bottom with no minimum height. Minimum height lets smaller screens or enlarged text grow naturally instead of clipping. The hero retains its own layout. `AnchorScroll` measures the sticky header with ResizeObserver into `--header-h`; the default is 81px, with existing narrow-header fallbacks. `--header-height` aliases it for the hero.
 
-At 1440×900 with an 81px header, sections target 819px total: 80px padding, 1px rule and at most 738px content. Static estimates (including section headings and internal gaps, excluding outer padding/rule): About 700–735px, Stack 640–700px, Work 690–735px, Framework about 650px, Record 650–710px (nine events), Contact about 515px. These are estimates, not browser measurements. Supervisor acceptance must measure 1440×900 and 1920×1080, all Record milestones and Work slides, plus horizontal overflow from 320px to 2000px. At 1366×768, content may grow beyond the minimum while preserving 40px top padding.
+At 1440×900 with an 81px header, sections target 819px total: 64px padding, 1px rule and up to 754px content. Content may grow beyond the minimum at shorter desktop heights or with enlarged text, preserving its padding and access to every control. Browser checks cover desktop section budgets, all 21 Record milestones, Work slides and narrow-screen overflow.
 
 ### Header (`components/layout/Header.tsx`)
 Sticky top, paper background with a bottom hairline. Left: pixel Saturn mark + `Line`. Center/right: links `About · Stack · Work · Framework · Record · Contact`. Right: `Open CV` outline button + 36px round pixel avatar. Under 900px: links collapse into a disclosure button (`aria-expanded`), Escape closes and returns focus. The header stays fully visible at every scroll position.
@@ -155,7 +155,7 @@ The hero contains an All projects link, planet, 56px desktop name, tagline, role
 The personal process replaces the project picker. The lead is "Data first. Systems that behave. Models you can trust." (28px display), followed by the supplied 17px introduction. Four numbered steps, Data / Agent / Behavior / Modeling, use the exact supplied sentences, 22px display titles, pixel letter badges, and Earth / Saturn / Jupiter / Neptune nodes. The layout stacks on phones, uses two columns at md, and four at lg, where a dashed orbit line draws once behind the nodes. Steps stagger in, with instant rendering when motion is off. The closing link returns to Work. Measured Chromium content at 1440x900: 589px, with an 819px section.
 
 ### 06 record (2026-11-06)
-One chronological list of all 20 milestones replaces year tabs. At lg, the SVG road has four rows of five nodes, alternating direction with smooth semicircular turns. Below lg, the same buttons follow a gentle vertical curve with left/right HTML labels. The server supplies its calendar date as a stable hydration prop; dates after that boundary have a dashed approach and a `Next` label. The travelled path uses accent, draws once in 1.2 seconds, and nodes pop in with a 45ms stagger. Motion Off renders the path and markers immediately; ongoing roles pulse only with motion enabled.
+One chronological list of all 21 milestones replaces year tabs. At lg, the SVG road has up to six nodes per row across four rows, alternating direction with smooth semicircular turns. Desktop labels stay centered over their own nodes with widths bounded by the available column, including at 1024px. Below lg, the same buttons follow a gentle vertical curve with left/right HTML labels. The server supplies its calendar date as a stable hydration prop; dates after that boundary have a dashed approach and a `Next` label. The travelled path uses accent, draws once in 1.2 seconds, and nodes pop in with a 45ms stagger. Motion Off renders the path and markers immediately; ongoing roles pulse only with motion enabled.
 
 Each 18px marker sits inside a 44px button and uses its type token: education ink with tint-c ring, role accent, award success, event muted, project accent outline. Moon / Earth / Saturn / Comet / Jupiter glyphs repeat in the five-type legend. Labels use 12px mono dates and 14px, two-line titles no wider than 190px. On desktop labels alternate above/below by column, keeping matching columns on the same side across rows to prevent collisions.
 
@@ -175,11 +175,41 @@ The existing ContactForm is unchanged, including submission, validation, error a
 - Motion is explicit-or-system. Stored `line.motion=on|off` wins; absence/invalid values follow `prefers-reduced-motion`, including live changes. The pre-paint script sets effective `data-motion` and `data-motion-source=user|system`. Cross-tab storage changes stay synchronized.
 - The dock says “Motion · On” or “Motion · Off”, appending “ (system)” when applicable. Its switch state reflects the effective value.
 - MotionConfig uses `always` when off and `never` when on. Framer opacity transitions also receive zero durations when off. The OS CSS fallback applies only to `html:not([data-motion])`, so explicit On works on Line’s Windows installation.
-- `html[data-motion="off"]` disables CSS animations and transitions. Section eyebrows and titles reveal once with a 24px rise and 60ms stagger; cards and Stack groups stagger by 50ms. Primary buttons lift 2px on hover when motion is on.
+- `html[data-motion="off"]` disables CSS animations and transitions. Section eyebrows and titles reveal once with a 16px rise over 500ms and 60ms stagger; cards and Stack groups stagger by 50ms. Primary buttons lift 2px on fine-pointer hover when motion is on.
 - `AnchorScroll` handles same-page anchors globally. Hero goes to zero; every other destination uses `max(0, sectionTop - headerHeight)` without centering. Navigation pushes the hash, closes the mobile menu, and focuses the section without another scroll. Hash loads wait for load/fonts/layout; browser history uses the same rule. Modifier clicks retain native behavior. CSS `scroll-margin-top: var(--header-h)` supplies the no-JS fallback.
 - Contrast: all checked text/background pairs reach 4.5:1 or better across all ten mode/accent combinations and the no-JS root.
 - Focus: 2px accent ring on interactive elements; destination sections are programmatically focusable without a visible section outline. Skip link and modal focus handling remain.
 - Headings: one H1, section H2s, card/subsection H3s. CSS and noscript fallbacks keep content available without JS.
+
+### Polished and playful effects (2026-11-06)
+
+The selected direction adds subtle depth within the existing palette. `app/effects.css` owns the shared surface, control, navigation and atmospheric effects; no dependencies or content were added.
+
+- The hero has a low-opacity accent atmosphere. Its two background shapes drift only at tablet/desktop widths with Motion On. The 550ms hero reveals start during the existing splash fade, so their entrance is visible.
+- `OrbitStage` wraps the server-rendered SVG with spring-driven movement, bounded to 5px translation and 3 degrees of tilt. It responds to a fine mouse pointer, settles on exit, and resets for keyboard focus or Motion Off. Planet links and the verified orbital geometry remain intact.
+- Capability, stack and project cards gain restrained elevation and a 3px hover lift. Decorative card planets tilt slightly; primary controls use 0.96 press feedback. Static tool chips change color without moving. Touch and Motion Off keep the static feedback.
+- Header links have animated underlines. `ReadingProgress` draws a 2px page-progress line using motion values, with direct updates when motion is off. The header remains visible.
+- The appearance panel enters in 200ms and exits in 120ms. Exiting content becomes inert immediately, Escape restores trigger focus, and interrupted transitions recover. Mobile navigation and milestone details use short entrances.
+
+Verified against the production build with configured Google fonts: TypeScript, ESLint, contrast (11 palettes), orbit geometry, navigation/motion checks, carousel unit checks, both project/career Chromium suites, and a local effects probe. The probe covered pointer reset, keyboard targets, interrupted dock transitions, live Motion Off, system reduced motion, 320–1920px overflow, dark/accent changes, and no-JavaScript hero/splash behavior. The career suite now checks label collisions at each desktop width. No live message delivery or deployment was performed.
+
+### Expressive motion refinement (2026-11-07)
+
+The stronger motion request keeps the same copy, tokens and pixel-space identity:
+
+- `ConstellationField` connects gently drifting pixel stars, with nearby points and lines responding to the mouse inside the hero. It caps its backing resolution at 1.5× and drawing at 30fps, suspends offscreen/background work, and disappears with Motion Off. The existing static stars remain as the fallback.
+- `MobileOrbit` supplies a compact, decorative avatar/planet composition below the hero actions on screens below 768px. The full linked desktop orbit retains its existing geometry and keyboard behavior.
+- `RevealWords` adds staggered, clipped word entrances to the hero and section headings. Text stays server-rendered and readable without JavaScript; Motion Off bypasses the animation.
+- `ProjectSurface` gives the active project a spring-driven tilt of up to 3.5 degrees and a localized accent light. Pointer-down, exit and keyboard focus reset the effect; touch gestures and inactive slides keep stable geometry. Motion Off clears transforms immediately.
+- Mode and accent buttons use a 600ms circular View Transition from the selected control. Rapid changes skip the preceding transition, Motion Off cancels it, and browsers without the API switch immediately.
+
+Verified with the production build: TypeScript/lint, contrast, navigation/motion, orbit geometry, carousel state, both existing Chromium browser suites, and an effects probe for canvas suspension, pointer/focus resets, theme interruption/fallbacks, no-JavaScript text and 320–1920px layout. The live Windows preview also verified the mobile orbit and no horizontal overflow with a visible scrollbar. First-load homepage JavaScript is 196kB; no dependencies were added.
+
+### Spacing and component reveals (2026-11-07)
+
+Primary hero actions and social links occupy separate groups with 16px between them. The availability badge has vertical padding when it wraps. Stats sit 32px after the hero content and 24px below their rule; smaller suffixes, tablet gaps and responsive numeral sizes keep GPA on one line. Shared section headings use a 24px content gap, with the intentional compact Record and Contact exceptions. Mobile project cards use 20px padding, expanding to 32px from `sm`; About labels use 84px on phones and 100px above. The Contact scene is 160px tall on phones and 196px from `md`.
+
+`AnchorScroll` and `app/reveals.css` coordinate component reveals for About copy/facts/exploration, capability and stack cards, methods, Work introduction/carousel, framework introduction/link, mobile orbit/stats, and Contact invitation/form. Only offscreen blocks are armed. Capability/stack cards lift through perspective with a brief accent sweep; facts slide in; the carousel/form use a clipped, scaled entrance; chips and stat groups build in sequence. Entrances last 600–700ms, with quick blur resolution, parent delay capped at 120ms and child stagger capped at 250ms (the complete sequence stays below a second). Section words unfold through perspective over 600ms. Motion is reduced in size on phones, and clipping is removed when a showcase finishes. Destination entrances wait for section-link scrolling to settle. Initially visible content is never hidden, nested movement is avoided, focus reveals immediately, and Motion Off clears pending states without replay on re-enabling. Existing framework steps and timeline motion keep their own behavior. No-JavaScript markup remains visible.
 
 ## 8. Copy decisions (Line confirms)
 

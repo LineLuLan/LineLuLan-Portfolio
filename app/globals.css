@@ -1,5 +1,7 @@
 @import './themes.css';
 @import './orbit.css';
+@import './effects.css';
+@import './reveals.css';
 
 /* Intent: share R2 typography and motion while keeping no-JS content readable.
    Status: implemented. Next: supervisor screenshots. Blockers: none. Confidence: static review and contrast gate. */
@@ -137,14 +139,17 @@
 }
 
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: none; }
 }
 
 .reveal-up {
-  animation: reveal-up 400ms ease-out both;
+  animation: reveal-up 550ms var(--ease-settle) both;
   animation-delay: var(--reveal-delay, 0ms);
 }
+
+/* Let the hero entrance emerge with the splash fade, instead of finishing behind it. */
+.hero-section .reveal-up { animation-delay: calc(900ms + var(--reveal-delay, 0ms)); }
 
 @keyframes companion-hop {
   from { transform: translateY(-6px); }
@@ -189,15 +194,3 @@
   50% { opacity: 1; }
 }
 .pixel-star { animation: pixel-twinkle 4s ease-in-out infinite; }
-@keyframes section-reveal {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: none; }
-}
-[data-reveal][data-revealed="true"] {
-  animation: section-reveal 400ms ease-out both;
-  animation-delay: var(--reveal-delay, 0ms);
-}
-html[data-motion="on"] :is(a, button).bg-accent,
-.stack-tool { transition: transform var(--theme-duration) var(--theme-ease), border-color var(--theme-duration) var(--theme-ease); }
-html[data-motion="on"] :is(a, button).bg-accent:hover,
-html[data-motion="on"] .stack-tool:hover { transform: translateY(-2px); }

@@ -4,6 +4,7 @@ import { OrbitCompanion } from '@/components/pixel/OrbitCompanion';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/hero/Hero';
 import { AboutSection } from '@/components/about/AboutSection';
+import { ExperienceSection } from '@/components/experience/ExperienceSection';
 import { SkillsSection } from '@/components/skills/SkillsSection';
 import { ProjectsSection } from '@/components/projects/ProjectsSection';
 import { DABMSection } from '@/components/dabm/DABMSection';
@@ -17,6 +18,7 @@ export default function Page() {
       <main className="relative">
         <Hero />
         <AboutSection />
+        <ExperienceSection />
         <SkillsSection />
         <ProjectsSection />
         <DABMSection />

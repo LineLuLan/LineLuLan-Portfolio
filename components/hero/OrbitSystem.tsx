@@ -7,7 +7,8 @@ import type { PlanetKind } from '@/lib/pixel-planets';
 
 const tilt = layout.tilt * Math.PI / 180;
 const labelWidth = (label: string) => label.length * 9 + 20;
-const bounds = SECTION_ORDER.map((id) => {
+const orbitSections = SECTION_ORDER.filter((id): id is Exclude<typeof id, 'experience'> => id !== 'experience');
+const bounds = orbitSections.map((id) => {
   const { ring, size } = layout.planets[id];
   const { rx } = layout.rings[ring]!;
   const ry = rx * layout.ratio;
@@ -46,7 +47,7 @@ export function OrbitSystem() {
         </g>
         <image href={AVATAR_PATH} x={-layout.avatarRadius} y={-layout.avatarRadius} width={layout.avatarRadius * 2} height={layout.avatarRadius * 2} clipPath="url(#orbit-avatar)" preserveAspectRatio="xMidYMid slice" />
         <circle r={layout.avatarRadius} fill="none" stroke="var(--color-accent)" strokeWidth={2} />
-        {SECTION_ORDER.map((id) => {
+        {orbitSections.map((id) => {
           const { ring, phase, size, kind } = layout.planets[id];
           const { rx, period } = layout.rings[ring]!;
           const label = capitalize(SECTIONS[id].label);

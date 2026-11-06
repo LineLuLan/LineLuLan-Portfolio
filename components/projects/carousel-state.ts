@@ -14,3 +14,19 @@ export function slidePosition(index: number, active: number, count: number) {
   const position = wrapIndex(index - active, count);
   return position > count / 2 ? position - count : position;
 }
+
+export function wheelDirection(deltaX: number, deltaY: number) {
+  if (Math.abs(deltaX) < 80 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return 0;
+  return deltaX > 0 ? 1 : -1;
+}
+
+export function coverflowState(distance: number) {
+  const amount = Math.min(1, Math.abs(distance));
+  return {
+    rotateY: distance === 0 ? 0 : -Math.sign(distance) * amount * 28,
+    scale: 1 - amount * 0.14,
+    z: -amount * 140,
+    opacity: 1 - amount * 0.45,
+    blur: amount,
+  };
+}

@@ -10,7 +10,7 @@ import { SECTION_PLANET } from '@/lib/pixel-planets';
 export function SkillsSection() {
   return (
     <SectionWrapper id="stack" ariaLabel="Stack" withTopRule>
-      <SectionHeader index={3} slug="stack" title="Tools I ship with." planet={SECTION_PLANET.stack} />
+      <SectionHeader index={4} slug="stack" title="Tools I ship with." planet={SECTION_PLANET.stack} />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {skills.map((tier, index) => (
           <SkillTier key={tier.id} tier={tier} index={index} />

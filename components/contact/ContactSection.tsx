@@ -21,7 +21,7 @@ export function ContactSection() {
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
         <div className="min-w-0">
           <ContactScene />
-          <SectionHeader index={7} slug="contact" planet={SECTION_PLANET.contact} title="Let's build something." className="mb-3 md:mb-3" />
+          <SectionHeader index={8} slug="contact" planet={SECTION_PLANET.contact} title="Let's build something." className="mb-3 md:mb-3" />
           <div data-reveal>
             <p className="text-[17px] leading-7 text-ink">Hiring for an AI / ML or data role, or have a research idea worth testing? My inbox is open.</p>
             <CopyEmail email={SOCIAL.email} />

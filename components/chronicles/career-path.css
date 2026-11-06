@@ -41,6 +41,9 @@ html[data-motion="off"] .career-road-travelled { stroke-dasharray: none !importa
   .career-node { left: var(--x); top: var(--y); }
   /* Keep every label inside its own column, including the 1024px desktop boundary. */
   .career-label, [data-side="right"] .career-label { left: 50%; right: auto; top: auto; bottom: 48px; width: min(156px, calc(14.5vw - 11.6px)); transform: translateX(-50%); text-align: center; }
+  /* Edge labels sit inside the row so the turns never cross text (Line, 2026-11-07). */
+  [data-column="0"] .career-label { width: 120px; transform: translateX(calc(-50% + 34px)); }
+  [data-column="5"] .career-label { width: 120px; transform: translateX(calc(-50% - 34px)); }
   .career-detail { top: calc(var(--y) + 22px); left: clamp(0px, calc(var(--x) - 170px), calc(100% - 340px)); width: 340px; }
   [data-bottom="true"] .career-detail, .career-nodes > li:last-child .career-detail { top: auto; bottom: calc(22px - var(--y)); }
 }

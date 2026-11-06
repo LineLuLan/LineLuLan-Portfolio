@@ -1,4 +1,26 @@
 /* Local depth and responsive motion for Orbit. All colors follow the active palette. */
+/* Intent: accent-only coverflow chrome; motion preferences retain ordinary slide navigation. */
+@property --carousel-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes carousel-ring { to { --carousel-angle: 360deg; } }
+.project-card[data-active="true"]::before {
+  content: ''; position: absolute; inset: -1px; padding: 2px; border-radius: inherit;
+  background: conic-gradient(from var(--carousel-angle), transparent 15%, var(--color-accent) 28%, transparent 43%, transparent 65%, var(--color-accent) 78%, transparent 93%);
+  mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
+  mask-composite: exclude; pointer-events: none; z-index: 1;
+}
+html[data-motion="on"] .project-card[data-active="true"]::before { animation: carousel-ring 9s linear infinite; }
+.carousel-drag-cursor { position: absolute; top: 0; left: 0; z-index: 30; pointer-events: none; border-radius: 999px; background: var(--color-accent); color: var(--color-on-accent); padding: 0.375rem 0.75rem; font-size: 0.875rem; white-space: nowrap; }
+.carousel-track :is(a, button) { cursor: pointer; }
+html[data-motion="off"] .carousel-drag-cursor { display: none; }
+html[data-motion="off"] .project-card[data-active="true"]::before { animation: none; }
+html[data-motion="off"] .coverflow-slide { transform: translateX(var(--coverflow-x, 0%)) !important; filter: none !important; }
+html[data-motion="off"] .coverflow-slide[aria-hidden="false"] { opacity: 1 !important; }
+html[data-motion="off"] .coverflow-slide[aria-hidden="true"] { opacity: 0.55 !important; }
+html[data-motion="off"] :is(.project-parallax-planet, .project-parallax-text) { transform: none !important; }
+@media (hover: none), (pointer: coarse) { .carousel-drag-cursor { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) .coverflow-slide { transform: translateX(var(--coverflow-x, 0%)) !important; filter: none !important; }
+}
 :root {
   --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-raised: 0 2px 4px color-mix(in srgb, var(--color-ink) 3%, transparent),

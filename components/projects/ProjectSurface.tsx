@@ -40,7 +40,7 @@ export function ProjectSurface({ children, active, className }: { children: Reac
   return (
     <div className="project-surface h-full" onPointerMove={follow} onPointerLeave={reset}
       onPointerDown={reset} onPointerCancel={reset} onFocusCapture={reset}>
-      <motion.article className={className} style={{ rotateX, rotateY, transformPerspective: 1000 }}>
+      <motion.article className={className} data-active={active} style={{ rotateX, rotateY, transformPerspective: 1000 }}>
         <motion.div className="project-card__light" style={{ background, opacity: light }} aria-hidden="true" />
         {children}
       </motion.article>

@@ -3,6 +3,24 @@ import type { PlanetKind } from '@/lib/pixel-planets';
 
 // Single source of truth for content shapes. Edit content/*.ts against these types.
 
+export type ExperienceRole = {
+  title: string;
+  type?: string;
+  start: string;
+  end?: string;
+  location?: string;
+  bullets?: string[];
+  skills?: string[];
+};
+
+export type ExperienceOrg = {
+  id: string;
+  org: string;
+  initials?: string; // monogram override when the org has no url
+  url?: string;
+  roles: ExperienceRole[];
+};
+
 export type ProjectState = 'live' | 'wip' | 'classified' | 'paused';
 
 export type ProjectDomain = 'research' | 'LLM' | 'ML' | 'EdTech' | 'creative' | 'other';

@@ -1,0 +1,22 @@
+/* Intent: a compact employment directory with grouped roles and a scrollable mobile tab row.
+   Status: implemented. Next: viewport checks. Blockers: none. Confidence: intrinsic sizing. */
+.experience-layout { display: grid; gap: 1.5rem; min-width: 0; }
+.experience-tabs { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.25rem; align-items: stretch; }
+.experience-tab { display: flex; flex: 0 0 16rem; align-items: center; gap: 0.75rem; padding: 0.75rem; text-align: left; border: 1px solid var(--color-line); border-radius: var(--theme-control-radius); background: var(--color-paper); font-size: 0.875rem; line-height: 1.4; }
+.experience-tab:hover { background: var(--color-tint-a); }
+.experience-tab[aria-selected="true"] { border-color: var(--color-accent); background: var(--color-tint-a); box-shadow: inset 3px 0 var(--color-accent); }
+.experience-monogram { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; background: var(--color-tint-a); color: var(--color-accent); border: 1px solid var(--color-line); border-radius: var(--theme-control-radius); font-family: var(--font-mono), monospace; }
+.experience-panel { border: 1px solid var(--color-line); border-radius: var(--theme-radius); background: var(--color-panel); padding: 1.25rem; overflow-wrap: anywhere; }
+.experience-roles { margin: 0; padding: 0; list-style: none; }
+.experience-role { position: relative; padding: 0 0 1.5rem 1.5rem; }
+.experience-role:last-child { padding-bottom: 0; }
+.experience-role::before { content: ''; position: absolute; left: 0; top: 0.5rem; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-accent); }
+.experience-role:not(:last-child)::after { content: ''; position: absolute; left: 0.1875rem; top: 1.125rem; bottom: 0.125rem; width: 1px; background: var(--color-line); }
+html[data-motion="on"] .experience-panel:not([hidden]) { animation: experience-enter 220ms var(--ease-settle); }
+@keyframes experience-enter { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
+@media (min-width: 1024px) {
+  .experience-layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.8fr); gap: 2rem; align-items: start; }
+  .experience-tabs { flex-direction: column; overflow: visible; }
+  .experience-tab { flex-basis: auto; width: 100%; }
+  .experience-panel { padding: 1.5rem; }
+}

@@ -15,12 +15,13 @@ export const CV_PATH = '/line-cv';
 export const CV_FILE = '/cv/tran-nam-anh-cv.pdf';
 export const AVATAR_PATH = '/avatar-pixel.png';
 
-// Section anchors + breadcrumb labels (editorial 7-section structure).
+// Section anchors + breadcrumb labels (eight sections; the hero retains seven orbits).
 // Key is the breadcrumb token; `id` is the DOM anchor used by `getElementById`.
 // `hero` stays as DOM id for backwards-compat with the skip link.
 export const SECTIONS = {
   whoami: { id: 'hero', slug: 'whoami', label: 'whoami' },
   about: { id: 'about', slug: 'about', label: 'about' },
+  experience: { id: 'experience', slug: 'experience', label: 'experience' },
   stack: { id: 'stack', slug: 'stack', label: 'stack' },
   work: { id: 'work', slug: 'work', label: 'work' },
   framework: { id: 'framework', slug: 'framework', label: 'framework' },
@@ -33,6 +34,7 @@ export type SectionId = keyof typeof SECTIONS;
 export const SECTION_ORDER: SectionId[] = [
   'whoami',
   'about',
+  'experience',
   'stack',
   'work',
   'framework',

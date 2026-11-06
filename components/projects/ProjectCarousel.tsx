@@ -1,38 +1,115 @@
 'use client';
 
-// Intent: center one story while keeping neighboring projects discoverable by touch and keyboard.
-// Status: implemented. Next: maintain gesture coverage. Blockers: none. Confidence: threshold tests.
-import { useEffect, useRef, useState } from 'react';
-import { animate, motion, useMotionValue, type PanInfo } from 'framer-motion';
+// Intent: keep live drag, coverflow depth and spring settling on one shared coordinate system.
+// Status: implemented. Next: gesture acceptance. Blockers: none. Confidence: state boundary tests.
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { animate, motion, useDragControls, useMotionValue, useTransform, type MotionStyle, type MotionValue, type PanInfo } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { ProjectSlide } from './ProjectSlide';
-import { slidePosition, swipeDirection, wrapIndex } from './carousel-state';
+import { coverflowState, slidePosition, swipeDirection, wheelDirection, wrapIndex } from './carousel-state';
 import type { Project } from '@/types';
+
+const spring = { type: 'spring' as const, stiffness: 280, damping: 32 };
+
+function CoverflowSlide({ project, index, count, position, recycled, active, dragX, width, select }: {
+  project: Project; index: number; count: number; position: number; recycled: boolean; active: boolean;
+  dragX: MotionValue<number>; width: MotionValue<number>; select: (index: number) => void;
+}) {
+  const { reducedMotion } = useTheme();
+  const slot = useMotionValue(position);
+  useEffect(() => {
+    if (recycled || reducedMotion) { slot.jump(position); return; }
+    const animation = animate(slot, position, spring);
+    return () => animation.stop();
+  }, [position, recycled, reducedMotion, slot]);
+  const distance = useTransform(() => slot.get() + dragX.get() / (width.get() * 1.04));
+  const x = useTransform(slot, (value) => `${value * 104}%`);
+  const rotateY = useTransform(distance, (value) => coverflowState(value).rotateY);
+  const scale = useTransform(distance, (value) => coverflowState(value).scale);
+  const z = useTransform(distance, (value) => coverflowState(value).z);
+  const opacity = useTransform(distance, (value) => coverflowState(value).opacity);
+  const filter = useTransform(distance, (value) => `blur(${coverflowState(value).blur}px)`);
+  const zIndex = useTransform(distance, (value) => 10 - Math.round(Math.abs(value) * 3));
+  const visibility = useTransform(distance, (value) => Math.abs(value) > 1.8 ? 'hidden' as const : 'visible' as const);
+
+  return (
+    <motion.div role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${count}: ${project.name}`}
+      aria-hidden={!active} className="coverflow-slide relative min-w-0 [grid-area:1/1]"
+      style={{ x, '--coverflow-x': x, zIndex, visibility, rotateY: reducedMotion ? 0 : rotateY, scale: reducedMotion ? 1 : scale,
+        z: reducedMotion ? 0 : z, opacity: reducedMotion ? (active ? 1 : 0.55) : opacity, filter: reducedMotion ? 'none' : filter } as MotionStyle}>
+      <div ref={(element) => { if (element) element.inert = !active; }} className="h-full">
+        <ProjectSlide project={project} index={index} active={active} dragX={dragX} />
+      </div>
+      {!active && <button type="button" tabIndex={-1} aria-label={`Show ${project.name}`} onClick={() => select(index)}
+        className="absolute inset-0 cursor-pointer rounded-[var(--theme-radius)]" />}
+    </motion.div>
+  );
+}
 
 export function ProjectCarousel({ projects }: { projects: Project[] }) {
   const [{ active, previous }, setSelection] = useState({ active: 0, previous: 0 });
   const { reducedMotion } = useTheme();
   const track = useRef<HTMLDivElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
   const region = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [cursorVisible, setCursorVisible] = useState(false);
+  const wheel = useRef({ x: 0, last: 0, consumed: false });
+  const controls = useDragControls();
   const x = useMotionValue(0);
+  const width = useMotionValue(1);
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
   const count = projects.length;
-  const transition = reducedMotion ? { duration: 0 } : { type: 'spring' as const, stiffness: 280, damping: 32 };
+  const transition = reducedMotion ? { duration: 0 } : spring;
 
   useEffect(() => {
-    if (reducedMotion) x.set(0);
+    if (reducedMotion) { x.jump(0); setCursorVisible(false); }
     return () => x.stop();
   }, [reducedMotion, x]);
 
-  function select(index: number) {
+  useEffect(() => {
+    const element = track.current;
+    if (!element) return;
+    const measure = () => width.set(Math.max(1, element.clientWidth));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [width]);
+
+  const select = useCallback((index: number) => {
+    if (!count) return;
     // Do not leave focus on a link that is about to become inert.
     if (track.current?.contains(document.activeElement)) region.current?.focus({ preventScroll: true });
     setSelection((selection) => ({ active: wrapIndex(index, count), previous: selection.active }));
-  }
+  }, [count]);
+
+  useEffect(() => {
+    const element = viewport.current;
+    if (!element) return;
+    function swipe(event: WheelEvent) {
+      if (event.ctrlKey || Math.abs(event.deltaX) <= Math.abs(event.deltaY) * 1.2) return;
+      event.preventDefault();
+      const gesture = wheel.current;
+      if (event.timeStamp - gesture.last > 180) { gesture.x = 0; gesture.consumed = false; }
+      gesture.last = event.timeStamp;
+      if (gesture.consumed || dragging.current && isDragging) return;
+      const multiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? width.get() : 1;
+      if (Math.sign(gesture.x) !== Math.sign(event.deltaX)) gesture.x = 0;
+      gesture.x += event.deltaX * multiplier;
+      const direction = wheelDirection(gesture.x, event.deltaY * multiplier);
+      if (direction) { gesture.consumed = true; select(active + direction); }
+    }
+    element.addEventListener('wheel', swipe, { passive: false });
+    return () => element.removeEventListener('wheel', swipe);
+  }, [active, select, width, isDragging]);
 
   function endDrag(_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
-    const direction = swipeDirection(info.offset.x, info.velocity.x, track.current?.clientWidth ?? 0);
+    setIsDragging(false);
+    const direction = swipeDirection(info.offset.x, info.velocity.x, width.get());
     if (direction) select(active + direction);
     animate(x, 0, transition);
   }
@@ -40,8 +117,7 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
   if (!count) return null;
 
   return (
-    <div ref={region} role="region" aria-roledescription="carousel" aria-label="Projects" tabIndex={0}
-      className="min-w-0"
+    <div ref={region} role="region" aria-roledescription="carousel" aria-label="Projects" tabIndex={0} className="min-w-0"
       onKeyDownCapture={() => { dragging.current = false; }}
       onKeyDown={(event) => {
         if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -49,37 +125,38 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
         event.preventDefault();
         select(active + (event.key === 'ArrowRight' ? 1 : -1));
       }}>
-      <div className="relative -mx-6 overflow-hidden py-4 md:mx-0">
-        <motion.div ref={track} drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={1} dragMomentum={false}
-          style={{ x, touchAction: 'pan-y' }}
+      <div ref={viewport} className="carousel-viewport relative -mx-6 overflow-hidden py-4 md:mx-0"
+        onPointerLeave={() => setCursorVisible(false)}
+        onPointerMove={(event) => {
+          const interactive = event.target instanceof Element && !!event.target.closest('a, button');
+          const show = !reducedMotion && event.pointerType === 'mouse' && !interactive && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+          setCursorVisible(show);
+          const box = event.currentTarget.getBoundingClientRect();
+          cursorX.set(event.clientX - box.left + 14);
+          cursorY.set(event.clientY - box.top + 14);
+        }}>
+        <motion.div ref={track} drag="x" dragControls={controls} dragListener={false}
+          dragConstraints={{ left: 0, right: 0 }} dragElastic={1} dragMomentum={false}
+          style={{ x, touchAction: 'pan-y', perspective: 1400 }}
           onPointerDownCapture={() => { dragging.current = false; }}
-          onDragStart={() => { dragging.current = true; x.stop(); }} onDragEnd={endDrag}
+          onPointerDown={(event) => {
+            if (event.button !== 0 || (event.target instanceof Element && event.target.closest('a, button'))) return;
+            controls.start(event);
+          }}
+          onDragStart={() => { dragging.current = true; setIsDragging(true); x.stop(); }} onDragEnd={endDrag}
+          onPointerCancel={() => { setIsDragging(false); animate(x, 0, transition); }}
           onClickCapture={(event) => { if (dragging.current) { event.preventDefault(); event.stopPropagation(); } }}
-          className="mx-auto grid w-[86vw] cursor-grab active:cursor-grabbing md:w-[72%] lg:w-[64%]">
+          className="carousel-track mx-auto grid w-[86vw] cursor-grab active:cursor-grabbing md:w-[72%] lg:w-[64%]">
           {projects.map((project, index) => {
             const position = slidePosition(index, active, count);
             // Recycled offscreen slides change sides instantly instead of crossing the centered story.
             const recycled = Math.abs(position - slidePosition(index, previous, count)) > 1;
-            const current = index === active;
-            return (
-              <motion.div key={project.slug} role="group" aria-roledescription="slide"
-                aria-label={`${index + 1} of ${count}: ${project.name}`} aria-hidden={!current}
-                initial={false}
-                animate={{ x: `${position * 104}%`, scale: current ? 1 : 0.88, opacity: current ? 1 : 0.55 }}
-                transition={recycled ? { duration: 0 } : transition}
-                className="relative min-w-0 [grid-area:1/1]"
-                style={{ visibility: Math.abs(position) > 1 ? 'hidden' : 'visible' }}>
-                <div ref={(element) => { if (element) element.inert = !current; }} className="h-full">
-                  <ProjectSlide project={project} index={index} active={current} />
-                </div>
-                {!current && (
-                  <button type="button" tabIndex={-1} aria-label={`Show ${project.name}`} onClick={() => select(index)}
-                    className="absolute inset-0 rounded-[var(--theme-radius)]" />
-                )}
-              </motion.div>
-            );
+            return <CoverflowSlide key={project.slug} project={project} index={index} count={count}
+              position={position} recycled={recycled} active={index === active} dragX={x} width={width} select={select} />;
           })}
         </motion.div>
+        {cursorVisible && !reducedMotion && <motion.span aria-hidden="true" className="carousel-drag-cursor"
+          style={{ x: cursorX, y: cursorY }}>← {isDragging ? 'Release' : 'Drag'} →</motion.span>}
       </div>
       <div className="mx-auto mt-4 grid max-w-xl grid-cols-[2.75rem_1fr_2.75rem] items-center">
         <button type="button" aria-label="Previous project" onClick={() => select(active - 1)} className="motion-control grid size-11 place-items-center rounded-[var(--theme-control-radius)] border hairline text-ink hover:border-accent hover:text-accent"><ArrowLeft size={20} aria-hidden="true" /></button>

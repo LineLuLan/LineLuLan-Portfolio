@@ -11,7 +11,7 @@ export function ChroniclesSection() {
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   return (
     <SectionWrapper id="record" ariaLabel="Record" withTopRule>
-      <SectionHeader index={6} slug="record" title="Experience and milestones." planet={SECTION_PLANET.record} className="mb-4 md:mb-4" />
+      <SectionHeader index={7} slug="record" title="Experience and milestones." planet={SECTION_PLANET.record} className="mb-4 md:mb-4" />
       <CareerPath events={chronicles} today={today} />
     </SectionWrapper>
   );

@@ -45,8 +45,8 @@ export const chronicles: ChronicleEvent[] = [
     id: 'google-certs',
     date: '2025-06-01',
     type: 'award',
-    title: 'Google Data Analytics certificates ×3',
-    description: 'Advanced Data Analytics · AI Essentials · Data Analytics Professional.',
+    title: 'Google certificates ×3',
+    description: 'Google Data Analytics: Advanced Data Analytics · AI Essentials · Data Analytics Professional.',
   },
   {
     id: 'gdgoc-vicelead',
@@ -96,17 +96,11 @@ export const chronicles: ChronicleEvent[] = [
     description: 'Academic Encouragement Scholarship.',
   },
   {
-    id: 'panic-hub',
-    date: '2026-03-01',
-    type: 'project',
-    title: 'Shipped Panic Hub',
-    description: 'Real-time agentic AI simulation · 50+ concurrent agents.',
-  },
-  {
     id: 'agentic-build-week',
     date: '2026-04-01',
     type: 'award',
-    title: 'Winner (KFC Track) · Agentic AI Build Week',
+    title: 'KFC Track Winner · Build Week',
+    description: 'Winner of the KFC Track at Agentic AI Build Week.',
     org: 'GenAI Fund · Team Twohearts',
   },
   {

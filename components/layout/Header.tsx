@@ -11,7 +11,7 @@ import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@
 import { capitalize, cn } from '@/lib/cn';
 import { ReadingProgress } from './ReadingProgress';
 
-// The brand is the whoami link; the brief reserves navigation for the six later sections.
+// The brand is the whoami link; seven section links share one desktop row.
 const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
 
 export function Header() {
@@ -64,7 +64,7 @@ export function Header() {
         aria-current={active === id ? 'location' : undefined}
         onClick={() => setOpen(false)}
         className={cn(
-          'nav-link relative flex min-h-11 items-center border-b-2 border-transparent px-3 font-sans text-[15px] font-medium hover:text-accent',
+          'nav-link relative flex min-h-11 items-center whitespace-nowrap border-b-2 border-transparent px-2 font-sans text-[15px] font-medium hover:text-accent xl:px-3',
           active === id ? 'text-accent' : 'text-ink',
         )}
       >
@@ -82,9 +82,9 @@ export function Header() {
         <Link href={home ? '#hero' : '/'} aria-label="Line, back to top" className="flex min-h-11 shrink-0 items-center gap-2">
           <PixelPlanet kind="saturn" size={28} />
           <span className="font-sans text-xl font-bold text-ink">Line</span>
-          <span className="hidden font-mono text-sm text-muted nav:inline">linelulan.vercel.app</span>
+          <span className="hidden font-mono text-sm text-muted">linelulan.vercel.app</span>
         </Link>
-        <nav aria-label="Sections" className="order-last hidden basis-full nav:block xl:order-none xl:basis-auto">
+        <nav aria-label="Sections" className="hidden nav:block">
           <ul className="flex items-center">{links}</ul>
         </nav>
         <div className="flex shrink-0 items-center gap-2">

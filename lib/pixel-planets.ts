@@ -148,6 +148,7 @@ export const PLANETS: Record<PlanetKind, string[]> = {
 export const SECTION_PLANET: Record<SectionId, PlanetKind> = {
   whoami: 'saturn',
   about: 'earth',
+  experience: 'satellite',
   stack: 'mars',
   work: 'jupiter',
   framework: 'neptune',

@@ -253,6 +253,6 @@ Each phase lands on branch `redesign/theme-planets`; `main` stays untouched unti
 - 100B Studio: icon from https://100b.studio/icon.png
 - International University, VNU-HCM: 'Logo IUHCM.png' from Wikimedia Commons (CC BY-SA 4.0)
 - GDGoC: Google Developer Groups favicon from https://gdg.community.dev
-- Luyện thi Khai Tâm: no public logo found; monogram 'KT' until Line provides one
+- Luyện thi Khai Tâm: site icon from https://luyenthikhaitam.com (logo confirmed by Line)
 
 Logos are trademarks of their owners and are shown only to identify where Line worked.

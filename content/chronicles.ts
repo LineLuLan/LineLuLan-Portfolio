@@ -23,6 +23,7 @@ export const chronicles: ChronicleEvent[] = [
     type: 'role',
     title: 'Student Manager · Khai Tâm',
     org: 'Luyện thi Khai Tâm',
+    link: 'https://luyenthikhaitam.com',
     description: 'Managing students and class operations at an exam-prep center for high schoolers.',
     ongoing: true,
   },

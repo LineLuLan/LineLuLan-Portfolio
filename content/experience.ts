@@ -80,7 +80,7 @@ export const experience: ExperienceOrg[] = [
     ],
   },
   {
-    id: 'khai-tam', org: 'Luyện thi Khai Tâm', initials: 'KT',
+    id: 'khai-tam', org: 'Luyện thi Khai Tâm', initials: 'KT', url: 'https://luyenthikhaitam.com', logo: '/experience/logos/khai-tam.webp',
     roles: [{
       title: 'Student Manager', type: 'Part-time', start: '2023-08', location: 'Ho Chi Minh City',
       bullets: ['Manage students and class operations at an exam-prep center for high schoolers.'],

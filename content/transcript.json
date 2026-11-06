@@ -1,0 +1,595 @@
+{
+  "updated": "2026-11-07",
+  "program": "BSc Data Science",
+  "school": "International University, VNU-HCM",
+  "semesters": [
+    {
+      "id": "2023-2024-1",
+      "label": "Semester 1 · 2023–2024",
+      "term": 1,
+      "year": "2023-2024",
+      "courses": [
+        {
+          "code": "ENTP01-1",
+          "name": "Intensive English 01- Twinning Program",
+          "credits": 17,
+          "weights": {
+            "coursework": 0,
+            "midterm": 0,
+            "final": 100
+          },
+          "scores": {
+            "coursework": null,
+            "midterm": null,
+            "final": null
+          },
+          "total10": null,
+          "letter": "P"
+        },
+        {
+          "code": "ENTP00",
+          "name": "Intensive English 0- Twinning Program",
+          "credits": 17,
+          "weights": {
+            "coursework": 0,
+            "midterm": 0,
+            "final": 100
+          },
+          "scores": {
+            "coursework": null,
+            "midterm": null,
+            "final": null
+          },
+          "total10": null,
+          "letter": "P"
+        }
+      ],
+      "summary": null
+    },
+    {
+      "id": "2023-2024-2",
+      "label": "Semester 2 · 2023–2024",
+      "term": 2,
+      "year": "2023-2024",
+      "courses": [
+        {
+          "code": "ENTP02",
+          "name": "Intensive English 2- Twinning Program",
+          "credits": 13,
+          "weights": {
+            "coursework": 0,
+            "midterm": 0,
+            "final": 100
+          },
+          "scores": {
+            "coursework": null,
+            "midterm": null,
+            "final": null
+          },
+          "total10": null,
+          "letter": "P"
+        }
+      ],
+      "summary": null
+    },
+    {
+      "id": "2024-2025-1",
+      "label": "Semester 1 · 2024–2025",
+      "term": 1,
+      "year": "2024-2025",
+      "courses": [
+        {
+          "code": "PT001IU",
+          "name": "Physical Training 1",
+          "credits": 3,
+          "weights": {
+            "coursework": 10,
+            "midterm": 30,
+            "final": 60
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 50,
+            "final": 80
+          },
+          "total10": 73,
+          "letter": "B+"
+        },
+        {
+          "code": "IT135IU",
+          "name": "Introduction to Data Science",
+          "credits": 3,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 55,
+            "final": 68
+          },
+          "total10": 74,
+          "letter": "B+"
+        },
+        {
+          "code": "IT149IU",
+          "name": "Fundamentals of Programming",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 87,
+            "final": 76
+          },
+          "total10": 87,
+          "letter": "A"
+        },
+        {
+          "code": "EN008IU",
+          "name": "Listening AE1",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 92,
+            "midterm": 58,
+            "final": 51
+          },
+          "total10": 65,
+          "letter": "B"
+        },
+        {
+          "code": "PT002IU",
+          "name": "Physical Training 2",
+          "credits": 3,
+          "weights": {
+            "coursework": 10,
+            "midterm": 30,
+            "final": 60
+          },
+          "scores": {
+            "coursework": 0,
+            "midterm": 60,
+            "final": 80
+          },
+          "total10": 66,
+          "letter": "B"
+        },
+        {
+          "code": "MA001IU",
+          "name": "Calculus 1",
+          "credits": 4,
+          "weights": {
+            "coursework": 20,
+            "midterm": 30,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 60,
+            "final": 80
+          },
+          "total10": 78,
+          "letter": "B+"
+        },
+        {
+          "code": "EN007IU",
+          "name": "Writing AE1",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 78,
+            "midterm": 69,
+            "final": 70
+          },
+          "total10": 72,
+          "letter": "B+"
+        }
+      ],
+      "summary": {
+        "gpa10": 77.1,
+        "gpa4": 3.07,
+        "cumulativeGpa10": 77.1,
+        "cumulativeGpa4": 3.07,
+        "creditsEarned": 15,
+        "creditsCumulative": 15,
+        "standing": "Good"
+      }
+    },
+    {
+      "id": "2024-2025-2",
+      "label": "Semester 2 · 2024–2025",
+      "term": 2,
+      "year": "2024-2025",
+      "courses": [
+        {
+          "code": "IT069IU",
+          "name": "Object-Oriented Programming",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 98,
+            "midterm": 95,
+            "final": 100
+          },
+          "total10": 98,
+          "letter": "A+"
+        },
+        {
+          "code": "IT079IU",
+          "name": "Principles of Database Management",
+          "credits": 4,
+          "weights": {
+            "coursework": 35,
+            "midterm": 25,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 94,
+            "midterm": 77,
+            "final": 80
+          },
+          "total10": 84,
+          "letter": "A"
+        },
+        {
+          "code": "PE015IU",
+          "name": "Philosophy of Marxism and Leninism",
+          "credits": 3,
+          "weights": {
+            "coursework": 30,
+            "midterm": 20,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 90,
+            "midterm": 90,
+            "final": 90
+          },
+          "total10": 90,
+          "letter": "A+"
+        },
+        {
+          "code": "PE016IU",
+          "name": "Political economics of Marxism and Leninism",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 20,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 95,
+            "midterm": 85,
+            "final": 75
+          },
+          "total10": 83,
+          "letter": "A"
+        },
+        {
+          "code": "PE021IU",
+          "name": "General Law",
+          "credits": 3,
+          "weights": {
+            "coursework": 20,
+            "midterm": 30,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 90,
+            "final": 90
+          },
+          "total10": 92,
+          "letter": "A+"
+        },
+        {
+          "code": "IT151IU",
+          "name": "Statistical Methods",
+          "credits": 3,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 95,
+            "midterm": 70,
+            "final": 87
+          },
+          "total10": 84,
+          "letter": "A"
+        },
+        {
+          "code": "EN011IU",
+          "name": "Writing AE2",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 83,
+            "midterm": 72,
+            "final": 60
+          },
+          "total10": 71,
+          "letter": "B+"
+        }
+      ],
+      "summary": {
+        "gpa10": 87.3,
+        "gpa4": 3.69,
+        "cumulativeGpa10": 83.1,
+        "cumulativeGpa4": 3.43,
+        "creditsEarned": 21,
+        "creditsCumulative": 36,
+        "standing": "Very good"
+      }
+    },
+    {
+      "id": "2024-2025-3",
+      "label": "Semester 3 · 2024–2025",
+      "term": 3,
+      "year": "2024-2025",
+      "courses": [
+        {
+          "code": "MP001IU",
+          "name": "Military Education",
+          "credits": 0,
+          "weights": {
+            "coursework": 0,
+            "midterm": 0,
+            "final": 100
+          },
+          "scores": {
+            "coursework": null,
+            "midterm": null,
+            "final": null
+          },
+          "total10": null,
+          "letter": "NA"
+        }
+      ],
+      "summary": null
+    },
+    {
+      "id": "2025-2026-1",
+      "label": "Semester 1 · 2025–2026",
+      "term": 1,
+      "year": "2025-2026",
+      "courses": [
+        {
+          "code": "PE017IU",
+          "name": "Scientific socialism",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 20,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 80,
+            "final": 70
+          },
+          "total10": 81,
+          "letter": "A"
+        },
+        {
+          "code": "IT159IU",
+          "name": "Artificial Intelligence",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 90,
+            "midterm": 90,
+            "final": 80
+          },
+          "total10": 86,
+          "letter": "A"
+        },
+        {
+          "code": "MA026IU",
+          "name": "Probability, Statistic & Random Process",
+          "credits": 3,
+          "weights": {
+            "coursework": 20,
+            "midterm": 30,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 95,
+            "final": 75
+          },
+          "total10": 86,
+          "letter": "A"
+        },
+        {
+          "code": "IT154IU",
+          "name": "Linear Algebra",
+          "credits": 3,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 90,
+            "final": 100
+          },
+          "total10": 97,
+          "letter": "A+"
+        },
+        {
+          "code": "EN012IU",
+          "name": "Speaking AE2",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 20,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 92,
+            "midterm": 90,
+            "final": 85
+          },
+          "total10": 88,
+          "letter": "A"
+        },
+        {
+          "code": "IT013IU",
+          "name": "Algorithms & Data Structures",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 94,
+            "midterm": 100,
+            "final": 95
+          },
+          "total10": 96,
+          "letter": "A+"
+        }
+      ],
+      "summary": {
+        "gpa10": 89.7,
+        "gpa4": 3.69,
+        "cumulativeGpa10": 85.3,
+        "cumulativeGpa4": 3.52,
+        "creditsEarned": 18,
+        "creditsCumulative": 54,
+        "standing": "Very good"
+      }
+    },
+    {
+      "id": "2025-2026-2",
+      "label": "Semester 2 · 2025–2026",
+      "term": 2,
+      "year": "2025-2026",
+      "courses": [
+        {
+          "code": "IT172IU",
+          "name": "Machine Learning",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 88,
+            "midterm": 96,
+            "final": 79
+          },
+          "total10": 87,
+          "letter": "A"
+        },
+        {
+          "code": "IT136IU",
+          "name": "Regression Analysis",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 97,
+            "midterm": 81,
+            "final": 93
+          },
+          "total10": 91,
+          "letter": "A+"
+        },
+        {
+          "code": "PE019IU",
+          "name": "Ho Chi Minh's Thoughts",
+          "credits": 2,
+          "weights": {
+            "coursework": 30,
+            "midterm": 20,
+            "final": 50
+          },
+          "scores": {
+            "coursework": 95,
+            "midterm": 100,
+            "final": 85
+          },
+          "total10": 91,
+          "letter": "A+"
+        },
+        {
+          "code": "IT171IU",
+          "name": "Statistical Learning",
+          "credits": 4,
+          "weights": {
+            "coursework": 30,
+            "midterm": 30,
+            "final": 40
+          },
+          "scores": {
+            "coursework": 100,
+            "midterm": 100,
+            "final": 70
+          },
+          "total10": 88,
+          "letter": "A"
+        },
+        {
+          "code": "IT138IU",
+          "name": "Data Science and Data Visualization",
+          "credits": 4,
+          "weights": {
+            "coursework": 40,
+            "midterm": 30,
+            "final": 30
+          },
+          "scores": {
+            "coursework": 98,
+            "midterm": 70,
+            "final": 85
+          },
+          "total10": 86,
+          "letter": "A"
+        }
+      ],
+      "summary": {
+        "gpa10": 88.3,
+        "gpa4": 3.67,
+        "cumulativeGpa10": 86,
+        "cumulativeGpa4": 3.56,
+        "creditsEarned": 18,
+        "creditsCumulative": 72,
+        "standing": "Very good"
+      }
+    }
+  ]
+}

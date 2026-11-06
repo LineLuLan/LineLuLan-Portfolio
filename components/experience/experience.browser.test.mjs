@@ -83,7 +83,7 @@ try {
   await noJS.goto(base);
   assert.equal(await noJS.locator('#experience [role="tabpanel"]').count(), 6);
   assert.equal(await noJS.locator('#experience .experience-role > h4').count(), 8);
-  assert.equal(await noJS.locator('#experience .experience-role ul.list-disc li').count(), 12);
+  assert.equal(await noJS.locator('#experience .experience-role ul.list-disc li').count(), 22);
   assert.equal(await noJS.locator('#experience [role="tab"][aria-selected="true"]').count(), 1);
   for (const slide of await noJS.locator('.coverflow-slide').all()) {
     const style = await slide.evaluate((element) => ({ filter: getComputedStyle(element).filter, transform: getComputedStyle(element).transform }));

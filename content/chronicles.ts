@@ -66,7 +66,8 @@ export const chronicles: ChronicleEvent[] = [
     date: '2025-11-15',
     type: 'event',
     title: 'Hosted TechTalk · AI Chatbots × Blockchain',
-    org: 'GDGoC HCMIU',
+    org: 'GDGoC HCMIU · DevFest on Campus',
+    image: { src: '/experience/gdgoc-techtalk.jpg', width: 1600, height: 1200, alt: 'Organisers and attendees at DevFest on Campus, International University', caption: 'DevFest on Campus at IU' },
   },
   {
     id: 'iu-ai-2025',

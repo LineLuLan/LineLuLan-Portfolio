@@ -16,6 +16,7 @@ export type ExperienceHighlight = {
   date?: string; // YYYY-MM
   body?: string;
   photos?: ExperiencePhoto[];
+  link?: { href: string; label: string };
 };
 
 export type ExperienceRole = {

@@ -1,6 +1,7 @@
 /* Intent: a compact employment directory with grouped roles and a scrollable mobile tab row.
    Status: implemented. Next: viewport checks. Blockers: none. Confidence: intrinsic sizing. */
 .experience-layout { display: grid; gap: 1.5rem; min-width: 0; }
+.experience-directory { min-width: 0; min-height: 0; }
 .experience-tabs { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.25rem; align-items: stretch; }
 .experience-tab { display: flex; flex: 0 0 16rem; align-items: center; gap: 0.75rem; padding: 0.75rem; text-align: left; border: 1px solid var(--color-line); border-radius: var(--theme-control-radius); background: var(--color-paper); font-size: 0.875rem; line-height: 1.4; }
 .experience-tab:hover { background: var(--color-tint-a); }
@@ -24,6 +25,8 @@ html[data-mode="dark"] .experience-layout { --milestone-gold: #F2C94C; }
 .experience-highlight-title { margin-top: 0.375rem; font-family: var(--font-display), sans-serif; font-size: 1.125rem; line-height: 1.4; font-weight: 700; color: var(--color-ink); }
 .experience-highlight-date { display: block; margin-top: 0.375rem; font-size: 0.8125rem; color: var(--color-muted); }
 .experience-highlight-body { margin-top: 0.75rem; max-width: 68ch; line-height: 1.65; color: var(--color-ink); }
+.experience-highlight-link { display: inline-flex; align-items: center; gap: 0.75rem; min-height: 2.75rem; margin-top: 1rem; padding: 0.625rem 1rem; border-radius: var(--theme-control-radius); background: var(--color-accent); color: var(--color-on-accent); font-weight: 700; }
+.experience-highlight-link:hover { background: var(--color-accent-hover); }
 .experience-roles { margin: 0; padding: 0; list-style: none; }
 .experience-role { position: relative; padding: 0 0 1.5rem 1.5rem; }
 .experience-role:last-child { padding-bottom: 0; }
@@ -34,8 +37,9 @@ html[data-motion="on"] .experience-panel:not([hidden]) { animation: experience-e
 @media (min-width: 1024px) {
   #experience.screen-section { height: calc(100svh - var(--header-h)); min-height: 0; padding-block: 2rem; }
   #experience > .container-x { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-  #experience > .container-x > header { flex-shrink: 0; }
   .experience-layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.8fr); grid-template-rows: minmax(0, 1fr); gap: 2rem; flex: 1; min-height: 0; }
+  .experience-directory { display: flex; flex-direction: column; }
+  .experience-directory > header { flex-shrink: 0; }
   .experience-tabs { flex-direction: column; overflow-y: auto; align-self: start; max-height: 100%; scrollbar-width: thin; scrollbar-color: var(--color-line) var(--color-panel); }
   .experience-tab { flex-basis: auto; width: 100%; }
   .experience-panel { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 1.5rem; scrollbar-width: thin; scrollbar-color: var(--color-accent) var(--color-panel); scrollbar-gutter: stable; --fade-top: 0px; --fade-bottom: 0px; mask-image: linear-gradient(to bottom, transparent, var(--color-ink) var(--fade-top), var(--color-ink) calc(100% - var(--fade-bottom)), transparent); }

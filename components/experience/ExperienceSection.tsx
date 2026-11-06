@@ -11,8 +11,9 @@ export function ExperienceSection() {
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   return (
     <SectionWrapper id="experience" ariaLabel="Experience" withTopRule>
-      <SectionHeader index={3} slug="experience" title="Where I've worked." planet={SECTION_PLANET.experience} />
-      <ExperienceTabs orgs={experience} today={today} />
+      <ExperienceTabs orgs={experience} today={today} header={
+        <SectionHeader index={3} slug="experience" title="Where I've worked." planet={SECTION_PLANET.experience} />
+      } />
     </SectionWrapper>
   );
 }

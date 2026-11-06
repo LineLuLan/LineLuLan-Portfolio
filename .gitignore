@@ -47,3 +47,6 @@ next-env.d.ts
 probe.mjs
 capture.mjs
 capture-boot.mjs
+
+# Raw grade exports (input to scripts/import-transcript.mjs); only the parsed JSON is committed
+.transcript-source/

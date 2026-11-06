@@ -2,7 +2,7 @@
 
 // Intent: make grouped roles discoverable by keyboard, pointer and server-side readers.
 // Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: ARIA tab pattern.
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import Image from 'next/image';
 import { SiteIcon } from '@/components/ui/SiteIcon';
 import type { ExperienceOrg } from '@/types';
@@ -10,7 +10,7 @@ import { orgDuration, roleDateRange, roleDuration } from './experience-dates';
 import { ExperienceHighlight } from './ExperienceHighlight';
 import './experience.css';
 
-export function ExperienceTabs({ orgs, today }: { orgs: ExperienceOrg[]; today: string }) {
+export function ExperienceTabs({ orgs, today, header }: { orgs: ExperienceOrg[]; today: string; header: ReactNode }) {
   const [selected, setSelected] = useState(0);
   const [vertical, setVertical] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(today);
@@ -61,6 +61,8 @@ export function ExperienceTabs({ orgs, today }: { orgs: ExperienceOrg[]; today: 
 
   return (
     <div className="experience-layout">
+      <div className="experience-directory">
+      {header}
       <div role="tablist" aria-label="Organizations" aria-orientation={vertical ? 'vertical' : 'horizontal'} className="experience-tabs">
         {orgs.map((org, index) => (
           <button key={org.id} type="button" role="tab" id={`experience-tab-${org.id}`}
@@ -76,6 +78,7 @@ export function ExperienceTabs({ orgs, today }: { orgs: ExperienceOrg[]; today: 
             </span>
           </button>
         ))}
+      </div>
       </div>
       <div className="experience-panels">
         {orgs.map((org, index) => {

@@ -15,7 +15,7 @@ try {
   await page.getByRole('dialog', { name: 'Loading' }).waitFor({ state: 'detached' });
   await page.evaluate(() => document.fonts.ready);
   const tabs = page.getByRole('tablist', { name: 'Organizations' }).getByRole('tab');
-  assert.equal(await page.locator('.experience-highlight').count(), 3);
+  assert.equal(await page.locator('.experience-highlight').count(), 5);
   for (const [width, height] of [[1440, 900], [1920, 1080]]) {
     await page.setViewportSize({ width, height });
     for (const tab of await tabs.all()) {
@@ -127,13 +127,14 @@ try {
   await page.keyboard.press('Escape');
   const reduced = await browser.newPage({ reducedMotion: 'reduce' });
   await reduced.goto(`${base}/#experience`);
-  await reduced.getByRole('dialog', { name: 'Loading' }).waitFor({ state: 'detached' });
+  await reduced.locator('.boot-splash').waitFor({ state: 'detached' });
+  await reduced.waitForFunction(() => document.querySelector('.experience-panel')?.hasAttribute('data-scroll-bottom'));
   await reduced.locator('.experience-panel:not([hidden]) .experience-photo-button').first().click();
   assert.equal(await reduced.locator('.experience-lightbox-content').evaluate((element) => getComputedStyle(element).animationName), 'none');
   await reduced.close();
   const noJS = await browser.newPage({ javaScriptEnabled: false });
   await noJS.goto(base);
-  assert.equal(await noJS.locator('.experience-highlight').count(), 3);
+  assert.equal(await noJS.locator('.experience-highlight').count(), 5);
   assert.equal(await noJS.locator('.experience-photo-button img').count(), 4);
   assert.ok((await noJS.locator('.experience-summary').textContent()).includes('Customer Intelligence.'));
   for (const image of await noJS.locator('.experience-photo-button img').all()) {

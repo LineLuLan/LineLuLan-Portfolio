@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "check:contrast": "node scripts/check-contrast.mjs",
-    "check:orbit": "node scripts/check-orbit.mjs"
+    "check:orbit": "node scripts/check-orbit.mjs",
+    "import:transcript": "node scripts/import-transcript.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.3.1",

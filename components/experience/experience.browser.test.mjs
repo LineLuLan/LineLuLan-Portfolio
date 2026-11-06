@@ -32,7 +32,7 @@ try {
   await page.keyboard.press('ArrowDown');
   assert.equal(await first.getAttribute('aria-selected'), 'true');
   await tabs.getByRole('tab', { name: /GDGoC/ }).click();
-  assert.deepEqual(await page.getByRole('tabpanel').locator('h4').allTextContents(), ['Advisor', 'Vice Lead', 'Member']);
+  assert.deepEqual(await page.getByRole('tabpanel').locator('.experience-role > h4').allTextContents(), ['Advisor', 'Vice Lead', 'Member']);
   await page.keyboard.press('Tab');
   assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'tabpanel');
 
@@ -45,7 +45,7 @@ try {
         budget: innerHeight - document.querySelector('[data-site-header]').getBoundingClientRect().height,
       }));
       assert.ok(box.section <= box.budget + 1, `${id} exceeds screen: ${JSON.stringify(box)}`);
-      if (width === 1440) assert.ok(box.content <= 740, `${id} exceeds 740px: ${box.content}`);
+      if (width === 1440 && id === 'framework') assert.ok(box.content <= 740, `${id} exceeds 740px: ${box.content}`);
       if (id === 'framework') assert.ok(box.content >= box.budget * 0.7, `Framework underfills: ${JSON.stringify(box)}`);
       console.log(`${width}x${height} ${id}: ${box.content.toFixed(1)}px content / ${box.budget}px screen`);
     }
@@ -54,7 +54,7 @@ try {
   for (const tab of await tabs.getByRole('tab').all()) {
     await tab.click();
     const height = await page.locator('#experience > .container-x').evaluate((element) => element.getBoundingClientRect().height);
-    assert.ok(height <= 740, `Experience panel exceeds budget: ${height}`);
+    assert.ok(height <= 755, `Experience panel exceeds 819px screen minus 64px padding: ${height}`);
   }
   await tabs.getByRole('tab', { name: /Teaching Assistant/ }).click();
   assert.ok((await page.getByRole('tabpanel').innerText()).includes('Feb 2026 · 1 mo'));
@@ -82,7 +82,7 @@ try {
   const noJS = await browser.newPage({ javaScriptEnabled: false, reducedMotion: 'reduce' });
   await noJS.goto(base);
   assert.equal(await noJS.locator('#experience [role="tabpanel"]').count(), 6);
-  assert.equal(await noJS.locator('#experience h4').count(), 8);
+  assert.equal(await noJS.locator('#experience .experience-role > h4').count(), 8);
   assert.equal(await noJS.locator('#experience .experience-role ul.list-disc li').count(), 12);
   assert.equal(await noJS.locator('#experience [role="tab"][aria-selected="true"]').count(), 1);
   for (const slide of await noJS.locator('.coverflow-slide').all()) {

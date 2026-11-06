@@ -3,6 +3,21 @@ import type { PlanetKind } from '@/lib/pixel-planets';
 
 // Single source of truth for content shapes. Edit content/*.ts against these types.
 
+export type ExperiencePhoto = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+};
+
+export type ExperienceHighlight = {
+  title: string;
+  date?: string; // YYYY-MM
+  body?: string;
+  photos?: ExperiencePhoto[];
+};
+
 export type ExperienceRole = {
   title: string;
   type?: string;
@@ -11,13 +26,17 @@ export type ExperienceRole = {
   location?: string;
   bullets?: string[];
   skills?: string[];
+  highlights?: ExperienceHighlight[];
 };
 
 export type ExperienceOrg = {
   id: string;
   org: string;
   initials?: string; // monogram override when the org has no url
+  logo?: string; // official logo under /public/experience/logos
   url?: string;
+  summary?: string;
+  highlights?: ExperienceHighlight[];
   roles: ExperienceRole[];
 };
 
@@ -82,6 +101,7 @@ export type ChronicleEvent = {
   description?: string;
   link?: string;
   ongoing?: boolean;
+  image?: ExperiencePhoto;
 };
 
 export type StackItem = { name: string; icon?: StackIconKey };

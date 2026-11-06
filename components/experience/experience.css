@@ -6,7 +6,21 @@
 .experience-tab:hover { background: var(--color-tint-a); }
 .experience-tab[aria-selected="true"] { border-color: var(--color-accent); background: var(--color-tint-a); box-shadow: inset 3px 0 var(--color-accent); }
 .experience-monogram { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; background: var(--color-tint-a); color: var(--color-accent); border: 1px solid var(--color-line); border-radius: var(--theme-control-radius); font-family: var(--font-mono), monospace; }
+/* Official logos sit on a white tile so dark-background marks stay legible in every palette. */
+.experience-monogram[data-logo] { background: #FFFFFF; padding: 3px; overflow: hidden; }
+.experience-logo { width: 100%; height: 100%; object-fit: contain; }
 .experience-panel { border: 1px solid var(--color-line); border-radius: var(--theme-radius); background: var(--color-panel); padding: 1.25rem; overflow-wrap: anywhere; }
+.experience-panels { min-width: 0; min-height: 0; }
+.experience-summary { max-width: 68ch; margin-bottom: 1.5rem; font-size: 1.0625rem; line-height: 1.65; color: var(--color-ink); }
+.experience-highlight { margin-block: 1.5rem; }
+.experience-highlight-eyebrow { display: flex; align-items: center; gap: 0.5rem; font: 0.8125rem/1.5 var(--font-mono), monospace; color: var(--color-muted); }
+/* Match Record's existing semantic award token across palettes. */
+.experience-layout { --milestone-gold: #B8860B; }
+html[data-mode="dark"] .experience-layout { --milestone-gold: #F2C94C; }
+.experience-award-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--milestone-gold); }
+.experience-highlight-title { margin-top: 0.375rem; font-family: var(--font-display), sans-serif; font-size: 1.125rem; line-height: 1.4; font-weight: 700; color: var(--color-ink); }
+.experience-highlight-date { display: block; margin-top: 0.375rem; font-size: 0.8125rem; color: var(--color-muted); }
+.experience-highlight-body { margin-top: 0.75rem; max-width: 68ch; line-height: 1.65; color: var(--color-ink); }
 .experience-roles { margin: 0; padding: 0; list-style: none; }
 .experience-role { position: relative; padding: 0 0 1.5rem 1.5rem; }
 .experience-role:last-child { padding-bottom: 0; }
@@ -15,8 +29,13 @@
 html[data-motion="on"] .experience-panel:not([hidden]) { animation: experience-enter 220ms var(--ease-settle); }
 @keyframes experience-enter { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
 @media (min-width: 1024px) {
-  .experience-layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.8fr); gap: 2rem; align-items: start; }
-  .experience-tabs { flex-direction: column; overflow: visible; }
+  #experience.screen-section { height: calc(100svh - var(--header-h)); min-height: 0; padding-block: 2rem; }
+  #experience > .container-x { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+  #experience > .container-x > header { flex-shrink: 0; }
+  .experience-layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.8fr); grid-template-rows: minmax(0, 1fr); gap: 2rem; flex: 1; min-height: 0; }
+  .experience-tabs { flex-direction: column; overflow-y: auto; align-self: start; max-height: 100%; scrollbar-width: thin; scrollbar-color: var(--color-line) var(--color-panel); }
   .experience-tab { flex-basis: auto; width: 100%; }
-  .experience-panel { padding: 1.5rem; }
+  .experience-panel { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 1.5rem; scrollbar-width: thin; scrollbar-color: var(--color-accent) var(--color-panel); scrollbar-gutter: stable; --fade-top: 0px; --fade-bottom: 0px; mask-image: linear-gradient(to bottom, transparent, var(--color-ink) var(--fade-top), var(--color-ink) calc(100% - var(--fade-bottom)), transparent); }
+  .experience-panel[data-scroll-top="true"] { --fade-top: 1.25rem; }
+  .experience-panel[data-scroll-bottom="true"] { --fade-bottom: 1.25rem; }
 }

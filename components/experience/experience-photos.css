@@ -1,0 +1,26 @@
+/* Intent: keep story photos legible at every size and reuse one modal in both sections.
+   Status: implemented. Next: browser acceptance. Blockers: none. Confidence: bounded image sizing. */
+.experience-photo-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+.experience-photo-grid figure { min-width: 0; }
+.experience-photo-button { display: block; width: 100%; overflow: hidden; border: 1px solid var(--color-line); border-radius: var(--theme-radius); background: var(--color-surface); cursor: zoom-in; }
+.experience-photo-button:hover { border-color: var(--color-accent); }
+.experience-photo-button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.experience-photo-button img { display: block; width: 100%; height: auto; max-height: 20rem; object-fit: cover; }
+.experience-photo-grid[data-count="1"] [data-portrait="true"] .experience-photo-button { width: min(100%, calc(26.25rem * var(--photo-ratio))); margin-inline: auto; }
+.experience-photo-grid[data-count="1"] [data-portrait="true"] img { max-height: 26.25rem; object-fit: contain; }
+.experience-photo-caption { margin-top: 0.5rem; color: var(--color-muted); font-size: 0.8125rem; line-height: 1.5; overflow-wrap: anywhere; }
+.experience-lightbox { position: fixed; inset: 0; width: 100vw; max-width: none; height: 100svh; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--color-ink); overflow: auto; overscroll-behavior: contain; }
+.experience-lightbox[open] { display: grid; place-items: center; }
+.experience-lightbox::backdrop { background: color-mix(in srgb, var(--color-paper) 92%, transparent); }
+.experience-lightbox-content { width: min(90vw, 90rem); margin-block: 1rem; padding: 0.75rem; border: 1px solid var(--color-line); border-radius: var(--theme-radius); background: var(--color-panel); }
+.experience-lightbox-image { display: block; width: auto; height: auto; max-width: 100%; max-height: min(85vh, calc(100svh - 13rem)); object-fit: contain; margin-inline: auto; }
+.experience-lightbox .experience-photo-caption { text-align: center; }
+.experience-lightbox-controls { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.experience-lightbox-controls button { min-width: 2.75rem; min-height: 2.75rem; padding: 0.5rem; color: var(--color-ink); border-radius: var(--theme-control-radius); }
+.experience-lightbox-controls button:hover { background: var(--color-tint-a); }
+html[data-motion="on"] .experience-lightbox[data-reduced-motion="false"] .experience-lightbox-content { animation: experience-photo-enter 180ms var(--theme-ease); }
+@keyframes experience-photo-enter { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+@media (min-width: 1024px) {
+  .experience-photo-grid[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .experience-photo-grid[data-count="2"] img { aspect-ratio: 1; height: auto; }
+}

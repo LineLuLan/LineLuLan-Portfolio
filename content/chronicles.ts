@@ -50,6 +50,9 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'gdgoc-vicelead',
+    image: { src: '/experience/gdgoc-vice-lead.jpg', width: 1067, height: 1600,
+      alt: 'Line in the GDGoC HCMIU Vice Chapter Lead announcement poster',
+      caption: 'Gen 5 core team announcement' },
     date: '2025-08-01',
     endDate: '2026-08-01',
     type: 'role',
@@ -66,6 +69,9 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'iu-ai-2025',
+    image: { src: '/experience/iu-ai-3rd.jpg', width: 1600, height: 1200,
+      alt: 'Line and teammates holding the IU AI Competition third prize board, trophy and medal',
+      caption: 'IU AI Competition 2025, third prize' },
     date: '2025-12-01',
     type: 'award',
     title: '3rd Place · IU AI Competition 2025',
@@ -94,14 +100,6 @@ export const chronicles: ChronicleEvent[] = [
     title: 'Academic Scholarship · 1st',
     org: 'IU VNU-HCM',
     description: 'Academic Encouragement Scholarship.',
-  },
-  {
-    id: 'agentic-build-week',
-    date: '2026-04-01',
-    type: 'award',
-    title: 'KFC Track Winner · Build Week',
-    description: 'Winner of the KFC Track at Agentic AI Build Week.',
-    org: 'GenAI Fund · Team Twohearts',
   },
   {
     id: 'swift-conf',
@@ -135,6 +133,17 @@ export const chronicles: ChronicleEvent[] = [
     link: 'https://twohearts.vn',
     ongoing: true,
     description: 'Data validation and normalization for AI-powered ordering; LLM eval harness; end-to-end testing with Gherkin and property-based tests.',
+  },
+  {
+    id: 'agentic-build-week',
+    date: '2026-07-01',
+    type: 'award',
+    title: 'KFC Track Winner · Build Week',
+    description: 'Winner of the KFC Track at Agentic AI Build Week.',
+    org: 'GenAI Fund · Team Twohearts',
+    image: { src: '/experience/kfc-winner-team.jpg', width: 1600, height: 1075,
+      alt: 'The Twohearts team on stage holding the KFC F&B Track Winner board at Agentic AI Build Week',
+      caption: 'The Twohearts team, KFC F&B Track winners' },
   },
   {
     id: 'gdgoc-advisor',

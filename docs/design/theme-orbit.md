@@ -223,6 +223,12 @@ Work uses 1400px perspective and a continuously sampled drag distance: centered 
 
 Chromium acceptance on 2026-11-07 measured Experience at 618.1px and Framework at 731.5px inside an 819px screen at 1440x900. At 1920x1080, Framework measured 911.5px inside 999px. All six Experience panels fit the 740px content budget. Checked widths span 320–2000px with no page overflow or desktop header wrap. These local measurements use fallback font faces; configured-font and non-Chromium rendering remain to be checked. Tests are `components/experience/experience-dates.test.mjs`, `components/experience/experience.browser.test.mjs`, and `components/projects/carousel-state.test.mjs`, alongside the existing navigation, orbit and contrast gates. No packages or theme tokens changed.
 
+### Experience photo stories (2026-11-07, R6)
+
+Organization summaries and dated photo highlights now sit alongside the role timeline, with all story copy and image metadata in server HTML. At desktop widths, Experience fills `100svh - --header-h`; the right panel scrolls with edge fades while the organization list stays in place. Below 1024px, stories flow naturally. One shared native modal supports keyboard navigation, focus containment/restoration, backdrop/Escape dismissal and motion preferences. Record's three photo milestones use fixed 16:9 thumbnails; the KFC win is dated July 2026, with 20 milestones retained.
+
+Chromium measured every organization at 819px section height at 1440×900 and 999px at 1920×1080. The new `experience-photos.browser.test.mjs` covers photo loading, panel scroll/reset, modal interactions, SSR and 320–2000px overflow. No packages or photo assets changed. API references checked 2026-11-07: [Next 14 Image](https://nextjs.org/docs/14/app/api-reference/components/image), [React lazy](https://react.dev/reference/react/lazy), and [native dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog).
+
 ## 8. Copy decisions (Line confirms)
 
 Hero H1 options: (A) `Build things that survive` / `contact with reality.` · (B) `Data in.` / `Decisions out.` · (C) `Models you can defend.` / `Pipelines you can trust.` Default A (it is already Line's own line from the narrative).
@@ -239,3 +245,14 @@ Section headings: “Where research meets production.” · “Tools I ship with
 | P4 Polish — done | OrbitCompanion, header hide/reveal, Lighthouse ≥ 95, docs refresh (README/PLANNING/TRACKING/HANDOFF), delete dead files | Lighthouse + a11y audit |
 
 Each phase lands on branch `redesign/theme-planets`; `main` stays untouched until Line approves the whole redesign. Backup of the pre-redesign site: branch `backup/pre-ui-refactor-2026-11-05`, tag `v1.1.0-pre-ui-refactor`.
+
+## Experience logo sources (fetched 2026-11-07)
+
+- Twohearts: favicon from https://twohearts.vn/favicon.svg
+- Hospital for Tropical Diseases HCMC: site icon from https://bvbnd.vn
+- 100B Studio: icon from https://100b.studio/icon.png
+- International University, VNU-HCM: 'Logo IUHCM.png' from Wikimedia Commons (CC BY-SA 4.0)
+- GDGoC: Google Developer Groups favicon from https://gdg.community.dev
+- Luyện thi Khai Tâm: no public logo found; monogram 'KT' until Line provides one
+
+Logos are trademarks of their owners and are shown only to identify where Line worked.

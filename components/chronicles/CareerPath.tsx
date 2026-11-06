@@ -2,7 +2,7 @@
 
 // Intent: let pointer, touch and keyboard users explore the same server-rendered milestones.
 // Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: geometry and SSR checks.
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
@@ -12,6 +12,9 @@ import type { PlanetKind } from '@/lib/pixel-planets';
 import type { ChronicleEvent } from '@/types';
 import { careerLayout } from './career-layout';
 import './career-path.css';
+
+// Detail photos are needed only when a milestone opens; reserve their aspect ratio while loading.
+const PhotoGallery = lazy(() => import('../experience/Lightbox'));
 
 const TYPES: Record<ChronicleEvent['type'], { label: string; planet: PlanetKind }> = {
   education: { label: 'Education', planet: 'moon' },
@@ -83,6 +86,9 @@ export function CareerPath({ events, today }: { events: ChronicleEvent[]; today:
               </button>
               {open === event.id && (
                 <div id={`career-detail-${event.id}`} role="region" aria-label={event.title} className="career-detail">
+                  {event.image && <Suspense fallback={<div className="career-photo-loading" aria-label="Loading photo" />}>
+                    <PhotoGallery photos={[event.image]} title={event.title} thumbnail />
+                  </Suspense>}
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-mono text-xs text-muted">{dateRange(event)}</p>
                     <button type="button" className="-mr-2 -mt-2 flex min-h-11 min-w-11 items-center justify-center text-ink" aria-label="Close milestone details" onClick={() => dismiss(event.id)}>×</button>

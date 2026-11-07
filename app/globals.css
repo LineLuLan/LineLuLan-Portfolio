@@ -160,19 +160,6 @@
   animation: companion-hop 160ms var(--theme-ease);
 }
 
-/* Reduced-motion: disable all decorative animations */
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion]),
-  html:not([data-motion]) *,
-  html:not([data-motion]) *::before,
-  html:not([data-motion]) *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 /* Header fallback matches the two-row navigation between nav and xl breakpoints. */
 @media (min-width: 900px) and (max-width: 1279px) {
   :root { --header-h: 121px; }

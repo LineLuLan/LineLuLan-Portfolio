@@ -1,0 +1,50 @@
+/* Intent: fit the visitor disclosure into Orbit without changing the header's height.
+   Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: bounded panel geometry. */
+.visitor-disclosure { display: flex; align-items: center; }
+.visitor-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  color: var(--color-ink);
+  background: var(--color-panel);
+  font: 12px var(--font-mono), monospace;
+  white-space: nowrap;
+}
+.visitor-chip:hover { border-color: var(--color-accent); }
+.visitor-dot { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--color-success); }
+.visitor-online-label { display: none; }
+@media (min-width: 900px) { .visitor-online-label { display: inline; } }
+.visitor-panel {
+  position: fixed;
+  z-index: 70;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 16px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--theme-control-radius);
+  background: var(--color-panel);
+  color: var(--color-ink);
+  box-shadow: 0 16px 48px #0002;
+}
+.visitor-panel-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.visitor-total { font-size: 44px; line-height: 1.15; letter-spacing: -0.04em; overflow-wrap: anywhere; }
+.visitor-close { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: var(--theme-control-radius); font-size: 24px; }
+.visitor-close:hover { background: var(--color-surface); }
+.visitor-map { display: block; width: 100%; height: auto; margin-block: 16px; }
+.visitor-countries { display: grid; gap: 6px; }
+.visitor-country { position: relative; display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 8px; isolation: isolate; font-size: 13px; }
+.visitor-country-bar { position: absolute; inset: 0 auto 0 0; z-index: -1; background: var(--color-accent); opacity: 0.08; border-radius: 4px; }
+.visitor-flag { width: 22px; height: 15px; flex-shrink: 0; }
+.visitor-unknown { display: grid; place-items: center; line-height: 15px; }
+.visitor-country-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.visitor-you { font-size: 11px; }
+.visitor-privacy { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--color-line); font-size: 12px; line-height: 1.6; }
+html[data-motion="on"] .visitor-you-ring { animation: visitor-pulse 2.5s ease-in-out infinite; }
+@keyframes visitor-pulse { 50% { opacity: 0.35; stroke-width: 1.1; } }

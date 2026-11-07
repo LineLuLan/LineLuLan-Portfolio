@@ -116,7 +116,7 @@ export function ThemeDock() {
             onClick={() => setMotion(motion === 'on' ? 'off' : 'on')}
             className="motion-control hairline min-h-11 rounded-[var(--theme-control-radius)] border px-3 hover:border-accent"
           >
-            Motion · {motion === 'on' ? 'On' : 'Off'}{motionSource === 'system' ? ' (system)' : ''}
+            Motion · {motion === 'on' ? 'On' : 'Off'}
           </button>
         </DockPanel>
       )}

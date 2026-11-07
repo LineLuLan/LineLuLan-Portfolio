@@ -18,9 +18,6 @@ html[data-motion="off"] .coverflow-slide[aria-hidden="false"] { opacity: 1 !impo
 html[data-motion="off"] .coverflow-slide[aria-hidden="true"] { opacity: 0.55 !important; }
 html[data-motion="off"] :is(.project-parallax-planet, .project-parallax-text) { transform: none !important; }
 @media (hover: none), (pointer: coarse) { .carousel-drag-cursor { display: none; } }
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion]) .coverflow-slide { transform: translateX(var(--coverflow-x, 0%)) !important; filter: none !important; }
-}
 :root {
   --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-raised: 0 2px 4px color-mix(in srgb, var(--color-ink) 3%, transparent),

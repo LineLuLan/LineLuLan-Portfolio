@@ -1,10 +1,11 @@
 'use client';
 
-// Intent: make grouped roles discoverable by keyboard, pointer and server-side readers.
-// Status: implemented. Next: viewport acceptance. Blockers: none. Confidence: ARIA tab pattern.
+// Intent: make grouped roles discoverable and align their section after tab clicks.
+// Status: shared alignment in use. Next: viewport acceptance. Blockers: none. Confidence: ARIA tab pattern and shared geometry.
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import Image from 'next/image';
 import { SiteIcon } from '@/components/ui/SiteIcon';
+import { alignSection } from '@/lib/scroll-to-section';
 import type { ExperienceOrg } from '@/types';
 import { orgDuration, roleDateRange, roleDuration } from './experience-dates';
 import { ExperienceHighlight } from './ExperienceHighlight';
@@ -68,7 +69,11 @@ export function ExperienceTabs({ orgs, today, header }: { orgs: ExperienceOrg[];
           <button key={org.id} type="button" role="tab" id={`experience-tab-${org.id}`}
             aria-controls={`experience-panel-${org.id}`} aria-selected={selected === index} tabIndex={selected === index ? 0 : -1}
             ref={(element) => { tabs.current[index] = element; }}
-            onClick={() => setSelected(index)} onKeyDown={(event) => navigate(event, index)} className="experience-tab">
+            onClick={(event) => {
+              setSelected(index);
+              const section = event.currentTarget.closest<HTMLElement>('section[id]');
+              if (section) alignSection(section);
+            }} onKeyDown={(event) => navigate(event, index)} className="experience-tab">
             <span className="experience-monogram" data-logo={org.logo ? "true" : undefined} aria-hidden="true">
               {org.logo ? <Image src={org.logo} alt="" width={40} height={40} className="experience-logo" /> : org.url ? <SiteIcon href={org.url} size={22} /> : org.initials ?? org.org.split(/\s+/).slice(0, 2).map((word) => word[0]).join('')}
             </span>

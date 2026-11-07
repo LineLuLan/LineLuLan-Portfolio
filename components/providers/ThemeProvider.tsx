@@ -1,6 +1,6 @@
 'use client';
 
-// Intent: share appearance and motion while preserving explicit choices over OS settings.
+// Intent: share appearance and default-on motion while preserving explicit choices.
 // Status: implemented. Next: browser acceptance. Blockers: none. Confidence: preference regression matrix.
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import {
@@ -28,7 +28,7 @@ type ThemeContextValue = {
   accent: Accent;
   setAccent: (accent: Accent) => void;
   motion: MotionPreference;
-  motionSource: 'user' | 'system';
+  motionSource: 'user' | 'default';
   setMotion: (motion: MotionPreference) => void;
   reducedMotion: boolean;
 };
@@ -49,7 +49,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mode, updateMode] = useState<Mode>('light');
   const [accent, updateAccent] = useState<Accent>(DEFAULT_ACCENT);
   const [motion, updateMotion] = useState<MotionPreference>('on');
-  const [motionSource, updateMotionSource] = useState<'user' | 'system'>('system');
+  const [motionSource, updateMotionSource] = useState<'user' | 'default'>('default');
 
   const setTheme = useCallback((next: ThemeId) => {
     if (!isTheme(next)) return;
@@ -86,7 +86,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Status: implemented. Next: maintain the preference matrix. Blockers: none. Confidence: tested storage paths.
     const root = document.documentElement;
     const initialTheme = isTheme(root.dataset.theme) ? root.dataset.theme : DEFAULT_THEME;
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const colorPreference = window.matchMedia('(prefers-color-scheme: dark)');
     const modeSource = root.dataset.modeSource === 'user' ? 'user' : 'system';
     const initialMode = modeSource === 'user' && isMode(root.dataset.mode)
@@ -97,8 +96,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     updateMode(initialMode);
     updateAccent(initialAccent);
     applyMode(initialMode);
-    const initialSource = root.dataset.motionSource === 'user' ? 'user' : 'system';
-    const initialMotion = initialSource === 'system' ? (preference.matches ? 'off' : 'on') : (root.dataset.motion === 'off' ? 'off' : 'on');
+    const initialSource = root.dataset.motionSource === 'user' ? 'user' : 'default';
+    const initialMotion = initialSource === 'user' && root.dataset.motion === 'off' ? 'off' : 'on';
     updateMotionSource(initialSource);
     root.dataset.motionSource = initialSource;
     updateTheme(initialTheme);
@@ -106,14 +105,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyTheme(initialTheme);
     root.dataset.motion = initialMotion;
 
-    const syncSystemMotion = () => {
-      if (root.dataset.motionSource === 'user') return;
-      const next = preference.matches ? 'off' : 'on';
-      updateMotion(next);
-      root.dataset.motion = next;
-    };
-    syncSystemMotion();
-    preference.addEventListener('change', syncSystemMotion);
     const syncSystemMode = () => {
       if (root.dataset.modeSource === 'user') return;
       const next = colorPreference.matches ? 'dark' : 'light';
@@ -145,8 +136,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
       if (event.key === MOTION_STORAGE_KEY || event.key === null) {
         const explicit = event.newValue === 'on' || event.newValue === 'off';
-        const source = explicit ? 'user' : 'system';
-        const next = explicit ? event.newValue as MotionPreference : preference.matches ? 'off' : 'on';
+        const source = explicit ? 'user' : 'default';
+        const next = explicit ? event.newValue as MotionPreference : 'on';
         updateMotion(next);
         updateMotionSource(source);
         root.dataset.motion = next;
@@ -155,7 +146,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener('storage', syncStorage);
     return () => {
-      preference.removeEventListener('change', syncSystemMotion);
       colorPreference.removeEventListener('change', syncSystemMode);
       window.removeEventListener('storage', syncStorage);
     };

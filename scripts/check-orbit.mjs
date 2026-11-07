@@ -18,18 +18,19 @@ const gap = layout.clearance;
 // Blockers: none. Confidence: conservative swept-cell bounds at every sampled time.
 const planets = Object.entries(layout.planets).map(([id, planet]) => {
   const grid = grids[planet.kind];
-  if (!grid || grid.length !== 16 || grid.some((row) => row.length !== 16)) {
-    throw new Error(`Missing or invalid 16×16 painted grid: ${planet.kind}`);
+  const dimension = grid?.length;
+  if (!dimension || grid.some((row) => row.length !== dimension)) {
+    throw new Error(`Missing or invalid square painted grid: ${planet.kind}`);
   }
   const cells = [];
-  const cellSize = planet.size / 16;
+  const cellSize = planet.size / dimension;
   grid.forEach((row, y) => [...row].forEach((color, x) => {
     if (color === '.' || !legend.has(color)) return;
     // Enclose each cell at every scale between rest and hover, including transitions.
-    const left = (x - 8) * cellSize;
-    const top = (y - 8) * cellSize;
-    const right = (x - 7) * cellSize;
-    const bottom = (y - 7) * cellSize;
+    const left = (x - dimension / 2) * cellSize;
+    const top = (y - dimension / 2) * cellSize;
+    const right = (x + 1 - dimension / 2) * cellSize;
+    const bottom = (y + 1 - dimension / 2) * cellSize;
     cells.push([Math.min(left, left * layout.hoverScale), Math.min(top, top * layout.hoverScale), Math.max(right, right * layout.hoverScale), Math.max(bottom, bottom * layout.hoverScale)]);
   }));
   if (!cells.length) throw new Error(`No painted cells: ${planet.kind}`);

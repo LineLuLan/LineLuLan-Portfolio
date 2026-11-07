@@ -13,6 +13,7 @@
   "planets": {
     "about": { "kind": "earth", "ring": 0, "phase": 0, "size": 36 },
     "record": { "kind": "moon", "ring": 0, "phase": 180, "size": 32 },
+    "experience": { "kind": "satellite", "ring": 0, "phase": 90, "size": 32 },
     "stack": { "kind": "mars", "ring": 1, "phase": 90, "size": 40 },
     "framework": { "kind": "neptune", "ring": 1, "phase": 270, "size": 44 },
     "whoami": { "kind": "saturn", "ring": 2, "phase": 30, "size": 52 },

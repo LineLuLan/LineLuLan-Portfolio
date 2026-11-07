@@ -1,7 +1,7 @@
 'use client';
 
 // Intent: share photo previews and an accessible modal between Experience and Record.
-// Status: implemented. Next: browser regression gate. Blockers: none. Confidence: native modal isolation.
+// Status: modal opener exempt from page alignment. Next: browser regression gate. Blockers: none. Confidence: native modal isolation.
 import Image from 'next/image';
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
@@ -90,7 +90,7 @@ export default function PhotoGallery({ photos, title, eager = false, thumbnail =
       <div className={thumbnail ? 'experience-photo-thumbnail' : 'experience-photo-grid'} data-count={photos.length}>
         {photos.map((photo, index) => (
           <figure key={photo.src} data-portrait={photo.height > photo.width} style={{ '--photo-ratio': photo.width / photo.height } as CSSProperties}>
-            <button type="button" className="experience-photo-button" aria-label={`View photo: ${photo.caption ?? photo.alt}`}
+            <button type="button" data-no-align className="experience-photo-button" aria-label={`View photo: ${photo.caption ?? photo.alt}`}
               onClick={() => setOpen(index)} aria-haspopup="dialog">
               <Image src={photo.src} alt={photo.alt} width={photo.width} height={photo.height}
                 sizes={thumbnail ? '(min-width: 1024px) 306px, calc(100vw - 80px)' : photos.length === 1

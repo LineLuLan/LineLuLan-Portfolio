@@ -10,6 +10,7 @@ import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { capitalize, cn } from '@/lib/cn';
 import { ReadingProgress } from './ReadingProgress';
+import { VisitorChip } from '@/components/visitors/VisitorChip';
 
 // The brand is the whoami link; seven section links share one desktop row.
 const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
@@ -88,10 +89,11 @@ export function Header() {
           <ul className="flex items-center">{links}</ul>
         </nav>
         <div className="flex shrink-0 items-center gap-2">
+          <VisitorChip />
           <a href={CV_PATH} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:bg-accent-hover">
             Open CV
           </a>
-          <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={40} height={40} className="h-10 w-10 rounded-full ring-2 ring-accent/40" />
+          <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={40} height={40} className="hidden h-10 w-10 rounded-full ring-2 ring-accent/40 min-[440px]:block" />
           <button
             ref={menuButton}
             type="button"

@@ -100,24 +100,35 @@ Planet set (`lib/pixel-planets.ts`), one per section plus extras:
 |---|---|---|
 | 01 whoami | Saturn (ringed) | the signature; also the dock symbol and favicon |
 | 02 about | Earth-like (two tones + a cloud) | |
-| 03 stack | Mars (small, crater) | |
-| 04 work | Jupiter (banded) | |
-| 05 framework | Neptune (deep accent) | |
-| 06 record | Moon (crescent) | |
-| 07 contact | Comet (streak) | |
+| 03 experience | Satellite | |
+| 04 stack | Mars (small, crater) | |
+| 05 work | Jupiter (banded) | |
+| 06 framework | Neptune (deep accent) | |
+| 07 record | Moon (crescent) | |
+| 08 contact | Comet (streak) | |
 
 Hero artwork (`components/hero/OrbitSystem.tsx`): exactly three ellipses tilted -12 degrees, ry/rx 0.62, rx 140/215/310. The outer radius was tuned from 290 within the approved +20 bound. Shared constants live in `lib/orbit-layout.json`.
 
-- Ring 1: Earth 36px at 0 degrees and Moon 32px at 180 degrees, 60-second revolution.
+- Ring 1: Earth 36px at 0 degrees, Satellite 32px at 90 degrees and Moon 32px at 180 degrees, 60-second revolution.
 - Ring 2: Mars 40px at 90 degrees and Neptune 44px at 270 degrees, 90-second revolution.
 - Ring 3: Saturn 52px at 30 degrees, Jupiter 52px at 150 degrees and Comet 44px at 270 degrees, 130-second revolution.
 - The center avatar has radius 56px, a 2px accent ring and a soft tint-a radial glow. Ring strokes are 1.5px line color.
 - Nested static SVG transforms define the ellipse; CSS rotates each planet and counter-rotates its sprite, maintaining upright, unsquashed artwork without JS. Hover/focus pauses every ring. Planet hover/focus scales to 1.12, highlights its ring and reveals a panel label in mono 14px ink.
-- The calculated viewBox includes the full orbit, hit targets, labels, hover scaling and 16px padding. Caption: “Hover a planet · click to jump”, mono 13px muted.
+- The calculated 730×524 viewBox includes the full orbit, hit targets, labels, hover scaling and 16px padding.
 - `pnpm check:orbit` reads the same layout JSON and actual painted sprite cells. It sweeps 2340 seconds at 0.25-second intervals (9361 samples), requiring at least 8px clearance from the avatar and between planets, including the entire hover-scale range. Labels are excluded because motion pauses while they are shown.
 - The hero grid uses line color at 22%. Pixel stars twinkle between opacity 0.35 and 1 over staggered 3–6-second cycles.
 
 Companion (`components/pixel/OrbitCompanion.tsx`): a 32px active-section planet in a 44px section link at bottom-right, with a 160ms hop. Hidden below 480px.
+
+### Pisces constellation (2026-11-07)
+
+Hovering the figure aligns its eight planets with Line's 669×616 Pisces reference. `components/hero/pisces.ts` records the original orientation, section stars, minor stars, segments and label sides. `lib/constellation-fit.ts` uniformly fits that data into the unchanged viewBox; `node scripts/check-constellation.mjs` checks numbering, all bounds, label collisions and line-endpoint clearance. Experience uses ring index 0, phase 90°, size 32px; the painted-cell sweep supports its existing 12×12 satellite grid.
+
+The server renders eight real anchors. The client pauses the existing CSS timelines before measuring each upright home group's `getScreenCTM()`, converts destinations into that local coordinate system, and transitions only an inner flight group (700ms, 40ms stagger). CSS transitions reverse from the current position. Return flights finish before the original orbit timelines resume. No anchor is replaced: keyboard focus enters constellation mode, Escape retains focus in orbit mode, and leaving the figure ends constellation mode. Hover enter/leave uses a 120ms debounce. On no-hover/touch devices, the first tap aligns, a second tap on a planet navigates, and an empty-space tap returns. The existing compact phone artwork remains unchanged below the figure's 768px breakpoint.
+
+Rings fade out and the avatar fades to 0.15. After the last planet arrives, accent segments draw over 400ms, minor stars appear and numbered mono labels fade in. Hover/focus emphasizes the label and directly connected segments. Motion Off switches instantly and freezes orbit timelines without resetting their phase. Captions are “Hover to align the planets · click to jump”, “Tap to align the planets” on touch, and “Pisces · follow the stars 1 to 8” when aligned.
+
+Chromium measured identical before/after hero heights: 819px at 1440×900 and 999px at 1920×1080; the figure remains 381.72px tall. Checks cover 85 widths from 320–2000px, persistent keyboard focus, touch interception, interrupted flights, instant Motion Off and hydration. These measurements use fallback fonts because Google Fonts requests are blocked in the local environment. API references checked 2026-11-07: [SVG coordinate matrices](https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement/getScreenCTM) and [CSS transitions](https://developer.mozilla.org/en-US/docs/Web/CSS/transition). No dependencies or external runtime requests were added.
 
 ## 6. Layout and sections
 
@@ -172,9 +183,9 @@ The existing ContactForm is unchanged, including submission, validation, error a
 
 ## 7. Motion, navigation and accessibility
 
-- Motion is explicit-or-system. Stored `line.motion=on|off` wins; absence/invalid values follow `prefers-reduced-motion`, including live changes. The pre-paint script sets effective `data-motion` and `data-motion-source=user|system`. Cross-tab storage changes stay synchronized.
-- The dock says “Motion · On” or “Motion · Off”, appending “ (system)” when applicable. Its switch state reflects the effective value.
-- MotionConfig uses `always` when off and `never` when on. Framer opacity transitions also receive zero durations when off. The OS CSS fallback applies only to `html:not([data-motion])`, so explicit On works on Line’s Windows installation.
+- Motion is explicit-or-on (Line, 2026-11-07). Stored `line.motion=on|off` wins; missing, invalid or inaccessible storage defaults to On regardless of OS reduced motion. The pre-paint script sets effective `data-motion` and `data-motion-source=user|default`. Cross-tab storage changes stay synchronized; removal/clear restores On/default.
+- The dock's switch state reflects the effective value. Its obsolete “(system)” suffix comparison requires a one-line follow-up outside this task's file scope.
+- MotionConfig uses `always` when off and `never` when on. Framer opacity transitions also receive zero durations when off. Redundant OS reduced-motion CSS fallbacks are removed; effective `data-motion="off"` remains the motion gate.
 - `html[data-motion="off"]` disables CSS animations and transitions. Section eyebrows and titles reveal once with a 16px rise over 500ms and 60ms stagger; cards and Stack groups stagger by 50ms. Primary buttons lift 2px on fine-pointer hover when motion is on.
 - `AnchorScroll` handles same-page anchors globally. Hero goes to zero; every other destination uses `max(0, sectionTop - headerHeight)` without centering. Navigation pushes the hash, closes the mobile menu, and focuses the section without another scroll. Hash loads wait for load/fonts/layout; browser history uses the same rule. Modifier clicks retain native behavior. CSS `scroll-margin-top: var(--header-h)` supplies the no-JS fallback.
 - Contrast: all checked text/background pairs reach 4.5:1 or better across all ten mode/accent combinations and the no-JS root.
@@ -238,6 +249,25 @@ Framework keeps its shared node/connector coordinates, with symmetric card inset
 Chromium measured Framework at 819px section / 731.55px content and Experience at 819px section / 754px panel at 1440×900, with 0px eyebrow/panel misalignment. At 1920×1080 the sections are 999px, Framework content is 911.55px and the panel is 934px. Both card-column gaps are 40px. `components/transcript/transcript.browser.test.mjs` checks 93 widths per route from 320–2000px, all ten palettes, hydration, keyboard values, IU navigation and no-JS results. Measurements use locally available fallback fonts; configured-font and non-Chromium rendering remain outside that coverage. Importer tests, TypeScript, lint, navigation/motion, orbit and contrast checks pass. No packages, remote data requests or client chart runtime were added. API references checked 2026-11-07: [Next 14 pages](https://nextjs.org/docs/14/app/building-your-application/routing/pages-and-layouts) and [static metadata](https://nextjs.org/docs/14/app/building-your-application/optimizing/metadata).
 
 Production build also passes and marks `/transcript` static: 210B route-specific JavaScript / 155kB first-load JavaScript including the shared site shell. Both existing Experience browser suites pass after updating content counts and waiting for hydration in the reduced-motion photo case. Independent review found no remaining material defects. Native screen-reader behavior is not verified; shorter desktop viewports such as 1280×720 scroll Framework vertically to preserve readable content.
+
+### Visitors (2026-11-07)
+
+The global header chip opens a lazy-loaded map and top-five country panel. Total means accumulated daily unique visits, starting at zero. One shared poller posts every 45 seconds while visible; presence lasts 90 seconds. `localStorage['line.visitor']` stores a random UUID with a memory fallback. No raw IDs, IPs, user agents or cookies are stored by the server. The short-lived hashes are identifiers, not a claim of irreversible anonymization.
+
+Redis uses only `REDIS_URL`, set by the Vercel ↔ Redis Cloud integration, with node-redis over TCP. Missing configuration uses empty memory storage in development; production returns 503/`{configured:false}`. A configured but unavailable database returns 503/`{configured:true,error:'unavailable'}`; the existing network-error behavior hides the chip. One lazy module-level client shares its in-flight connection promise. An error listener logs only a fixed message, never the URL. Socket connection timeout is 3s, the complete connection/handshake deadline is 4s, and the command deadline is 1.5s (at most about 5.5s combined, excluding event-loop delays). Deadline expiry destroys the socket. Offline queuing and background reconnects are disabled; a later request can reconnect through the same shared deadline.
+
+Storage uses exact SET membership rather than approximate cardinality. IDs and rate fields use the first 9 bytes of SHA-256 encoded as 12 base64url characters; counting is exact for these stored hashes. Keys and admission policy:
+
+- `v:t` and `v:c` retain total visits and country totals. Country codes normally produce about 250 small fields, including unknown-country fallback; the existing two-letter validation permits at most 676 codes.
+- `v:d:<YYYYMMDD>` stores at most 50,000 ID hashes. `SISMEMBER` precedes the capacity check; only a successful new `SADD` can count. `EXPIREAT` is the next UTC midnight plus 3600s, so two day keys coexist only during the first hour. New IDs beyond the daily cap are neither added nor counted for the rest of that day. Existing members still update presence.
+- `v:r:<YYYYMMDDHH>` is one hash per UTC hour, with at most 10,000 fields derived from `SHA256(ip + UTC-hour)` and an expiry of the end of that hour plus 60s. Only IDs not already in the daily set consult the rate budget. Each field allows 30 new daily IDs per hour. Existing fields remain usable when the field cap is full; new fields are rejected for that hour. Rate-limited IDs are still recorded in the capped daily set and remain excluded from totals for the rest of the day, even after changing IP or entering a new hour. Their heartbeats consume no further budget.
+- `v:o` contains at most 5,000 ID hashes with timestamps. Every call prunes entries older than 90s before checking capacity. Existing members can refresh when full; new members wait for space without affecting their daily count. Non-bot POSTs set a 180s expiry. Bots and GET only prune this set and read statistics.
+
+The caps trade excess-traffic coverage for a predictable storage budget: visitors beyond the daily or rate limits stop being counted rather than risking the 30 MB plan. The memory store uses the same policies, with injectable small caps for boundary tests. Estimated worst case: a 50,000-member daily set × ~70 B ≈ 3.5 MB, or ~7 MB for two sets during the first hour; a 10,000-field rate hash × ~60 B ≈ 0.6 MB, or ~1.2 MB for two hashes during the one-minute overlap; a 5,000-member online set × ~100 B ≈ 0.5 MB; counters are negligible. Total is about 9 MB, targeting less than 10 MB of the 30 MB plan. These are sizing estimates, not measured allocator usage; confirm `MEMORY USAGE` and database baseline overhead in the supervisor's live smoke test. The hard limits apply to cardinality, independent of expiry cleanup timing.
+
+Every POST uses one atomic EVAL round trip. Internal Redis commands for an admitted new ID with new online presence: 18 with a new rate field, 17 with an existing field; a counted visitor's normal heartbeat uses 8; a new ID exceeding its existing field's 30-ID limit uses 15; a new IP rejected by the rate-field cap uses 14; a new ID rejected by the daily cap uses 10. These last three counts assume new online presence with room available. Online presence already existing saves one cardinality check; a full online set skips `ZADD`. Bot POSTs and GET use one EVAL containing 4 commands. Polling costs nominally 80 POSTs per visible tab-hour plus mount/resume requests; live TCP latency and billing remain unmeasured. Local tests cover memory semantics and mocked client failures; Lua execution is reserved for the supervisor's live smoke test because no local Redis/Lua runtime is installed.
+
+`pnpm build:world-dots` generates 2924 points and 231 anchors (26640 bytes), using local polygon bounds when country-json has gaps and circular longitude bounds at the date line. A real polygon land sample preserves Fiji in the coarse grid. Unmatched names: England, Netherlands Antilles, Northern Ireland, Scotland, Wales. No bounds: Cocos (Keeling) Islands; Holy See (Vatican City State); Micronesia, Federated States of; Pitcairn; United States Minor Outlying Islands; Virgin Islands, British; Virgin Islands, U.S. These retain counts/list rows without map anchors. Centers snapped to land are approximate. References checked 2026-11-07: supervisor-provided node-redis 5.12.1 Context7 documentation and installed client source/types; [node-redis](https://github.com/redis/node-redis), [Redis EXPIREAT](https://redis.io/docs/latest/commands/expireat/). Before rollout, smoke-test a dedicated Redis instance. Rollback only this tracker diff, preserving pre-existing dependency changes.
 
 ## 8. Copy decisions (Line confirms)
 

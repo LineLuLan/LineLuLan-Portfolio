@@ -1,10 +1,10 @@
 'use client';
 
-// Intent: centralize anchor navigation, layout measurement, focus and history.
-// Status: R2. Next: browser coverage. Blockers: none. Confidence: shared offset regression cases.
+// Intent: centralize anchor navigation, interaction alignment, layout measurement, focus and history.
+// Status: interaction alignment added. Next: browser coverage. Blockers: none. Confidence: shared offset regression cases.
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { scrollToSection } from '@/lib/scroll-to-section';
+import { alignSection, scrollToSection } from '@/lib/scroll-to-section';
 
 function observeComponentReveals(root: HTMLElement) {
   const elements = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
@@ -160,7 +160,7 @@ export function AnchorScroll() {
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const anchor = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
-      if (!anchor || anchor.hasAttribute('download') || (anchor.getAttribute('target') && anchor.getAttribute('target') !== '_self')) return;
+      if (!anchor || anchor.closest('[data-tap-intercept="true"]') || anchor.hasAttribute('download') || (anchor.getAttribute('target') && anchor.getAttribute('target') !== '_self')) return;
       const hash = anchor.getAttribute('href')!;
       const section = target(hash);
       if (!section) return;
@@ -168,6 +168,15 @@ export function AnchorScroll() {
       navigated = true;
       history.pushState(null, '', hash);
       navigate(section);
+    };
+    const onInteractionClick = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const element = event.target;
+      const section = element.closest<HTMLElement>('section.screen-section[id]');
+      if (!section || section.id === 'hero') return;
+      if (element.closest('[data-no-align], [role="dialog"], [aria-modal="true"], [data-site-header], [data-site-footer], .dock-trigger, #theme-dock-panel, a[href]')) return;
+      const interactive = element.closest<HTMLElement>('button, [role="tab"], [role="button"], summary, input, select, textarea, label, [data-align-section]');
+      if (interactive && section.contains(interactive)) alignSection(section);
     };
     const onHistory = () => {
       navigated = true;
@@ -184,6 +193,8 @@ export function AnchorScroll() {
       });
     });
     document.addEventListener('click', onClick, true);
+    // Capture: React may remove the clicked control (carousel slides) before a bubbling listener runs.
+    document.addEventListener('click', onInteractionClick, true);
     window.addEventListener('popstate', onHistory);
     window.addEventListener('hashchange', onHistory);
     return () => {
@@ -192,6 +203,7 @@ export function AnchorScroll() {
       observer.disconnect();
       stopReveals();
       document.removeEventListener('click', onClick, true);
+      document.removeEventListener('click', onInteractionClick, true);
       window.removeEventListener('popstate', onHistory);
       window.removeEventListener('hashchange', onHistory);
     };

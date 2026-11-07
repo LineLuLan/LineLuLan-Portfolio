@@ -51,6 +51,17 @@ assert.equal(careerLayout([], '2026-11-06').nodes.length, 0);
 const require = createRequire(import.meta.url);
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
+for (const motion of ['on', 'off']) {
+  const { MotionProvider } = load('../components/layout/MotionProvider.tsx', {
+    require(id) {
+      if (id === 'react/jsx-runtime') return require(id);
+      if (id === '@/components/providers/ThemeProvider') return { useTheme: () => ({ motion }) };
+      if (id === 'framer-motion') return { MotionConfig: () => null };
+      assert.fail(`Unexpected MotionProvider dependency: ${id}`);
+    },
+  });
+  assert.equal(MotionProvider({ children: null }).props.reducedMotion, motion === 'off' ? 'always' : 'never');
+}
 const { CareerPath } = load('../components/chronicles/CareerPath.tsx', {
   require(id) {
     if (id === 'react' || id === 'react/jsx-runtime') return require(id);
@@ -113,8 +124,8 @@ for (const reduced of [false, true]) {
       } },
     });
     const explicit = stored === 'on' || stored === 'off';
-    assert.equal(root.dataset.motion, explicit ? stored : reduced ? 'off' : 'on');
-    assert.equal(root.dataset.motionSource, explicit ? 'user' : 'system');
+    assert.equal(root.dataset.motion, explicit ? stored : 'on');
+    assert.equal(root.dataset.motionSource, explicit ? 'user' : 'default');
   }
 }
 let appearanceCases = 0;

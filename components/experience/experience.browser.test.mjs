@@ -16,7 +16,7 @@ try {
   await page.goto(`${base}/#experience`);
   await page.getByRole('dialog', { name: 'Loading' }).waitFor({ state: 'detached' });
   await page.evaluate(() => document.fonts.ready);
-  assert.equal(await page.locator('.orbit-planet-link').count(), 7);
+  assert.equal(await page.locator('.orbit-planet-link').count(), 8);
   const nav = page.getByRole('navigation', { name: 'Sections', exact: true });
   assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Experience', 'Stack', 'Work', 'Framework', 'Record', 'Contact']);
   const tabs = page.getByRole('tablist', { name: 'Organizations' });
@@ -85,17 +85,18 @@ try {
   assert.equal(await noJS.locator('#experience .experience-role > h4').count(), 8);
   assert.equal(await noJS.locator('#experience .experience-role ul.list-disc li').count(), 22);
   assert.equal(await noJS.locator('#experience [role="tab"][aria-selected="true"]').count(), 1);
-  for (const slide of await noJS.locator('.coverflow-slide').all()) {
-    const style = await slide.evaluate((element) => ({ filter: getComputedStyle(element).filter, transform: getComputedStyle(element).transform }));
-    assert.equal(style.filter, 'none');
-    assert.ok(!style.transform.startsWith('matrix3d'));
-  }
+  assert.equal(await noJS.locator('.coverflow-slide[aria-hidden="false"]').evaluate((element) => getComputedStyle(element).visibility), 'visible');
   await noJS.close();
 
   const reduced = await browser.newPage({ reducedMotion: 'reduce' });
   await reduced.goto(`${base}/#work`);
+  await reduced.waitForFunction(() => document.documentElement.dataset.motion === 'on');
+  assert.equal(await reduced.locator('html').getAttribute('data-motion-source'), 'default');
+  await reduced.locator('.boot-splash').waitFor({ state: 'detached' });
+  await reduced.getByRole('button', { name: /^Appearance, current/ }).click();
+  await reduced.getByRole('switch', { name: /Motion/ }).click();
   await reduced.waitForFunction(() => document.documentElement.dataset.motion === 'off');
-  assert.equal(await reduced.locator('html').getAttribute('data-motion-source'), 'system');
+  assert.equal(await reduced.locator('html').getAttribute('data-motion-source'), 'user');
   assert.equal(await reduced.locator('.carousel-drag-cursor').count(), 0);
   assert.ok(await reduced.locator('.coverflow-slide').evaluateAll((slides) => slides.every((slide) => getComputedStyle(slide).filter === 'none' && !getComputedStyle(slide).transform.startsWith('matrix3d'))));
   await reduced.close();
@@ -155,5 +156,5 @@ try {
   }
   assert.equal(await active().locator('.project-card').evaluate((element) => getComputedStyle(element, '::before').animationName), 'none');
   assert.deepEqual(errors, []);
-  console.log('PASS: eight sections/seven planets, SSR roles, tabs/focus, all panel budgets, 320–2000px overflow/nav, wheel latch, live 3D/parallax/cursor and Motion Off.');
+  console.log('PASS: eight sections/eight planets, SSR roles, tabs/focus, all panel budgets, 320–2000px overflow/nav, wheel latch, live 3D/parallax/cursor and Motion Off.');
 } finally { await browser.close(); }

@@ -1,9 +1,11 @@
-/* Intent: CSS motion over static SVG positioning, with synchronized inverse rotation.
-   Status: R2. Next: visual review. Blockers: none. Confidence: shared geometry checker. */
+/* Intent: reversible flights from frozen CSS orbits into Line's Pisces section map.
+   Status: fixed figure footprint and persistent links. Next: browser regression.
+   Blockers: none. Confidence: shared geometry and interaction checks. */
 .orbit-figure { width: 100%; margin: 0; }
 .orbit-system { display: block; width: 100%; height: auto; overflow: visible; }
 .orbit-revolve,
 .orbit-counter-revolve,
+.orbit-flight,
 .orbit-sprite {
   transform-box: view-box;
   transform-origin: 0 0;
@@ -12,10 +14,9 @@
 .orbit-counter-revolve { animation: orbit-counter-revolve var(--orbit-period) linear infinite; }
 @keyframes orbit-revolve { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes orbit-counter-revolve { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-.orbit-figure:hover .orbit-revolve,
-.orbit-figure:hover .orbit-counter-revolve,
-.orbit-system:focus-within .orbit-revolve,
-.orbit-system:focus-within .orbit-counter-revolve { animation-play-state: paused; }
+.orbit-figure[data-paused="true"] :is(.orbit-revolve, .orbit-counter-revolve) { animation-play-state: paused; }
+.orbit-flight { transform: translate(0px, 0px); transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
+.orbit-figure[data-mode="constellation"] .orbit-flight { transition-delay: var(--flight-delay); }
 .orbit-planet-link { cursor: pointer; outline: none; }
 .orbit-sprite { transition: transform 180ms ease; pointer-events: none; }
 .orbit-focus-ring { opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
@@ -28,9 +29,37 @@
 .orbit-system:has(.orbit-planet-link[data-ring="1"]:is(:hover, :focus-visible)) .orbit-track[data-ring="1"],
 .orbit-system:has(.orbit-planet-link[data-ring="2"]:is(:hover, :focus-visible)) .orbit-track[data-ring="2"] { stroke: var(--color-accent); }
 .orbit-caption { margin-top: 0.25rem; color: var(--color-muted); font-family: var(--font-mono), monospace; font-size: 13px; text-align: center; }
-[data-motion="off"] .orbit-revolve,
-[data-motion="off"] .orbit-counter-revolve { animation: none; }
-[data-motion="off"] .orbit-sprite,
-[data-motion="off"] .orbit-label,
-[data-motion="off"] .orbit-focus-ring,
-[data-motion="off"] .orbit-track { transition: none; }
+.orbit-caption-touch { display: none; }
+@media (hover: none) {
+  .orbit-caption-hover { display: none; }
+  .orbit-caption-touch { display: inline; }
+}
+.orbit-avatar, .orbit-rings { transition: opacity 400ms ease; pointer-events: none; }
+.orbit-figure[data-mode="constellation"] .orbit-avatar { opacity: 0.15; }
+.orbit-figure[data-mode="constellation"] .orbit-rings { opacity: 0; }
+.orbit-figure[data-mode="constellation"] .orbit-label { opacity: 0; }
+.pisces-lines, .pisces-stars, .pisces-label { pointer-events: none; }
+.pisces-line { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; stroke-opacity: 0.55; transition: stroke-dashoffset 400ms ease, opacity 180ms ease; }
+.orbit-figure[data-mode="constellation"] .pisces-line { stroke-dashoffset: 0; opacity: 1; transition-delay: 980ms; }
+.pisces-stars, .pisces-label { opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 180ms; }
+.orbit-figure[data-mode="constellation"] :is(.pisces-stars, .pisces-label) { opacity: 1; visibility: visible; transition-delay: 980ms; }
+.pisces-star { opacity: 0.6; filter: drop-shadow(0 0 3px var(--color-ink)); }
+.pisces-star-faint { opacity: 0.3; }
+.orbit-figure[data-mode="constellation"] .pisces-star { animation: pisces-twinkle 3s ease-in-out calc(1.4s + var(--star-delay)) infinite alternate; }
+@keyframes pisces-twinkle { to { opacity: 0.35; } }
+.orbit-planet-link:is(:hover, :focus-visible) .pisces-label rect { stroke: var(--color-accent); stroke-width: 2; }
+.orbit-planet-link:is(:hover, :focus-visible) .pisces-label text { font-weight: 500; }
+/* Pausing, rather than destroying, the animation preserves the exact orbit phase even
+   if Motion Off is selected during flight. These override the global animation reset. */
+html[data-motion="off"] .orbit-figure .orbit-revolve { animation: orbit-revolve var(--orbit-period) linear infinite !important; animation-play-state: paused !important; }
+html[data-motion="off"] .orbit-figure .orbit-counter-revolve { animation: orbit-counter-revolve var(--orbit-period) linear infinite !important; animation-play-state: paused !important; }
+html[data-motion="off"] .orbit-figure * { transition: none !important; }
+
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="whoami"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="whoami"], [data-to="whoami"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="about"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="about"], [data-to="about"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="experience"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="experience"], [data-to="experience"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="stack"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="stack"], [data-to="stack"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="work"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="work"], [data-to="work"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="framework"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="framework"], [data-to="framework"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="record"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="record"], [data-to="record"]),
+.orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="contact"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="contact"], [data-to="contact"]) { stroke-opacity: 1; stroke-width: 2.5; }

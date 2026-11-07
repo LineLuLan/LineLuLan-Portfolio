@@ -128,6 +128,12 @@ try {
   const reduced = await browser.newPage({ reducedMotion: 'reduce' });
   await reduced.goto(`${base}/#experience`);
   await reduced.locator('.boot-splash').waitFor({ state: 'detached' });
+  assert.equal(await reduced.locator('html').getAttribute('data-motion'), 'on');
+  assert.equal(await reduced.locator('html').getAttribute('data-motion-source'), 'default');
+  await reduced.getByRole('button', { name: /^Appearance, current/ }).click();
+  await reduced.getByRole('switch', { name: /Motion/ }).click();
+  await reduced.waitForFunction(() => document.documentElement.dataset.motion === 'off');
+  await reduced.keyboard.press('Escape');
   await reduced.waitForFunction(() => document.querySelector('.experience-panel')?.hasAttribute('data-scroll-bottom'));
   await reduced.locator('.experience-panel:not([hidden]) .experience-photo-button').first().click();
   assert.equal(await reduced.locator('.experience-lightbox-content').evaluate((element) => getComputedStyle(element).animationName), 'none');

@@ -36,11 +36,11 @@ const display = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher',
+    default: 'Trần Nam Anh (Line) · AI / ML Engineer · Data Engineering',
     template: '%s · Line',
   },
   description:
-    'Trần Nam Anh (Line), Data Engineer at Twohearts Technologies and Lead AI Researcher in clinical ML. Co-first author of GoiBERT, compact Vietnamese encoders. Building LLM systems, evaluation harnesses and data pipelines in Ho Chi Minh City.',
+    'Trần Nam Anh (Line), AI / ML Engineer and Data Engineer at Twohearts Technologies, first author in clinical ML. Researcher by training, engineer by habit. Co-first author of GoiBERT, compact Vietnamese encoders. Building LLM systems, evaluation harnesses and data pipelines in Ho Chi Minh City.',
   keywords: [
     'data science',
     'machine learning',
@@ -62,15 +62,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'Line · linelulan.vercel.app',
-    title: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher',
-    description: 'Data Engineer · Lead AI Researcher · GoiBERT co-first author. Chill in coding, feel in styling.',
+    title: 'Trần Nam Anh (Line) · AI / ML Engineer · Data Engineering',
+    description: 'Researcher by training, engineer by habit. I turn ideas from papers into ML and LLM systems that hold up in production.',
     // Static file: the dynamic edge route took 2-5 s per uncached hit and chat crawlers gave up (2026-11-08).
-    images: [{ url: '/og/line-share.png', width: 1200, height: 630, type: 'image/png', alt: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher' }],
+    images: [{ url: '/og/line-share.png', width: 1200, height: 630, type: 'image/png', alt: 'Trần Nam Anh (Line) · AI / ML Engineer · Data Engineering' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher',
-    description: 'Data Engineer · Lead AI Researcher · GoiBERT co-first author. Chill in coding, feel in styling.',
+    title: 'Trần Nam Anh (Line) · AI / ML Engineer · Data Engineering',
+    description: 'Researcher by training, engineer by habit. I turn ideas from papers into ML and LLM systems that hold up in production.',
     images: ['/og/line-share.png'],
   },
   robots: {
@@ -90,7 +90,7 @@ const personJsonLd = {
   '@type': 'Person',
   name: 'Trần Nam Anh',
   alternateName: 'Line',
-  jobTitle: 'Data Engineer and AI Researcher',
+  jobTitle: 'AI / ML Engineer · Data Engineering',
   image: `${SITE_URL}/about/line-square.jpg`,
   worksFor: { '@type': 'Organization', name: 'Twohearts Technologies', url: 'https://twohearts.vn' },
   knowsAbout: ['Machine learning', 'Large language models', 'Data engineering', 'Knowledge distillation', 'Clinical machine learning'],

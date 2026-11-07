@@ -7,28 +7,40 @@ export const projects: Project[] = [
     year: '2026',
     lead: true,
     name: 'GoiBERT-M',
-    tagline: 'Compact Vietnamese language encoders trained by two-stage knowledge distillation.',
+    // Copy from the arXiv paper 2610.30067v2 (read 2026-11-08); every number is from its tables.
+    tagline: 'Compact Vietnamese encoders that read raw text and outscore models twice their size, distilled from two teachers.',
     domains: ['research', 'LLM'],
     state: 'live',
     featured: true,
-    problem: 'Vietnamese NLP needs encoders small enough to serve cheaply without giving up benchmark quality.',
-    dataset: '328.6M Vietnamese tokens for distillation; eight Vietnamese NLP benchmarks for evaluation.',
-    method: 'Two-stage knowledge distillation into 26.4M-parameter (base) and 49.4M-parameter (large) encoders.',
-    results: 'Average 81.13 across eight benchmarks with GoiBERT-large, above BamiBERT (80.65) and PhoBERT-v2 (80.71). 2× GPU throughput at roughly half the parameters and peak memory of BamiBERT; GoiBERT-base keeps 99% of BamiBERT’s score at a quarter of the parameters.',
-    tech: ['Python', 'PyTorch', 'HuggingFace', 'Knowledge Distillation'],
+    problem:
+      'The strongest Vietnamese encoders are expensive to run. CafeBERT has 559M parameters, almost half of them in a multilingual vocabulary; PhoBERT needs an external word segmenter at inference time; even the leanest strong baseline, BamiBERT, carries a 102M-parameter encoder. Teams serving Vietnamese NLP on CPUs, small GPUs or tight latency budgets had no compact, segmentation-free encoder that holds up across tasks.',
+    dataset:
+      '328.6M tokens of clean, unlabeled Vietnamese text from HPLT 3.0, Wikipedia and benchmark training splits, with every passage that matches validation or test content removed by exact and 13-gram matching. Evaluation on eight benchmarks across text classification, aspect-based sentiment, natural language inference and NER: 15 metrics, three seeds each.',
+    method:
+      'Two teachers, two stages, each teacher used where its knowledge can actually transfer. Stage 1: BamiBERT, which shares the student\'s tokenizer, teaches general representations through layer-wise hidden-state and attention matching on unlabeled text. Stage 2: CafeBERT, whose 250K multilingual vocabulary cannot be aligned token by token, teaches only through task soft labels, generated out of fold by five teachers each trained on four folds, so no example is ever labeled by a model that saw it. The students are RoBERTa encoders (10 × 384 and 12 × 512) with embeddings initialised from the teacher by PCA and layer-wise learning-rate decay.',
+    results:
+      'GoiBERT-large averages 81.13 across eight benchmarks, the best non-teacher model, ahead of PhoBERT-v2 (80.71) and BamiBERT (80.65) with 48% of BamiBERT\'s parameters, and it beats its 559M-parameter teacher on classification (80.19 vs 79.98). Against BamiBERT it doubles GPU throughput (4,827 vs 2,397 sentences/s), halves memory and cuts CPU latency by 37%. GoiBERT-base keeps 99.2% of BamiBERT\'s score at a quarter of the size with 3.5× the throughput. Compression is nearly free for sentiment and classification; NLI and NER are where it still costs, and the paper says so.',
+    tech: ['Python', 'PyTorch', 'Hugging Face', 'RoBERTa', 'Knowledge Distillation'],
     role: 'Co-first author · distillation and evaluation',
+    gallery: [
+      { src: '/projects/goibert/training-pipeline.png', width: 931, height: 403, fit: 'contain', alt: 'GoiBERT training pipeline: general distillation from BamiBERT on 329M tokens, out-of-fold soft labels from five CafeBERT teachers, then task fine-tuning with cross-entropy plus distillation loss', caption: 'Two teachers, two stages: the training pipeline (paper Figure 2)' },
+      { src: '/projects/goibert/encoder-architecture.png', width: 604, height: 994, fit: 'contain', alt: 'GoiBERT encoder architecture: embeddings over the 20,481-token BamiBERT vocabulary, L encoder layers of multi-head self-attention and feed-forward blocks, and a task head; base is 10 layers at 384 wide, large is 12 layers at 512 wide', caption: 'The compact encoder, base and large (paper Figure 4)' },
+      { src: '/projects/goibert/results-table.png', width: 1183, height: 562, fit: 'contain', alt: 'Test results on eight Vietnamese benchmarks: GoiBERT-large averages 81.13, the best non-teacher model, with 49.4M parameters', caption: 'Main results on eight benchmarks (paper Table 1)' },
+      { src: '/projects/goibert/full-results-table.png', width: 1204, height: 876, fit: 'contain', alt: 'Complete results across all 15 metrics with parameter and FLOP breakdown: GoiBERT-base has 26.4M parameters and 4.8 GFLOPs at 128 tokens', caption: 'All 15 metrics, parameters and FLOPs (paper Table 5)' },
+    ],
     hfModels: ['TwoheartsTechnologies/GoiBERT-M', 'TwoheartsTechnologies/GoiBERT-S'], // Intent: family stats. Status: enabled. Next: none. Blockers: none. Confidence: verified Hub IDs.
     links: {
       paper: 'https://arxiv.org/abs/2610.30067',
+      github: 'https://github.com/Nhantran65/GoiBERT',
       model: 'https://huggingface.co/TwoheartsTechnologies/GoiBERT-M',
     },
     dabm: {
-      D: '328.6M Vietnamese tokens · 8 benchmarks',
-      A: 'downstream Vietnamese NLP tasks',
-      B: 'teacher-to-student signal transfer',
-      M: 'two-stage distillation · compact encoders',
+      D: '328.6M Vietnamese tokens · 8 benchmarks · 15 metrics',
+      A: 'teams serving Vietnamese NLP on CPUs, small GPUs and tight latency budgets',
+      B: 'two teachers whose knowledge transfers at different granularities',
+      M: 'two-stage distillation · out-of-fold soft labels · compact RoBERTa students',
     },
-    why: 'Careful distillation beats scale for a low-resource language, and research results can ship as usable models.',
+    why: 'Shows research judgment, not just training runs: each teacher matched to the stage it can teach, leakage guarded at every step, and measured speed reported next to the tasks where compression still costs.',
   },
   {
     slug: 'line-harness',

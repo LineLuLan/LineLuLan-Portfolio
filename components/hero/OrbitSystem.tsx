@@ -20,10 +20,10 @@ export function OrbitSystem() {
     <OrbitController targets={fitted.planets}>
       <svg viewBox={`0 0 ${frame.width} ${frame.height}`} role="group" aria-label="Sections as planets" className="orbit-system w-full" style={{ '--orbit-hover-scale': layout.hoverScale } as CSSProperties}>
         <g className="pisces-lines" aria-hidden="true">
-          {PISCES.lines.map(([from, to]) => {
+          {PISCES.lines.map(([from, to], index) => {
             const a = fitted.stars[from]!;
             const b = fitted.stars[to]!;
-            return <path key={`${from}-${to}`} className="pisces-line" data-from={from} data-to={to} d={`M${a.x} ${a.y}L${b.x} ${b.y}`} pathLength={1} fill="none" stroke="var(--color-accent)" strokeWidth={1.5} />;
+            return <path key={`${from}-${to}`} className="pisces-line" style={{ '--line-index': index } as CSSProperties} data-from={from} data-to={to} d={`M${a.x} ${a.y}L${b.x} ${b.y}`} pathLength={1} fill="none" stroke="var(--color-accent)" strokeWidth={1.5} />;
           })}
         </g>
         <g className="pisces-stars" aria-hidden="true">

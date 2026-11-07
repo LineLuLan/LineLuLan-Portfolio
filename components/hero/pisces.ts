@@ -24,7 +24,8 @@ export const PISCES = {
     faint1: { x: 100, y: 430 }, faint2: { x: 110, y: 470 }, faint3: { x: 330, y: 300 },
   },
   lines: [
-    ['whoami', 'about'], ['a', 'about'], ['about', 'b'], ['b', 'experience'],
+    // Ordered as a path from star 1 to star 8 so the lines draw in that order.
+    ['whoami', 'about'], ['about', 'a'], ['about', 'b'], ['b', 'experience'],
     ['experience', 'stack'], ['stack', 'work'], ['work', 'c'], ['c', 'framework'],
     ['framework', 'd'], ['d', 'record'], ['record', 'e'], ['e', 'contact'],
     ['contact', 'f'], ['f', 'g'], ['g', 'h'], ['h', 'd'],

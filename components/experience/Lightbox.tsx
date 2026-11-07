@@ -98,7 +98,7 @@ export default function PhotoGallery({ photos, title, eager = false, thumbnail =
                   ? '(min-width: 1024px) 640px, calc(100vw - 96px)'
                   : '(min-width: 1024px) 300px, calc(100vw - 96px)'}
                 loading={eager && index === 0 ? 'eager' : 'lazy'}
-                style={cropThumbnails ? { aspectRatio: '16 / 10', height: 'auto', maxHeight: 'none', objectFit: 'cover', objectPosition: 'top' } : undefined} />
+                style={cropThumbnails ? { aspectRatio: '16 / 10', height: 'auto', maxHeight: 'none', objectFit: photo.fit ?? 'cover', objectPosition: photo.fit ? 'center' : 'top', background: photo.fit ? '#ffffff' : undefined } : undefined} />
             </button>
             {!thumbnail && photo.caption && <figcaption className="experience-photo-caption">{photo.caption}</figcaption>}
           </figure>

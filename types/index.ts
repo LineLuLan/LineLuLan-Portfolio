@@ -9,6 +9,8 @@ export type ExperiencePhoto = {
   width: number;
   height: number;
   caption?: string;
+  // 'contain' shows a whole figure (diagrams, tables) instead of a top-cropped thumbnail.
+  fit?: 'contain';
 };
 
 export type ExperienceHighlight = {

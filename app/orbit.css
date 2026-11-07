@@ -39,8 +39,9 @@
 .orbit-figure[data-mode="constellation"] .orbit-rings { opacity: 0; }
 .orbit-figure[data-mode="constellation"] .orbit-label { opacity: 0; }
 .pisces-lines, .pisces-stars, .pisces-label { pointer-events: none; }
-.pisces-line { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; stroke-opacity: 0.55; transition: stroke-dashoffset 400ms ease, opacity 180ms ease; }
-.orbit-figure[data-mode="constellation"] .pisces-line { stroke-dashoffset: 0; opacity: 1; transition-delay: 980ms; }
+.pisces-line { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; stroke-opacity: 0.55; transition: stroke-dashoffset 140ms linear, opacity 80ms ease; }
+/* Lines trace star 1 to star 8 in order, starting while the planets land (Line, 2026-11-08). */
+.orbit-figure[data-mode="constellation"] .pisces-line { stroke-dashoffset: 0; opacity: 1; transition-delay: calc(350ms + var(--line-index, 0) * 55ms); }
 .pisces-stars, .pisces-label { opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 180ms; }
 .orbit-figure[data-mode="constellation"] :is(.pisces-stars, .pisces-label) { opacity: 1; visibility: visible; transition-delay: 980ms; }
 .pisces-star { opacity: 0.6; filter: drop-shadow(0 0 3px var(--color-ink)); }

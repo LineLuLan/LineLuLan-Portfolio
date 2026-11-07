@@ -64,11 +64,14 @@ export const metadata: Metadata = {
     siteName: 'Line · linelulan.vercel.app',
     title: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher',
     description: 'Data Engineer · Lead AI Researcher · GoiBERT co-first author. Chill in coding, feel in styling.',
+    // Static file: the dynamic edge route took 2-5 s per uncached hit and chat crawlers gave up (2026-11-08).
+    images: [{ url: '/og/line-share.png', width: 1200, height: 630, type: 'image/png', alt: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Trần Nam Anh (Line) · Data Engineer & AI Researcher',
     description: 'Data Engineer · Lead AI Researcher · GoiBERT co-first author. Chill in coding, feel in styling.',
+    images: ['/og/line-share.png'],
   },
   robots: {
     index: true,

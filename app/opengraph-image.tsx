@@ -1,18 +1,29 @@
 import { ImageResponse } from 'next/og';
+import { SITE_URL } from '@/lib/constants';
 
 // Intent: share Line's real portrait and research in the Orbit visual language.
-// Status: implemented. Next: production image acceptance. Blockers: sandbox denies build worker spawn. Confidence: static checks only.
+// Status: edge runtime with fonts and portrait fetched from /public at request time, so they are
+// not bundled. Bundling them broke the Vercel Hobby 1 MB edge-function limit (2026-11-08).
+// Next: none. Confidence: local next start with NEXT_PUBLIC_SITE_URL pointing at the local server.
 export const runtime = 'edge';
 export const alt = 'Trần Nam Anh (Line) · Data Engineer & AI Researcher';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+const asset = (path: string) => fetch(`${SITE_URL}${path}`).then((response) => {
+  if (!response.ok) throw new Error(`OG asset ${path}: ${response.status}`);
+  return response.arrayBuffer();
+});
+
 export default async function OG() {
-  const [regular, bold, portrait] = await Promise.all([
-    fetch(new URL('./og-fonts/BeVietnamPro-Regular.ttf', import.meta.url)).then((response) => response.arrayBuffer()),
-    fetch(new URL('./og-fonts/BeVietnamPro-Bold.ttf', import.meta.url)).then((response) => response.arrayBuffer()),
-    fetch(new URL('../public/about/line-square.jpg', import.meta.url)).then((response) => response.arrayBuffer()),
+  const [regular, bold, portraitBytes] = await Promise.all([
+    asset('/og-fonts/BeVietnamPro-Regular.ttf'),
+    asset('/og-fonts/BeVietnamPro-Bold.ttf'),
+    asset('/about/line-square.jpg'),
   ]);
+  let binary = '';
+  new Uint8Array(portraitBytes).forEach((byte) => { binary += String.fromCharCode(byte); });
+  const portrait = `data:image/jpeg;base64,${btoa(binary)}`;
 
   return new ImageResponse(
     (
@@ -37,7 +48,7 @@ export default async function OG() {
         <div style={{ display: 'flex', position: 'absolute', left: 782, top: 151, width: 308, height: 308, borderRadius: '50%', border: '4px solid #c084fc', overflow: 'hidden' }}>
           {/* ImageResponse accepts binary image data; this is not a browser image element. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={portrait as unknown as string} alt="" width={300} height={300} style={{ objectFit: 'cover', borderRadius: '50%' }} />
+          <img src={portrait} alt="" width={300} height={300} style={{ objectFit: 'cover', borderRadius: '50%' }} />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', position: 'absolute', left: 56, top: 58, width: 620 }}>

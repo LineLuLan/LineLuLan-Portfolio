@@ -65,16 +65,12 @@ html[data-motion="off"] .orbit-figure * { transition: none !important; }
 .orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="record"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="record"], [data-to="record"]),
 .orbit-figure[data-mode="constellation"]:has(.orbit-planet-link[data-section="contact"]:is(:hover, :focus-visible)) .pisces-line:is([data-from="contact"], [data-to="contact"]) { stroke-opacity: 1; stroke-width: 2.5; }
 
-/* About portrait orbit: round photo, dashed ring, two pixel planets (Line, 2026-11-08). */
-.about-orbit { position: relative; aspect-ratio: 1; padding: 13%; overflow: hidden; }
-.about-orbit-ring { position: absolute; inset: 4%; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--color-accent) 45%, transparent); }
-.about-orbit-carrier { position: absolute; inset: 4%; }
-.about-orbit-planet { position: absolute; display: grid; place-items: center; transform: translate(-50%, -50%); }
-.about-orbit-planet-a { left: 50%; top: 0; }
-.about-orbit-planet-b { left: 50%; top: 100%; }
-.about-orbit-photo { position: relative; height: 100%; width: 100%; overflow: hidden; border-radius: 50%; border: 2px solid var(--color-accent); box-shadow: 0 0 28px color-mix(in srgb, var(--color-accent) 22%, transparent); }
-[data-motion="on"] .about-orbit-carrier { animation: about-orbit-spin 28s linear infinite; }
-[data-motion="on"] .about-orbit-planet > * { animation: about-orbit-counter 28s linear infinite; }
-[data-motion="on"] .about-orbit-ring { animation: about-orbit-spin 90s linear infinite reverse; }
-@keyframes about-orbit-spin { to { transform: rotate(360deg); } }
-@keyframes about-orbit-counter { to { transform: rotate(-360deg); } }
+/* About portrait orbit: square photo, dashed rounded-square track, two pixel planets travelling it (Line, 2026-11-08). */
+.about-orbit { position: relative; aspect-ratio: 1; padding: 6%; }
+.about-orbit-ring { position: absolute; inset: 2.5%; border-radius: 22px; border: 1px dashed color-mix(in srgb, var(--color-accent) 45%, transparent); }
+.about-orbit-planet { position: absolute; top: 0; left: 0; display: block; width: max-content; height: max-content; offset-path: inset(2.5% round 22px); offset-rotate: 0deg; offset-anchor: center; offset-distance: 12%; z-index: 1; }
+.about-orbit-planet-b { offset-distance: 62%; }
+.about-orbit-photo { position: relative; height: 100%; width: 100%; overflow: hidden; border-radius: var(--theme-radius); border: 2px solid var(--color-accent); box-shadow: 0 0 28px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+[data-motion="on"] .about-orbit-planet { animation: about-orbit-travel 26s linear infinite; }
+[data-motion="on"] .about-orbit-planet-b { animation-delay: -13s; }
+@keyframes about-orbit-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }

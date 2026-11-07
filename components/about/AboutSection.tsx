@@ -21,21 +21,19 @@ export function AboutSection() {
           <p data-reveal className="mt-4 text-[17px] leading-7 text-ink [--reveal-delay:60ms]">{profile.narrative.mission}</p>
           <ExploringTags tags={profile.exploring} />
         </div>
-        {/* Round portrait sized by viewport height so About keeps one window on any screen;
-            a small orbit with two pixel planets circles it (Line, 2026-11-08). */}
-        <figure data-reveal="slide" className="about-orbit-figure mx-auto w-[min(300px,100%)] min-w-0 lg:w-[min(260px,30svh)] [--reveal-delay:80ms]">
+        {/* Square portrait sized by viewport height so About keeps one window on any screen;
+            two pixel planets travel a dashed rounded-square orbit around it (Line, 2026-11-08). */}
+        <figure data-reveal="slide" className="about-orbit-figure mx-auto w-[min(320px,100%)] min-w-0 lg:w-[min(310px,34svh)] [--reveal-delay:80ms]">
           <div className="about-orbit">
             <div className="about-orbit-ring" aria-hidden="true" />
-            <div className="about-orbit-carrier" aria-hidden="true">
-              <span className="about-orbit-planet about-orbit-planet-a"><PixelPlanet kind="saturn" size={22} /></span>
-              <span className="about-orbit-planet about-orbit-planet-b"><PixelPlanet kind="moon" size={16} /></span>
-            </div>
+            <span className="about-orbit-planet about-orbit-planet-a" aria-hidden="true"><PixelPlanet kind="saturn" size={22} /></span>
+            <span className="about-orbit-planet about-orbit-planet-b" aria-hidden="true"><PixelPlanet kind="moon" size={16} /></span>
             <div className="about-orbit-photo">
               <Image
                 src="/about/line-portrait.jpg"
                 width={1000}
                 height={1250}
-                sizes="(min-width: 1024px) 220px, 240px"
+                sizes="300px"
                 alt="Trần Nam Anh (Line) in a Hackathon Vietnam · GDG on Campus t-shirt, making a hand sign outdoors at sunset"
                 className="h-full w-full object-cover object-top"
               />

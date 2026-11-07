@@ -69,16 +69,32 @@ export const experience: ExperienceOrg[] = [
   },
   {
     id: '100b', org: '100B Studio', url: 'https://100b.studio', logo: '/experience/logos/100b-studio.png',
-    summary: '100B Studio is a small product studio. Alongside its own products, the team takes on outsourced builds for clients.',
+    // Facts from 100b.studio (read 2026-11-07) and Line's product notes; no revenue figures published.
+    summary: 'A three-person fullstack studio in Saigon that builds production-shaped systems on fixed scope and fixed price. Every engagement opens with a paid two-week scoping and a written architecture brief, and the studio holds at two concurrent builds so neither gets the leftovers.',
+    highlights: [{
+      title: 'Monodesk · multi-channel AI customer service',
+      body: 'One inbox for Shopify, Instagram, Discord, Facebook, WhatsApp and Zalo, plus an embeddable widget. A GPT-4o agent answers around the clock from the shop\'s own knowledge (retrieval over Couchbase, jobs on BullMQ), targets a first token under 2.5 s at p95, and hands the conversation to a human when its confidence drops. Paused before launch when the investor withdrew.',
+    }, {
+      title: 'Visield · content QA before you publish',
+      body: 'A neural simulation that stands in for a Vietnamese audience: it scores a post\'s viral potential, names the likeliest reason it would flop, and returns three fixes, hook rewrites and timestamped video edits before anything goes live. Paused when the same investor withdrew.',
+    }, {
+      title: 'Panic Hub · agentic simulation game', date: '2026-03',
+      body: 'A real-time market panic simulation with 50+ concurrent LLM-driven agents, shipped by the studio team with multi-provider routing for low-latency inference.',
+      link: { href: '/projects/panic-hub', label: 'Read the project story' },
+    }, {
+      title: 'EnStudy-Hub · FSRS vocabulary trainer', date: '2026-05',
+      body: 'A spaced-repetition vocabulary app for Vietnamese English learners, built by the studio team and live on Vercel with four review minigames.',
+      link: { href: '/projects/enstudy-hub', label: 'Read the project story' },
+    }],
     roles: [{
-      title: 'Co-founder · Data & AI Engineer', start: '2026-04', location: 'Ho Chi Minh City',
+      title: 'Co-founder · Backend, Data & AI Engineer', start: '2026-04', location: 'Ho Chi Minh City',
       bullets: [
-        'Co-founded the studio and help decide which client projects it takes on, from first call to delivery.',
-        "Work as the studio's data, AI and data-science engineer on outsourced projects: data pipelines, model prototypes and the analytics behind them.",
-        'Turn loose client briefs into scoped milestones, estimates and early demos the client can react to.',
-        'Set up the shared engineering habits: code review, automated tests and lightweight delivery checklists.',
+        'Co-founded the studio and shape which engagements it takes on: a two-week paid scoping, a fixed-price estimate, and a clear "no" when a project does not fit.',
+        'Own the backend of studio builds: service contracts, Postgres data models, queues and the LLM layer, designed for predictable behaviour under load and partial failure.',
+        'Build the AI engines behind the products: retrieval, confidence routing and cost ceilings, so an assistant answers when it is sure and hands over when it is not.',
+        'Write the architecture briefs clients keep, covering constraints, load targets and service shape, and set the shared habits: contracts before code, telemetry before opinions, code review and automated tests.',
       ],
-      skills: ['Python', 'Data pipelines', 'LLM integration', 'Next.js', 'PostgreSQL'],
+      skills: ['TypeScript', 'Python', 'PostgreSQL', 'Redis', 'BullMQ', 'RAG', 'LLM integration', 'Next.js'],
     }],
   },
   {

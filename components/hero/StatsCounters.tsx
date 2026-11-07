@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useInView } from 'framer-motion';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import type { ProfileStat } from '@/types';
+import { yearsSince } from '@/lib/tenure';
 
 type Props = {
   stats: ProfileStat[];
@@ -21,8 +22,12 @@ function format(value: number, decimals = 0, pad = 0) {
   return pad > 0 ? s.padStart(pad, '0') : s;
 }
 
-function Counter({ stat, start }: { stat: ProfileStat; start: boolean }) {
+function Counter({ stat: base, start }: { stat: ProfileStat; start: boolean }) {
   const { reducedMotion: reduce } = useTheme();
+  // A static page keeps counting tenure against the visitor's own clock.
+  const [liveValue, setLiveValue] = useState(base.value);
+  useEffect(() => { if (base.since) setLiveValue(yearsSince(base.since)); }, [base.since]);
+  const stat = { ...base, value: liveValue, label: liveValue === 1 && base.labelOne ? base.labelOne : base.label };
   const [display, setDisplay] = useState(stat.value);
 
   useEffect(() => {
@@ -76,7 +81,7 @@ export function StatsCounters({ stats }: Props) {
           {s.href ? (
             <a
               href={s.href}
-              aria-label={`${s.label} ${format(s.value, s.decimals ?? 0, s.pad ?? 0)}${s.suffix?.replace('/', ' of ') ?? ''}, view ${s.href === '/transcript' ? 'academic record' : s.href === '#record' ? 'career record' : s.href === '#work' ? 'projects' : 'experience'}`}
+              aria-label={`${s.value === 1 && s.labelOne ? s.labelOne : s.label} ${format(s.value, s.decimals ?? 0, s.pad ?? 0)}${s.suffix?.replace('/', ' of ') ?? ''}, view ${s.href === '/transcript' ? 'academic record' : s.href === '#record' ? 'career record' : s.href === '#work' ? 'projects' : 'experience'}`}
               className="surface-card block h-full rounded-[var(--theme-radius)] hover:bg-tint-a focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               <Counter stat={s} start={inView} />

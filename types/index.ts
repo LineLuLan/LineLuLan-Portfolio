@@ -137,6 +137,9 @@ export type SocialLinks = {
 
 export type ProfileStat = {
   value: number;
+  // Live tenure: whole years since this YYYY-MM month, recomputed from the visitor's clock.
+  since?: string;
+  labelOne?: string;
   href?: string;
   suffix?: string;
   label: string;

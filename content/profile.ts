@@ -1,6 +1,8 @@
 // Intent: present Line's supplied R2 narrative and evidence without changing project records.
 // Status: R2. Next: supervisor copy review. Blockers: none. Confidence: supplied task packet.
 import type { Profile } from '@/types';
+import { projects } from './projects';
+import { yearsSince } from '@/lib/tenure';
 
 export const profile: Profile = {
   name: 'Trần Nam Anh',
@@ -30,10 +32,10 @@ export const profile: Profile = {
   openTo: 'AI / ML Engineer · Data Engineering roles',
   availability: 'Open to AI / ML & Data roles · HCMC',
   stats: [
-    { value: 4, suffix: '+', label: 'Years in tech', href: '#record' },
-    { value: 1, suffix: '+', label: 'Year in industry', href: '#experience' },
+    { value: yearsSince('2023-09'), since: '2023-09', suffix: '+', label: 'Years in tech', labelOne: 'Year in tech', href: '#record' },
+    { value: yearsSince('2025-09'), since: '2025-09', suffix: '+', label: 'Years in industry', labelOne: 'Year in industry', href: '#experience' },
     { value: 3.56, suffix: '/4.0', label: 'Current GPA', decimals: 2, href: '/transcript' },
-    { value: 6, suffix: '+', label: 'Projects shipped', href: '#work' },
+    { value: projects.filter((project) => project.listed !== false).length, label: 'Projects shipped', href: '#work' },
   ],
   whatIBring: [
     {

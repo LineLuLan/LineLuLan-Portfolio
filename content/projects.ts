@@ -188,7 +188,7 @@ export const projects: Project[] = [
     results:
       'Live on Vercel · v0.2.0 shipped 2026-05-13 (dashboard, stats, 4 minigame modes, settings, theme); v1.0.0 in flight with CSV import, per-card actions, inline editing · 108 green vitest unit tests covering schema/queue/FSRS logic.',
     tech: ['Next.js 15', 'TypeScript', 'Supabase', 'Drizzle ORM', 'ts-fsrs', 'Zod', 'Tailwind v4', 'Vitest'],
-    role: 'Lead dev · architecture, FSRS integration, server actions, UI',
+    role: 'Lead dev · architecture, FSRS integration, server actions, UI · 100B Studio',
     collaborators: [
       { name: 'Phí Vương Tường Tâm', role: 'contributor' },
       { name: 'Trần Nam Anh', role: 'contributor' },
@@ -244,11 +244,16 @@ export const projects: Project[] = [
     tagline: 'Real-time agentic AI simulation game with 50+ concurrent LLM-driven agents.',
     domains: ['LLM', 'ML'],
     state: 'live',
-    problem: 'Simulate a market under panic: dozens of autonomous agents reacting to LLM-driven events in real time without the simulation falling over.',
-    method: 'Core simulation logic for a multi-agent environment with 50+ concurrent agents, combining probabilistic decision-making, LLM-driven events, and macroeconomic constraints. Multi-provider LLM routing across Gemini, Groq, and Cerebras for low-latency, cost-efficient inference; asynchronous execution with Pydantic-validated outputs.',
-    results: 'Shipped March 2026.',
+    problem:
+      'Simulate a market under panic: dozens of autonomous agents reacting to breaking events in real time, each with its own memory and temperament, without the simulation stalling, contradicting itself or burning through an inference budget.',
+    dataset:
+      'No fixed dataset: the world state is generated live. Each tick carries the market state, macroeconomic constraints and every agent\'s memory of what it has seen, and LLM-generated events feed back into that state.',
+    method:
+      'Core simulation logic for a multi-agent environment with 50+ concurrent agents, combining probabilistic decision-making, LLM-driven events and macroeconomic constraints. Inference is routed across Gemini, Groq and Cerebras so each call goes to the fastest affordable provider; agents run asynchronously and every LLM output is validated with Pydantic before it can change the world state, so one malformed answer never corrupts the run.',
+    results:
+      'Shipped in March 2026 with the 100B Studio team; the recorded demo shows 50+ agents reacting to events live. The validation layer turned free-form model output into typed state changes, which kept a long-running simulation stable.',
     tech: ['Python 3.11', 'PyTorch', 'Pydantic', 'AsyncIO', 'Gemini', 'Groq', 'Cerebras'],
-    role: 'AI Architect · simulation logic and LLM routing',
+    role: 'AI Architect · simulation logic and LLM routing · 100B Studio',
     dabm: {
       D: 'simulated market state · agent memories',
       A: '50+ concurrent autonomous agents',

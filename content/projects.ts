@@ -30,6 +30,36 @@ export const projects: Project[] = [
     why: 'Careful distillation beats scale for a low-resource language, and research results can ship as usable models.',
   },
   {
+    slug: 'line-harness',
+    planet: 'satellite',
+    year: '2026',
+    name: 'Line Harness',
+    tagline: 'My daily agent-coding harness: Claude Code plans and reviews, Codex CLI implements, hooks enforce the rules.',
+    domains: ['LLM', 'other'],
+    state: 'live',
+    featured: true,
+    problem:
+      'Coding agents fail quietly. A worker dies mid-task and nobody notices for an hour, a sandbox rejects every command while the run still exits 0, or the model that wrote the code also grades it. I needed a setup where every delegated change is bounded, observable, and checked by something other than its author.',
+    dataset:
+      'My own working record: 328 delegated tasks logged in a review ledger from September to November 2026, 168 detached worker runs, and 77 shared skills mirrored on both agents.',
+    method:
+      'Claude Code is the supervisor: it writes a task packet (goal, success criteria, stop rules) and dispatches it to the Codex CLI through a PowerShell dispatcher that launches workers outside the agent process tree, preflights the Windows sandbox, supports resume, attach and cancel, and posts a toast when a run ends. Every change passes a three-layer review gate (deterministic gates, a fresh-session model review, then the supervisor re-running the change) under tiered model routing. Twelve hooks enforce the rules on every turn: delegation reminder, context-budget guard, a docs-check guard that forces current library docs through context7, and git-push and shell guards. A custom status line shows quotas, context, and live worker runs.',
+    results:
+      'Across 328 ledgered tasks the gate caught 504 defects: 38 by deterministic gates, 165 by model review, and 301 by supervisor verification, so a worker checking its own output is not enough. Worker cold start dropped from 48.7 s to 12.6 s, and silent sandbox failures now fail within seconds with a clear exit code. Open-sourced with a portable restore script.',
+    tech: ['Claude Code', 'Codex CLI', 'PowerShell', 'Node.js', 'MCP', 'context7'],
+    role: 'Solo builder · harness design, tooling, review policy',
+    links: {
+      github: 'https://github.com/LineLuLan/line-harness',
+    },
+    dabm: {
+      D: '328 ledgered tasks · 168 worker runs · 77 shared skills',
+      A: 'me, shipping research and product code every day with two agents',
+      B: 'where agent work fails silently: dead workers, rejected sandboxes, self-grading',
+      M: 'supervisor-worker split · three-layer review gate · rule-enforcing hooks',
+    },
+    why: 'Shows I can design the system around AI agents (routing, guardrails, observability, review) instead of only prompting them, and that I measure whether it works.',
+  },
+  {
     slug: 'enstudy-hub',
     planet: 'earth',
     year: '2026',

@@ -1,7 +1,7 @@
 'use client';
 
-// Intent: keep live drag, coverflow depth and spring settling on one shared coordinate system.
-// Status: implemented. Next: gesture acceptance. Blockers: none. Confidence: state boundary tests.
+// Intent: keep coverflow motion on one coordinate system and pass server-fetched adoption to cards.
+// Status: implemented. Next: gesture acceptance. Blockers: none. Confidence: state boundary and HF tests.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { animate, motion, useDragControls, useMotionValue, useTransform, type MotionStyle, type MotionValue, type PanInfo } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -12,8 +12,9 @@ import type { Project } from '@/types';
 
 const spring = { type: 'spring' as const, stiffness: 280, damping: 32 };
 
-function CoverflowSlide({ project, index, count, position, recycled, active, dragX, width, select }: {
+function CoverflowSlide({ project, hfDownloads, index, count, position, recycled, active, dragX, width, select }: {
   project: Project; index: number; count: number; position: number; recycled: boolean; active: boolean;
+  hfDownloads?: number | null;
   dragX: MotionValue<number>; width: MotionValue<number>; select: (index: number) => void;
 }) {
   const { reducedMotion } = useTheme();
@@ -39,7 +40,7 @@ function CoverflowSlide({ project, index, count, position, recycled, active, dra
       style={{ x, '--coverflow-x': x, zIndex, visibility, rotateY: reducedMotion ? 0 : rotateY, scale: reducedMotion ? 1 : scale,
         z: reducedMotion ? 0 : z, opacity: reducedMotion ? (active ? 1 : 0.55) : opacity, filter: reducedMotion ? 'none' : filter } as MotionStyle}>
       <div ref={(element) => { if (element) element.inert = !active; }} className="h-full">
-        <ProjectSlide project={project} index={index} active={active} dragX={dragX} />
+        <ProjectSlide project={project} hfDownloads={hfDownloads} index={index} active={active} dragX={dragX} />
       </div>
       {!active && <button type="button" tabIndex={-1} aria-label={`Show ${project.name}`} onClick={() => select(index)}
         className="absolute inset-0 cursor-pointer rounded-[var(--theme-radius)]" />}
@@ -47,7 +48,7 @@ function CoverflowSlide({ project, index, count, position, recycled, active, dra
   );
 }
 
-export function ProjectCarousel({ projects }: { projects: Project[] }) {
+export function ProjectCarousel({ projects, hfDownloads = {} }: { projects: Project[]; hfDownloads?: Record<string, number | null> }) {
   const [{ active, previous }, setSelection] = useState({ active: 0, previous: 0 });
   const { reducedMotion } = useTheme();
   const track = useRef<HTMLDivElement>(null);
@@ -151,7 +152,7 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
             const position = slidePosition(index, active, count);
             // Recycled offscreen slides change sides instantly instead of crossing the centered story.
             const recycled = Math.abs(position - slidePosition(index, previous, count)) > 1;
-            return <CoverflowSlide key={project.slug} project={project} index={index} count={count}
+            return <CoverflowSlide key={project.slug} project={project} hfDownloads={hfDownloads[project.slug]} index={index} count={count}
               position={position} recycled={recycled} active={index === active} dragX={x} width={width} select={select} />;
           })}
         </motion.div>
@@ -163,7 +164,7 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
         <div className="flex justify-center" aria-label="Choose project">
           {projects.map((project, index) => (
             <button key={project.slug} type="button" aria-label={`Show ${project.name}`} aria-pressed={index === active}
-              onClick={() => select(index)} className="motion-control grid size-11 place-items-center rounded-[var(--theme-control-radius)] hover:bg-tint-a">
+              onClick={() => select(index)} className="motion-control grid h-11 w-8 place-items-center rounded-[var(--theme-control-radius)] hover:bg-tint-a sm:w-11">
               <span className={`size-2 rounded-full ${index === active ? 'bg-accent' : 'border hairline bg-panel'}`} />
             </button>
           ))}

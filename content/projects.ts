@@ -17,6 +17,7 @@ export const projects: Project[] = [
     results: 'Average 81.13 across eight benchmarks with GoiBERT-large, above BamiBERT (80.65) and PhoBERT-v2 (80.71). 2× GPU throughput at roughly half the parameters and peak memory of BamiBERT; GoiBERT-base keeps 99% of BamiBERT’s score at a quarter of the parameters.',
     tech: ['Python', 'PyTorch', 'HuggingFace', 'Knowledge Distillation'],
     role: 'Co-first author · distillation and evaluation',
+    hfModels: ['TwoheartsTechnologies/GoiBERT-M', 'TwoheartsTechnologies/GoiBERT-S'], // Intent: family stats. Status: enabled. Next: none. Blockers: none. Confidence: verified Hub IDs.
     links: {
       paper: 'https://arxiv.org/abs/2610.30067',
       model: 'https://huggingface.co/TwoheartsTechnologies/GoiBERT-M',
@@ -58,6 +59,45 @@ export const projects: Project[] = [
       M: 'supervisor-worker split · three-layer review gate · rule-enforcing hooks',
     },
     why: 'Shows I can design the system around AI agents (routing, guardrails, observability, review) instead of only prompting them, and that I measure whether it works.',
+  },
+  // Intent: feature Line's CreditMiner story and screenshots. Status: listed third. Next: none. Blockers: none. Confidence: supplied project facts.
+  {
+    slug: 'creditminer',
+    planet: 'jupiter',
+    year: '2026',
+    name: 'CreditMiner',
+    tagline: 'Predicts credit-card default on 30,000 clients and explains why, from Weka models to a Next.js dashboard.',
+    domains: ['ML', 'research'],
+    state: 'live',
+    featured: true,
+    problem:
+      'A card issuer wants to know, before the next statement, which clients are likely to default and which behaviours drive that risk. The UCI Default of Credit Card Clients dataset holds 30,000 clients with six months of statements, payments and repayment status; 22.1% defaulted the next month.',
+    dataset:
+      'UCI dataset 350 (Yeh and Lien, 2009): 29,965 clients after cleaning (35 duplicates removed), with IQR and z-score outlier flags and seven engineered features: utilization, payment ratio, months delayed, longest delay, bill trend and a risk tier.',
+    method:
+      'A stratified 80/20 split and ten Weka classifier variants (J48, random forest, naive Bayes, logistic regression; baseline, SMOTE and cost-sensitive) with 10-fold cross-validation and permutation importance. Then K-means personas (k = 4 from ten k-means++ restarts) with a PCA view, Apriori rule families and GSP repayment sequences. Every headline number is a traceable fact served by one API to the dashboard, the web report and a 28-page academic PDF.',
+    results:
+      'Random forest with cost-sensitive learning: holdout F1 0.533, ROC AUC 0.777, PR AUC 0.550. Clients two or more months late on the latest statement default at 69.5%, 3.1x the portfolio rate. Two delaying personas are 30.5% of clients but hold 61.5% of defaults. 183 backend tests, 209 web tests and a Playwright layout and contrast gate.',
+    tech: ['Java 21', 'Spring Boot', 'Weka', 'Next.js', 'TypeScript', 'PostgreSQL', 'Playwright'],
+    role: 'Team leader and main developer · data, models, API, dashboard, report',
+    links: {
+      github: 'https://github.com/LineLuLan/CreditMiner',
+    },
+    image: '/projects/creditminer/overview-dark.jpg',
+    gallery: [
+      { src: '/projects/creditminer/overview-dark.jpg', width: 1600, height: 1040, alt: 'CreditMiner overview dashboard in dark mode with the hero insight, KPI row, priority default signals and default rate by dimension', caption: 'Overview: hero insight, KPIs and priority signals' },
+      { src: '/projects/creditminer/insights-light.jpg', width: 1440, height: 3583, alt: 'Ten ranked insights, each with its evidence chart against the portfolio baseline', caption: 'Ten ranked insights with evidence charts' },
+      { src: '/projects/creditminer/personas-light.jpg', width: 1440, height: 2668, alt: 'Four customer personas with share bar, defaults gauge, comparison table and PCA scatter', caption: 'Four personas and how they separate' },
+      { src: '/projects/creditminer/rules-light.jpg', width: 1440, height: 3048, alt: 'Association rule families ranked by lift with modifier tables', caption: 'Association rule families ranked by lift' },
+      { src: '/projects/creditminer/customers-light.jpg', width: 1600, height: 1040, alt: 'Customer table with risk tier, payment-ratio direction, persona and outlier flags', caption: 'Customer table with risk tiers and flags' },
+    ],
+    dabm: {
+      D: '29,965 clients · six months of statements and repayments',
+      A: 'credit managers deciding who to call before the next statement',
+      B: 'repayment delays and utilization that signal default',
+      M: 'cost-sensitive random forest · K-means personas · Apriori and GSP patterns',
+    },
+    why: 'Shows the full path from raw data to a decision tool a credit manager could use, with every number traceable and tested.',
   },
   {
     slug: 'enstudy-hub',

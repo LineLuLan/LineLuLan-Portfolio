@@ -81,22 +81,24 @@ export function Lightbox({ photos, title, initialIndex, onClose }: {
   );
 }
 
-export default function PhotoGallery({ photos, title, eager = false, thumbnail = false }: {
-  photos: ExperiencePhoto[]; title: string; eager?: boolean; thumbnail?: boolean;
+// Intent: crop project screenshots without changing existing photo previews. Status: opt-in. Next: none. Blockers: none. Confidence: full-image modal retained.
+export default function PhotoGallery({ photos, title, eager = false, thumbnail = false, cropThumbnails = false }: {
+  photos: ExperiencePhoto[]; title: string; eager?: boolean; thumbnail?: boolean; cropThumbnails?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <>
-      <div className={thumbnail ? 'experience-photo-thumbnail' : 'experience-photo-grid'} data-count={photos.length}>
+      <div className={thumbnail ? 'experience-photo-thumbnail' : `experience-photo-grid${cropThumbnails ? ' sm:grid-cols-2' : ''}`} data-count={photos.length}>
         {photos.map((photo, index) => (
           <figure key={photo.src} data-portrait={photo.height > photo.width} style={{ '--photo-ratio': photo.width / photo.height } as CSSProperties}>
             <button type="button" data-no-align className="experience-photo-button" aria-label={`View photo: ${photo.caption ?? photo.alt}`}
-              onClick={() => setOpen(index)} aria-haspopup="dialog">
+              onClick={() => setOpen(index)} aria-haspopup="dialog" style={cropThumbnails ? { width: '100%' } : undefined}>
               <Image src={photo.src} alt={photo.alt} width={photo.width} height={photo.height}
                 sizes={thumbnail ? '(min-width: 1024px) 306px, calc(100vw - 80px)' : photos.length === 1
                   ? '(min-width: 1024px) 640px, calc(100vw - 96px)'
                   : '(min-width: 1024px) 300px, calc(100vw - 96px)'}
-                loading={eager && index === 0 ? 'eager' : 'lazy'} />
+                loading={eager && index === 0 ? 'eager' : 'lazy'}
+                style={cropThumbnails ? { aspectRatio: '16 / 10', height: 'auto', maxHeight: 'none', objectFit: 'cover', objectPosition: 'top' } : undefined} />
             </button>
             {!thumbnail && photo.caption && <figcaption className="experience-photo-caption">{photo.caption}</figcaption>}
           </figure>

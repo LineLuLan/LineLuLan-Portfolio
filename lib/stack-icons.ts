@@ -1,6 +1,6 @@
 // Intent: render official marks and original generic motifs with mode-aware contrast.
 // Status: implemented. Next: browser acceptance. Blockers: none. Confidence: source geometry and WCAG ratios.
-import { siPython, siPostgresql, siMongodb, siTypescript, siJavascript, siR, siPytorch, siScikitlearn, siHuggingface, siOpencv, siPandas, siPolars, siNumpy, siRedis, siDocker, siGit, siGithub, siReact, siNextdotjs, siVercel, siSupabase, siNeon, siPrisma, siDrizzle, siAnthropic, siGooglegemini, siOpenrouter } from 'simple-icons';
+import { siPython, siPostgresql, siMongodb, siTypescript, siJavascript, siR, siPytorch, siScikitlearn, siHuggingface, siOpencv, siPandas, siPolars, siNumpy, siRedis, siDocker, siGit, siGithub, siReact, siNextdotjs, siVercel, siSupabase, siNeon, siPrisma, siDrizzle, siAnthropic, siGooglegemini, siOpenrouter, siClaude, siModelcontextprotocol, siGithubactions, siPnpm, siNodedotjs } from 'simple-icons';
 
 type IconPath = { d: string; fill: string; fillRule?: 'evenodd' | 'nonzero' };
 type StackIcon = { title: string; viewBox: string; paths: IconPath[] };
@@ -236,6 +236,13 @@ export const stackIcons = {
   googlegemini: simpleIcon(siGooglegemini),
   openrouter: simpleIcon(siOpenrouter),
   openjdk: customIcons.Java!,
+  // Codex CLI is OpenAI's agent, so it carries the OpenAI mark.
+  openai: customIcons.OpenAI!,
+  claude: simpleIcon(siClaude),
+  modelcontextprotocol: simpleIcon(siModelcontextprotocol),
+  githubactions: simpleIcon(siGithubactions),
+  pnpm: simpleIcon(siPnpm),
+  nodedotjs: simpleIcon(siNodedotjs),
 } as const;
 
 export type StackIconKey = keyof typeof stackIcons;

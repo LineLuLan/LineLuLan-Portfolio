@@ -73,6 +73,8 @@ export type Project = {
   role?: string;
   collaborators?: { name: string; role?: string }[];
   // links
+  // Intent: identify a project's Hub model family. Status: optional. Next: none. Blockers: none. Confidence: typed IDs.
+  hfModels?: string[];
   links?: {
     github?: string;
     demo?: string;
@@ -84,6 +86,8 @@ export type Project = {
   dabm?: DABMMapping;
   // visual
   image?: string;
+  // Intent: reuse accessible story photos for projects. Status: optional. Next: none. Blockers: none. Confidence: shared type.
+  gallery?: ExperiencePhoto[];
   // ETA for WIP/classified
   eta?: string;
   // why it matters (1 sentence)

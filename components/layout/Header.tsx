@@ -1,11 +1,11 @@
 'use client';
 
-// Intent: keep navigation fully visible and close the disclosure on global section navigation.
-// Status: R2. Next: browser checks. Blockers: none. Confidence: independent static review.
+// Intent: keep navigation visible and offer Line's guided tour from avatar or mobile menu.
+// Status: tour triggers added. Next: browser checks. Blockers: none. Confidence: shared navigation events.
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { AVATAR_PATH, CV_PATH, SECTIONS, SECTION_ORDER, type SectionId } from '@/lib/constants';
 import { capitalize, cn } from '@/lib/cn';
@@ -17,9 +17,33 @@ const navigation = SECTION_ORDER.filter((id) => id !== 'whoami');
 
 export function Header() {
   const home = usePathname() === '/';
+  const router = useRouter();
   const [active, setActive] = useState<SectionId>('whoami');
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const mobileTourButton = useRef<HTMLButtonElement>(null);
+  const restoreMobileTourFocus = useRef(false);
+
+  const startTour = (trigger: HTMLButtonElement) => {
+    setOpen(false);
+    if (!home) router.push('/?tour=1');
+    else document.dispatchEvent(new CustomEvent('starttour', { detail: { trigger } }));
+  };
+
+  useEffect(() => {
+    const restoreTourFocus = () => {
+      restoreMobileTourFocus.current = true;
+      setOpen(true);
+    };
+    document.addEventListener('tourrestore', restoreTourFocus);
+    return () => document.removeEventListener('tourrestore', restoreTourFocus);
+  }, []);
+
+  useEffect(() => {
+    if (!open || !restoreMobileTourFocus.current) return;
+    restoreMobileTourFocus.current = false;
+    mobileTourButton.current?.focus({ preventScroll: true });
+  }, [open]);
 
   useEffect(() => {
     const closeMenu = () => setOpen(false);
@@ -93,7 +117,11 @@ export function Header() {
           <a href={CV_PATH} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-[var(--theme-control-radius)] bg-accent px-4 font-mono text-sm text-on-accent hover:bg-accent-hover">
             Open CV
           </a>
-          <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={40} height={40} className="hidden h-10 w-10 rounded-full ring-2 ring-accent/40 min-[440px]:block" />
+          <button type="button" aria-label="Take a tour of this portfolio" aria-describedby="tour-avatar-tooltip" data-tour-trigger="avatar"
+            className="tour-avatar" onClick={(event) => startTour(event.currentTarget)}>
+            <Image src={AVATAR_PATH} alt="Line's pixel avatar" width={40} height={40} className="h-10 w-10 rounded-full ring-2 ring-accent/40" />
+            <span id="tour-avatar-tooltip" className="tour-tooltip" role="tooltip">Take the tour</span>
+          </button>
           <button
             ref={menuButton}
             type="button"
@@ -107,7 +135,12 @@ export function Header() {
         </div>
       </div>
       <nav id="mobile-navigation" aria-label="Mobile sections" hidden={!open} className="hairline border-t nav:hidden">
-        <ul className="container-x flex flex-col py-2">{links}</ul>
+        <ul className="container-x flex flex-col py-2">{links}
+          <li className="min-[440px]:hidden">
+            <button ref={mobileTourButton} type="button" className="tour-mobile-trigger" data-tour-trigger="mobile"
+              onClick={(event) => startTour(event.currentTarget)}>Take the tour</button>
+          </li>
+        </ul>
       </nav>
       <ReadingProgress />
     </header>

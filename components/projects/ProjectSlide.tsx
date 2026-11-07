@@ -1,7 +1,7 @@
 'use client';
 
-// Intent: offer a concise project introduction with a dedicated story destination.
-// Status: implemented. Next: Line's fuller case studies. Blockers: none. Confidence: existing content only.
+// Intent: offer a concise project introduction with server-fetched adoption on the existing metadata row.
+// Status: implemented. Next: Line's fuller case studies. Blockers: none. Confidence: typed optional counts.
 import Link from 'next/link';
 import { motion, useTransform, type MotionValue } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -14,7 +14,7 @@ import type { Project } from '@/types';
 
 const tints = ['bg-tint-a', 'bg-tint-c', 'bg-tint-b'] as const;
 
-export function ProjectSlide({ project, index, active, dragX }: { project: Project; index: number; active: boolean; dragX: MotionValue<number> }) {
+export function ProjectSlide({ project, hfDownloads, index, active, dragX }: { project: Project; hfDownloads?: number | null; index: number; active: boolean; dragX: MotionValue<number> }) {
   const { reducedMotion } = useTheme();
   const textX = useTransform(dragX, (value) => Math.max(-24, Math.min(24, value)));
   const planetX = useTransform(textX, (value) => value * 1.6);
@@ -26,7 +26,10 @@ export function ProjectSlide({ project, index, active, dragX }: { project: Proje
         {project.lead && <span className="rounded-[var(--theme-control-radius)] bg-paper px-3 py-1 font-mono text-sm text-accent">Featured project</span>}
       </div>
       <motion.div className="project-parallax-text" style={{ x: parallax ? textX : 0 }}>
-      <p className="font-mono text-sm text-muted">{String(index + 1).padStart(2, '0')} · {project.role?.split(' · ')[0]}</p>
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-sm text-muted">
+        <span>{String(index + 1).padStart(2, '0')} · {project.role?.split(' · ')[0]}</span>
+        {hfDownloads != null && <span className="whitespace-nowrap rounded-[var(--theme-control-radius)] bg-paper px-2 text-accent">{hfDownloads.toLocaleString('en-US')} HF downloads</span>}
+      </p>
       <h3 className="mt-2 break-words font-display text-[2.25rem] font-bold leading-tight text-ink">{project.name}</h3>
       <p className="mt-2 text-lg leading-relaxed text-ink">{project.tagline}</p>
       <div className="mt-4">{project.tech && <ProjectTech tech={project.tech.slice(0, 5)} />}</div>

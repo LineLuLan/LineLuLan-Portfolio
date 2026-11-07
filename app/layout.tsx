@@ -7,6 +7,9 @@ import { AnchorScroll } from '@/components/layout/AnchorScroll';
 import { MotionProvider } from '@/components/layout/MotionProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { themeInitScript } from '@/lib/themes';
+// Intent: mount one tour controller across routes for header-triggered home navigation.
+// Status: implemented. Next: browser acceptance. Blockers: none. Confidence: shared layout lifetime.
+import { GuidedTour } from '@/components/tour/GuidedTour';
 import './globals.css';
 
 const sans = Manrope({
@@ -114,6 +117,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Skip to content
             </a>
             <AnchorScroll />
+            <GuidedTour />
             <BootSplashGate />
             {children}
             <Analytics />

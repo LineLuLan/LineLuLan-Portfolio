@@ -1,7 +1,8 @@
-// Intent: give each of Line's projects a readable, permanent story destination.
-// Status: implemented using existing copy. Next: Line's fuller case studies. Blockers: none. Confidence: typed content.
+// Intent: give Line's projects permanent stories with server-cached model adoption near their links.
+// Status: implemented. Next: Line's fuller case studies. Blockers: none. Confidence: typed content and HF failure tests.
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -10,8 +11,11 @@ import { PixelPlanet } from '@/components/pixel/PixelPlanet';
 import { ProjectLinks } from '@/components/projects/ProjectLinks';
 import { ProjectTech } from '@/components/projects/ProjectTech';
 import { StoryReveal } from '@/components/projects/story/StoryReveal';
+import PhotoGallery from '@/components/experience/Lightbox';
 import { projects } from '@/content/projects';
 import { dabmSteps } from '@/content/dabm';
+import { SiteIcon } from '@/components/ui/SiteIcon';
+import { getHfStats } from '@/lib/hf-stats';
 
 type Props = { params: { slug: string } };
 const chapters = [
@@ -30,9 +34,11 @@ export function generateMetadata({ params }: Props): Metadata {
   return { title: project.name, description: project.tagline };
 }
 
-export default function ProjectPage({ params }: Props) {
+export default async function ProjectPage({ params }: Props) {
   const project = projects.find(({ slug }) => slug === params.slug);
   if (!project) notFound();
+  const hfStats = project.hfModels ? await getHfStats(project.hfModels) : null;
+  const modelHref = project.links?.model;
   // Unlisted work has a direct URL but is never advertised by the public project sequence.
   const listed = projects.filter((item) => item.listed !== false);
   const index = listed.findIndex(({ slug }) => slug === project.slug);
@@ -50,7 +56,24 @@ export default function ProjectPage({ params }: Props) {
           <p className="mt-4 max-w-[68ch] text-xl leading-relaxed text-ink">{project.tagline}</p>
           <p className="my-6 max-w-[68ch] font-mono text-sm leading-relaxed text-muted">{project.role} · {project.year} · {statuses[project.state]}</p>
           <ProjectLinks links={project.links} />
+          {hfStats && modelHref && (
+            <div className="mt-4 font-mono text-sm">
+              <a href={modelHref} target="_blank" rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 text-accent hover:underline">
+                <SiteIcon href={modelHref} />
+                <span>{hfStats.total.toLocaleString('en-US')} downloads on Hugging Face · {hfStats.likes.toLocaleString('en-US')} likes</span>
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+              <p className="text-muted">{hfStats.models.map((model) => `${model.name} ${model.allTime.toLocaleString('en-US')}`).join(' · ')}</p>
+            </div>
+          )}
         </header>
+        {/* Intent: show project covers and bounded screenshot previews. Status: implemented. Next: none. Blockers: none. Confidence: shared gallery. */}
+        {project.image && (
+          <div className="relative mt-10 aspect-video overflow-hidden rounded-[var(--theme-radius)] border hairline bg-panel">
+            <Image src={project.image} alt={`${project.name} overview`} fill sizes="(min-width: 1280px) 1200px, 100vw" className="object-cover object-top" />
+          </div>
+        )}
         {project.slug === 'panic-hub' && (
           <div className="mt-10 aspect-video overflow-hidden rounded-[var(--theme-radius)] border hairline bg-panel">
             <iframe src="https://www.youtube-nocookie.com/embed/Vw9_MV7uf-c" title="Panic Hub project demonstration" loading="lazy"
@@ -68,6 +91,14 @@ export default function ProjectPage({ params }: Props) {
             </StoryReveal>
           ))}
         </div>
+        {!!project.gallery?.length && (
+          <StoryReveal>
+            <section className="mt-12" aria-labelledby="chapter-screenshots">
+              <h2 id="chapter-screenshots" className="mt-3 font-display text-3xl font-bold text-ink">Screenshots</h2>
+              <PhotoGallery photos={project.gallery} title={`${project.name} screenshots`} cropThumbnails />
+            </section>
+          </StoryReveal>
+        )}
         {project.dabm && (
           <section className="mt-14 border-t hairline pt-10" aria-labelledby="project-dabm">
             <h2 id="project-dabm" className="font-display text-3xl font-bold text-ink">Through the DABM lens</h2>

@@ -155,7 +155,7 @@ export const projects: Project[] = [
     results:
       '3rd place at the IU AI Competition 2025 with team Newbie-Coding. The fine-tuned model runs fully offline on an ordinary laptop without a dedicated GPU and reached about 75% accuracy in manual testing; the simulated judge pushes back on weak arguments instead of only quoting the law.',
     tech: ['Python', 'Qwen2.5', 'Ollama', 'FastAPI', 'Electron', 'RAG'],
-    role: 'Team Newbie-Coding · four members',
+    role: 'AI engineer · LLM fine-tuning, RAG and the AI backend · team Newbie-Coding',
     links: {
       video: 'https://youtu.be/0yGZIgFPGX0',
     },
@@ -188,10 +188,9 @@ export const projects: Project[] = [
     results:
       'Live on Vercel · v0.2.0 shipped 2026-05-13 (dashboard, stats, 4 minigame modes, settings, theme); v1.0.0 in flight with CSV import, per-card actions, inline editing · 108 green vitest unit tests covering schema/queue/FSRS logic.',
     tech: ['Next.js 15', 'TypeScript', 'Supabase', 'Drizzle ORM', 'ts-fsrs', 'Zod', 'Tailwind v4', 'Vitest'],
-    role: 'Lead dev · architecture, FSRS integration, server actions, UI · 100B Studio',
+    role: 'Lead dev and backend · architecture, FSRS integration, server actions · 100B Studio',
     collaborators: [
-      { name: 'Phí Vương Tường Tâm', role: 'contributor' },
-      { name: 'Trần Nam Anh', role: 'contributor' },
+      { name: 'Phí Vương Tường Tâm (tamir39)', role: 'UI/UX' },
       { name: 'Lê Thành Danh', role: 'contributor' },
     ],
     links: {

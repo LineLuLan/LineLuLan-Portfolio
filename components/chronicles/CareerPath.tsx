@@ -96,7 +96,8 @@ export function CareerPath({ events, today }: { events: ChronicleEvent[]; today:
                   <h3 className="font-display text-lg font-bold text-ink">{event.title}</h3>
                   {event.org && <p className="mt-1 text-sm text-muted">{event.org}</p>}
                   {event.description && <p className="mt-3 text-sm leading-6 text-ink">{event.description}</p>}
-                  {event.link && <a href={event.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm text-accent underline underline-offset-4"><SiteIcon href={event.link} />Visit {new URL(event.link).hostname.replace(/^www\./, '')}</a>}
+                  {event.link?.startsWith('/') && <a href={event.link} className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm text-accent underline underline-offset-4">Read the project story →</a>}
+{event.link && !event.link.startsWith('/') && <a href={event.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm text-accent underline underline-offset-4"><SiteIcon href={event.link} />Visit {new URL(event.link).hostname.replace(/^www\./, '')}</a>}
                 </div>
               )}
             </li>

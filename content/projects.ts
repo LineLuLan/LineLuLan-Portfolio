@@ -32,6 +32,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'line-harness',
+    showStars: true,
     planet: 'satellite',
     year: '2026',
     lead: true,
@@ -158,6 +159,9 @@ export const projects: Project[] = [
     links: {
       video: 'https://youtu.be/0yGZIgFPGX0',
     },
+    gallery: [
+      { src: '/experience/iu-ai-3rd.jpg', width: 1600, height: 1200, alt: 'Line and teammates of team Newbie-Coding holding the IU AI Competition third prize board, trophy and medal', caption: 'IU AI Competition 2025, third prize' },
+    ],
     dabm: {
       D: '~100,000 Vietnamese legal documents · 10,000 fine-tuning samples',
       A: 'law students rehearsing hearings without a real courtroom',

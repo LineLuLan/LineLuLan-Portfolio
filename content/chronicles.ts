@@ -73,6 +73,7 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'iu-ai-2025',
+    link: '/projects/ai-legal-council',
     image: { src: '/experience/iu-ai-3rd.jpg', width: 1600, height: 1200,
       alt: 'Line and teammates holding the IU AI Competition third prize board, trophy and medal',
       caption: 'IU AI Competition 2025, third prize' },

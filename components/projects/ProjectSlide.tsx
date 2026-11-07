@@ -14,7 +14,7 @@ import type { Project } from '@/types';
 
 const tints = ['bg-tint-a', 'bg-tint-c', 'bg-tint-b'] as const;
 
-export function ProjectSlide({ project, hfDownloads, index, active, dragX }: { project: Project; hfDownloads?: number | null; index: number; active: boolean; dragX: MotionValue<number> }) {
+export function ProjectSlide({ project, hfDownloads, githubStars, index, active, dragX }: { project: Project; hfDownloads?: number | null; githubStars?: number | null; index: number; active: boolean; dragX: MotionValue<number> }) {
   const { reducedMotion } = useTheme();
   const textX = useTransform(dragX, (value) => Math.max(-24, Math.min(24, value)));
   const planetX = useTransform(textX, (value) => value * 1.6);
@@ -29,6 +29,7 @@ export function ProjectSlide({ project, hfDownloads, index, active, dragX }: { p
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-sm text-muted">
         <span>{String(index + 1).padStart(2, '0')} · {project.role?.split(' · ')[0]}</span>
         {hfDownloads != null && <span className="whitespace-nowrap rounded-[var(--theme-control-radius)] bg-paper px-2 text-accent">{hfDownloads.toLocaleString('en-US')} HF downloads</span>}
+        {githubStars != null && githubStars > 0 && <span className="whitespace-nowrap rounded-[var(--theme-control-radius)] bg-paper px-2 text-accent">★ {githubStars.toLocaleString('en-US')} GitHub {githubStars === 1 ? 'star' : 'stars'}</span>}
       </p>
       <h3 className="mt-2 break-words font-display text-[2.25rem] font-bold leading-tight text-ink">{project.name}</h3>
       <p className="mt-2 text-lg leading-relaxed text-ink">{project.tagline}</p>

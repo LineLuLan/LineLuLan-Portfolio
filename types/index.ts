@@ -75,6 +75,7 @@ export type Project = {
   // links
   // Intent: identify a project's Hub model family. Status: optional. Next: none. Blockers: none. Confidence: typed IDs.
   hfModels?: string[];
+  showStars?: boolean;
   links?: {
     github?: string;
     demo?: string;

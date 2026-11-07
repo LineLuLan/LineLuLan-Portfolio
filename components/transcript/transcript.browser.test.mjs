@@ -17,8 +17,8 @@ try {
   await page.locator('.boot-splash').waitFor({ state: 'detached' });
   await page.evaluate(() => document.fonts.ready);
   assert.deepEqual(errors, [], 'Transcript must hydrate without replacing server HTML');
-  assert.equal(await page.title(), 'Transcript · Line');
-  assert.equal(await page.locator('h1').innerText(), 'Transcript.');
+  assert.equal(await page.title(), 'Academic record · Line');
+  assert.equal(await page.locator('h1').innerText(), 'Course by course.');
   assert.equal(await page.locator('.transcript-semester').count(), 7);
   assert.equal(await page.locator('.transcript-course-table tbody tr').count(), 29);
   assert.match(await page.locator('.transcript-overview').innerText(), /3\.56 \/ 4\.0/);
@@ -82,9 +82,9 @@ try {
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole('tab', { name: /Teaching Assistant/ }).click();
-  await page.getByRole('link', { name: 'View full transcript' }).click();
+  await page.getByRole('link', { name: 'See every course and grade' }).click();
   await page.waitForURL(`${base}/transcript`);
-  await page.getByRole('heading', { name: 'Transcript.', exact: true }).waitFor();
+  await page.getByRole('heading', { name: 'Course by course.', exact: true }).waitFor();
   for (const mode of ['light', 'dark']) for (const accent of ['kafka', 'nebula', 'aurora', 'mars', 'rose']) {
     await page.evaluate(({ mode, accent }) => {
       for (const [key, value] of [['line.mode', mode], ['line.accent', accent]]) {
@@ -121,7 +121,7 @@ try {
   const noJS = await browser.newPage({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
   await noJS.goto(`${base}/transcript`);
   assert.equal(await noJS.locator('.transcript-course-table tbody tr').count(), 29);
-  assert.ok(await noJS.getByRole('heading', { name: 'Transcript.' }).isVisible());
+  assert.ok(await noJS.getByRole('heading', { name: 'Course by course.' }).isVisible());
   assert.ok(await noJS.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await noJS.close();
   console.log(`PASS: hydration, static transcript, keyboard chart values, IU round-trip, all ten palettes, ${widths.length} widths per route (320–2000px), desktop section geometry and no-JS results.`);

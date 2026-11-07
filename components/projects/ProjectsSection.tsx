@@ -6,12 +6,18 @@ import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { ProjectCarousel } from './ProjectCarousel';
 import { projects } from '@/content/projects';
 import { getHfStats } from '@/lib/hf-stats';
+import { getRepoStars } from '@/lib/github-stats';
 
 export async function ProjectsSection() {
   const listed = projects.filter((project) => project.listed !== false);
-  const hfDownloads = Object.fromEntries(await Promise.all(listed.map(async (project) => [
-    project.slug, project.hfModels ? (await getHfStats(project.hfModels))?.total ?? null : null,
-  ])));
+  const [hfDownloads, githubStars] = await Promise.all([
+    Promise.all(listed.map(async (project) => [
+      project.slug, project.hfModels ? (await getHfStats(project.hfModels))?.total ?? null : null,
+    ] as const)).then(Object.fromEntries),
+    Promise.all(listed.map(async (project) => [
+      project.slug, project.showStars && project.links?.github ? await getRepoStars(project.links.github) : null,
+    ] as const)).then(Object.fromEntries),
+  ]);
   return (
     <SectionWrapper id="work" ariaLabel="Work" withTopRule>
       <div className="mb-6 grid items-end gap-6 lg:grid-cols-[1fr_minmax(0,36ch)]">
@@ -20,7 +26,7 @@ export async function ProjectsSection() {
           Real things I&apos;ve shipped, from clinical ML research to production LLM systems.
         </p>
       </div>
-      <div data-reveal="showcase"><ProjectCarousel projects={listed} hfDownloads={hfDownloads} /></div>
+      <div data-reveal="showcase"><ProjectCarousel projects={listed} hfDownloads={hfDownloads} githubStars={githubStars} /></div>
     </SectionWrapper>
   );
 }

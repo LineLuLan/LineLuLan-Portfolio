@@ -76,7 +76,7 @@ export function StatsCounters({ stats }: Props) {
           {s.href ? (
             <a
               href={s.href}
-              aria-label={`${s.label} ${format(s.value, s.decimals ?? 0, s.pad ?? 0)}${s.suffix?.replace('/', ' of ') ?? ''}, view ${s.href === '/transcript' ? 'transcript' : s.href === '#record' ? 'career record' : s.href === '#work' ? 'projects' : 'experience'}`}
+              aria-label={`${s.label} ${format(s.value, s.decimals ?? 0, s.pad ?? 0)}${s.suffix?.replace('/', ' of ') ?? ''}, view ${s.href === '/transcript' ? 'academic record' : s.href === '#record' ? 'career record' : s.href === '#work' ? 'projects' : 'experience'}`}
               className="surface-card block h-full rounded-[var(--theme-radius)] hover:bg-tint-a focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               <Counter stat={s} start={inView} />

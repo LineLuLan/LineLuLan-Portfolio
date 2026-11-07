@@ -12,7 +12,7 @@ import transcript from '@/content/transcript.json';
 import '@/components/transcript/transcript.css';
 
 export const metadata: Metadata = {
-  title: 'Transcript',
+  title: 'Academic record',
   description: "Line's BSc Data Science academic record at International University, VNU-HCM: course grades, semester GPA and cumulative progress.",
 };
 
@@ -33,7 +33,7 @@ export default function TranscriptPage() {
         <header className="transcript-hero">
           <Link href="/#experience" className="transcript-back"><span aria-hidden="true">&larr;</span> Back to experience</Link>
           <p className="eyebrow">Academic record</p>
-          <h1 className="editorial-h2">Transcript<span className="text-accent">.</span></h1>
+          <h1 className="editorial-h2">Course by course<span className="text-accent">.</span></h1>
           <p className="transcript-program">{transcript.program}<span>{transcript.school}</span></p>
           <dl className="transcript-overview">
             <div className="transcript-gpa-tile">

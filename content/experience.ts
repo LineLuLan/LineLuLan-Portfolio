@@ -86,10 +86,11 @@ export const experience: ExperienceOrg[] = [
     highlights: [{
       title: 'Academic record',
       body: 'BSc Data Science, 2023 – expected 2028. Course-by-course grades, semester GPA and the cumulative trend.',
-      link: { href: '/transcript', label: 'View full transcript' },
+      link: { href: '/transcript', label: 'See every course and grade' },
     }, {
       title: '3rd Place · IU AI Competition 2025', date: '2025-12',
-      body: 'Third prize at the university-wide IU AI Competition with a four-person team.',
+      body: 'Third prize at the university-wide IU AI Competition with a four-person team, for AI Legal Council: an offline courtroom simulator for Vietnamese law students.',
+      link: { href: '/projects/ai-legal-council', label: 'Read the project story' },
       photos: [{ src: '/experience/iu-ai-3rd.jpg', width: 1600, height: 1200,
         alt: 'Line and teammates holding the IU AI Competition third prize board, trophy and medal',
         caption: 'IU AI Competition 2025, third prize' }],

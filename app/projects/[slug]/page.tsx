@@ -16,6 +16,7 @@ import { projects } from '@/content/projects';
 import { dabmSteps } from '@/content/dabm';
 import { SiteIcon } from '@/components/ui/SiteIcon';
 import { getHfStats } from '@/lib/hf-stats';
+import { getRepoStars } from '@/lib/github-stats';
 
 type Props = { params: { slug: string } };
 const chapters = [
@@ -39,6 +40,9 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
   const hfStats = project.hfModels ? await getHfStats(project.hfModels) : null;
   const modelHref = project.links?.model;
+  const githubHref = project.links?.github;
+  const githubStars = project.showStars && githubHref ? await getRepoStars(githubHref) : null;
+  const youtubeId = project.links?.video?.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/)?.[1];
   // Unlisted work has a direct URL but is never advertised by the public project sequence.
   const listed = projects.filter((item) => item.listed !== false);
   const index = listed.findIndex(({ slug }) => slug === project.slug);
@@ -67,6 +71,16 @@ export default async function ProjectPage({ params }: Props) {
               <p className="text-muted">{hfStats.models.map((model) => `${model.name} ${model.allTime.toLocaleString('en-US')}`).join(' · ')}</p>
             </div>
           )}
+          {githubStars != null && githubStars > 0 && githubHref && (
+            <div className="mt-4 font-mono text-sm">
+              <a href={githubHref} target="_blank" rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 text-accent hover:underline">
+                <SiteIcon href={githubHref} />
+                <span>{githubStars.toLocaleString('en-US')} {githubStars === 1 ? 'star' : 'stars'} on GitHub</span>
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          )}
         </header>
         {/* Intent: show project covers and bounded screenshot previews. Status: implemented. Next: none. Blockers: none. Confidence: shared gallery. */}
         {project.image && (
@@ -74,9 +88,10 @@ export default async function ProjectPage({ params }: Props) {
             <Image src={project.image} alt={`${project.name} overview`} fill sizes="(min-width: 1280px) 1200px, 100vw" className="object-cover object-top" />
           </div>
         )}
-        {project.slug === 'panic-hub' && (
+        {/* Any YouTube demo link embeds privacy-enhanced (Panic Hub, AI Legal Council). */}
+        {youtubeId && (
           <div className="mt-10 aspect-video overflow-hidden rounded-[var(--theme-radius)] border hairline bg-panel">
-            <iframe src="https://www.youtube-nocookie.com/embed/Vw9_MV7uf-c" title="Panic Hub project demonstration" loading="lazy"
+            <iframe src={`https://www.youtube-nocookie.com/embed/${youtubeId}`} title={`${project.name} demonstration video`} loading="lazy"
               allow="encrypted-media; picture-in-picture" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen className="h-full w-full border-0" />
           </div>
         )}
@@ -94,8 +109,8 @@ export default async function ProjectPage({ params }: Props) {
         {!!project.gallery?.length && (
           <StoryReveal>
             <section className="mt-12" aria-labelledby="chapter-screenshots">
-              <h2 id="chapter-screenshots" className="mt-3 font-display text-3xl font-bold text-ink">Screenshots</h2>
-              <PhotoGallery photos={project.gallery} title={`${project.name} screenshots`} cropThumbnails />
+              <h2 id="chapter-screenshots" className="mt-3 font-display text-3xl font-bold text-ink">Gallery</h2>
+              <PhotoGallery photos={project.gallery} title={`${project.name} gallery`} cropThumbnails />
             </section>
           </StoryReveal>
         )}

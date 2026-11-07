@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { profile } from '@/content/profile';
@@ -6,17 +6,8 @@ import { SECTION_PLANET } from '@/lib/pixel-planets';
 import { WhatIBring } from './WhatIBring';
 import { ExploringTags } from './ExploringTags';
 
-// Intent: fit Line's narrative, facts and capabilities into a desktop screen.
-// Status: implemented. Next: viewport probe. Blockers: browser unavailable. Confidence: content budget.
-
-const IDENTITY_LABEL: Record<string, string> = {
-  location: 'Based in',
-  status: 'Studying',
-  gpa: 'GPA',
-  research: 'Research',
-  building: 'Currently',
-  'open to': 'Open to',
-};
+// Intent: pair Line's narrative with a real portrait within the desktop screen budget.
+// Status: implemented. Next: viewport acceptance. Blockers: sandbox denies Chromium spawn. Confidence: static checks only.
 
 export function AboutSection() {
   return (
@@ -29,14 +20,19 @@ export function AboutSection() {
           <p data-reveal className="mt-4 text-[17px] leading-7 text-ink [--reveal-delay:60ms]">{profile.narrative.mission}</p>
           <ExploringTags tags={profile.exploring} />
         </div>
-        <dl data-reveal="slide" className="[--reveal-delay:80ms]">
-          {profile.facts.map((fact, index) => (
-            <div key={fact.key} data-reveal-child style={{ '--reveal-order': index } as CSSProperties} className="grid min-h-11 grid-cols-[84px_minmax(0,1fr)] items-baseline gap-3 border-t hairline py-2 sm:grid-cols-[100px_minmax(0,1fr)]">
-              <dt className="eyebrow self-start">{IDENTITY_LABEL[fact.key] ?? fact.key}</dt>
-              <dd className="text-[15px] leading-7 text-ink">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <figure data-reveal="slide" className="mx-auto w-full max-w-[360px] min-w-0 lg:max-w-[256px] 2xl:max-w-[360px] [--reveal-delay:80ms]">
+          <div className="overflow-hidden rounded-[var(--theme-radius)] border hairline motion-safe:[html[data-motion=on]_&]:transition-shadow motion-safe:[html[data-motion=on]_&]:duration-[var(--theme-duration)] motion-safe:[html[data-motion=on]_&]:ease-[var(--theme-ease)] motion-safe:[html[data-motion=on]_&]:hover:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-accent)_20%,transparent),0_0_24px_color-mix(in_srgb,var(--color-accent)_12%,transparent)]">
+            <Image
+              src="/about/line-portrait.jpg"
+              width={1000}
+              height={1250}
+              sizes="(min-width: 1536px) 360px, (min-width: 1024px) 256px, (min-width: 408px) 360px, calc(100vw - 48px)"
+              alt="Trần Nam Anh (Line) in a Hackathon Vietnam · GDG on Campus t-shirt, making a hand sign outdoors at sunset"
+              className="aspect-[4/5] w-full object-cover object-top lg:aspect-square 2xl:aspect-[4/5]"
+            />
+          </div>
+          <figcaption className="mt-2 text-center font-mono text-[13px] leading-5 text-muted">Line · Ho Chi Minh City</figcaption>
+        </figure>
       </div>
 
       <WhatIBring items={profile.whatIBring} />

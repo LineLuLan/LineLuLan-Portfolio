@@ -283,6 +283,11 @@ The same browser suite passes in Strict Mode development after a failing-then-pa
 
 References checked 2026-11-07: [React portals](https://react.dev/reference/react-dom/createPortal) and [native inert](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert). Screen-reader and non-Chromium behavior require manual follow-up. Rollback removes `components/tour`, the two scripts, and only the tour hunks in Header, layout and this document; preserve unrelated working-tree changes.
 
+### About portrait and share card (2026-11-08)
+
+<!-- Intent: document Line's real portrait and shared Orbit social card. Status: implemented. Next: production/browser acceptance. Blockers: sandbox spawn EPERM. Confidence: static checks only. -->
+About replaces the duplicated identity list with a 4:5 portrait, a mono location caption, and a token-based hover glow gated by both site motion and reduced-motion preferences. The card is centered at up to 360px on mobile, capped at 280px on desktop and 360px from 1536px. `profile.facts` remains in content; no other consumer was found. Open Graph and Twitter share a 1200×630 dark Orbit card with a circular portrait, SVG rings and planets, and local SIL OFL Be Vietnam Pro regular/bold fonts. TypeScript, lint, navigation/motion and contrast pass. Production build and Chromium are blocked by `spawn EPERM`; viewport heights, overflow, production image responses and PNG size remain unverified. The existing reveal test at `components/layout/reveals.browser.test.mjs:243` needs its out-of-scope `#about dl[data-reveal]` selector updated to the portrait figure. API references checked 2026-11-08: [Next 14 ImageResponse](https://nextjs.org/docs/14/app/api-reference/functions/image-response) and [image metadata files](https://nextjs.org/docs/14/app/api-reference/file-conventions/metadata/opengraph-image).
+
 ## 8. Copy decisions (Line confirms)
 
 Hero H1 options: (A) `Build things that survive` / `contact with reality.` · (B) `Data in.` / `Decisions out.` · (C) `Models you can defend.` / `Pipelines you can trust.` Default A (it is already Line's own line from the narrative).

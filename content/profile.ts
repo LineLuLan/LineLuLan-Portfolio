@@ -46,7 +46,7 @@ export const profile: Profile = {
     {
       title: 'Data engineering',
       description: 'Reproducible pipelines that extract, harmonize and validate clinical lab data under strict privacy rules.',
-      proof: 'Leakage-audited clinical pipeline',
+      proof: 'Leakage-audited pipeline',
     },
     {
       title: 'LLM & agent systems',

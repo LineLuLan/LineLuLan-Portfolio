@@ -240,7 +240,7 @@ try {
     requestAnimationFrame(sample);
   });
   // Exercise transforms while entering, not only their finished layout.
-  for (const selector of ['[aria-label="Quick stats"]', '#about dl[data-reveal]', '#stack .surface-card', '#work [data-reveal]:has([aria-roledescription="carousel"])']) {
+  for (const selector of ['[aria-label="Quick stats"]', '#about figure[data-reveal]', '#stack .surface-card', '#work [data-reveal]:has([aria-roledescription="carousel"])']) {
     const target = mobile.locator(selector).first();
     await target.scrollIntoViewIfNeeded();
     await mobile.waitForFunction((targetSelector) => document.querySelector(targetSelector)?.dataset.revealState === 'shown', selector);

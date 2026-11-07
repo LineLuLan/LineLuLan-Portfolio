@@ -19,7 +19,7 @@ export const experience: ExperienceOrg[] = [
         'Raised multi-turn ordering Outcome + Safety from 17% to 78.75%, and shipped an order-consent guard that cut critical failures from 7 to 0 on the real-backend benchmark.',
         'Built a governed Customer Intelligence platform (identity graph, resolution, compliance, omnichannel capture, profile memory) across eight gated phases with tenant-scoped row-level security.',
         'Created and own the black-box end-to-end testing harness: compose stack, mock providers, five test tiers, mutation testing and SHA-pinned CI gates.',
-        'Co-first author of GoiBERT, the in-house family of compact Vietnamese encoders: trained on the LUMI EuroHPC supercomputer, published on Hugging Face and exported to ONNX with exact fp32 parity.',
+        'Co-first author of GoiBERT, the in-house family of compact Vietnamese encoders: two-teacher distillation on 328.6M tokens with a single NVIDIA L40S GPU, published on Hugging Face and exported to ONNX with exact fp32 parity.',
         'Compared classifier setups with paired statistical tests (task success 71.3% vs 75.2%, p = 0.011).',
       ],
       skills: ['TypeScript', 'Node.js', 'PostgreSQL', 'Python', 'PyTorch', 'Promptfoo', 'Docker', 'GitHub Actions', 'LLM evaluation'],
@@ -110,6 +110,9 @@ export const experience: ExperienceOrg[] = [
       photos: [{ src: '/experience/iu-ai-3rd.jpg', width: 1600, height: 1200,
         alt: 'Line and teammates holding the IU AI Competition third prize board, trophy and medal',
         caption: 'IU AI Competition 2025, third prize' }],
+    }, {
+      title: 'Academic Encouragement Scholarship · twice', date: '2026-06',
+      body: 'Awarded International University\'s Academic Encouragement Scholarship in two consecutive rounds, February and June 2026, for academic results.',
     }],
     roles: [{
       title: 'Teaching Assistant', type: 'Part-time', start: '2026-02', end: '2026-02', location: 'Ho Chi Minh City',

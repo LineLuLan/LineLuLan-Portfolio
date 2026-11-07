@@ -106,7 +106,7 @@ export const experience: ExperienceOrg[] = [
     }],
   },
   {
-    id: 'gdgoc', org: 'GDGoC HCMIU', logo: '/experience/logos/gdg.png',
+    id: 'gdgoc', org: 'GDGoC HCMIU', url: 'https://www.facebook.com/gdgoc.hcmiu', logo: '/experience/logos/gdg.png',
     roles: [
       {
         title: 'Advisor', start: '2026-08',

@@ -37,6 +37,7 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'gdgoc-member',
+    link: 'https://www.facebook.com/gdgoc.hcmiu',
     date: '2024-09-01',
     type: 'role',
     title: 'Joined GDGoC HCMIU',
@@ -51,6 +52,7 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'gdgoc-vicelead',
+    link: 'https://www.facebook.com/gdgoc.hcmiu',
     image: { src: '/experience/gdgoc-vice-lead.jpg', width: 1067, height: 1600,
       alt: 'Line in the GDGoC HCMIU Vice Chapter Lead announcement poster',
       caption: 'Gen 5 core team announcement' },
@@ -149,6 +151,7 @@ export const chronicles: ChronicleEvent[] = [
   },
   {
     id: 'gdgoc-advisor',
+    link: 'https://www.facebook.com/gdgoc.hcmiu',
     date: '2026-08-01',
     type: 'role',
     title: 'Advisor · GDGoC HCMIU',

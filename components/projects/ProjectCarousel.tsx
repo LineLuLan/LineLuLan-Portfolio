@@ -164,7 +164,7 @@ export function ProjectCarousel({ projects, hfDownloads = {} }: { projects: Proj
         <div className="flex justify-center" aria-label="Choose project">
           {projects.map((project, index) => (
             <button key={project.slug} type="button" aria-label={`Show ${project.name}`} aria-pressed={index === active}
-              onClick={() => select(index)} className="motion-control grid h-11 w-8 place-items-center rounded-[var(--theme-control-radius)] hover:bg-tint-a sm:w-11">
+              onClick={() => select(index)} className="motion-control grid h-11 w-6 place-items-center rounded-[var(--theme-control-radius)] hover:bg-tint-a sm:w-11">
               <span className={`size-2 rounded-full ${index === active ? 'bg-accent' : 'border hairline bg-panel'}`} />
             </button>
           ))}

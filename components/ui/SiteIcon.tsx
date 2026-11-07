@@ -1,7 +1,7 @@
 // Intent: identify link destinations with monochrome marks, including an original review motif.
 // Status: implemented. Next: browser acceptance. Blockers: none. Confidence: hostname render checks.
 import { Globe, Linkedin, Mail } from 'lucide-react';
-import { siArxiv, siGithub, siHuggingface, siKaggle, siYoutube, type SimpleIcon } from 'simple-icons';
+import { siArxiv, siFacebook, siGithub, siHuggingface, siKaggle, siYoutube, type SimpleIcon } from 'simple-icons';
 
 export const openReviewIcon = {
   title: 'OpenReview',
@@ -19,6 +19,7 @@ const siteIcons: Record<string, SimpleIcon> = {
   'huggingface.co': siHuggingface,
   'youtube.com': siYoutube,
   'youtu.be': siYoutube,
+  'facebook.com': siFacebook,
 };
 
 export function SiteIcon({ href, size = 16 }: { href: string; size?: number }) {

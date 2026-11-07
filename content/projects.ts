@@ -34,6 +34,7 @@ export const projects: Project[] = [
     slug: 'line-harness',
     planet: 'satellite',
     year: '2026',
+    lead: true,
     name: 'Line Harness',
     tagline: 'My daily agent-coding harness: Claude Code plans and reviews, Codex CLI implements, hooks enforce the rules.',
     domains: ['LLM', 'other'],
@@ -98,6 +99,72 @@ export const projects: Project[] = [
       M: 'cost-sensitive random forest · K-means personas · Apriori and GSP patterns',
     },
     why: 'Shows the full path from raw data to a decision tool a credit manager could use, with every number traceable and tested.',
+  },
+  {
+    slug: 'student-risk',
+    planet: 'moon',
+    year: '2026',
+    name: 'Student Risk Early Warning',
+    tagline: 'Flags at-risk students before final grades and explains why, in a one-screen D3 dashboard.',
+    domains: ['ML', 'EdTech'],
+    state: 'live',
+    featured: true,
+    problem:
+      'Schools learn a student failed only when the final grade is issued. The question was whether earlier signals (midterm grades, past failures, absences, lifestyle) can flag at-risk students in time to act, and explain why.',
+    dataset:
+      'UCI Student Performance (Cortez and Silva, 2008): 1,044 students from two Portuguese schools in Mathematics and Portuguese, 33 attributes and three grade periods. A student is at risk when the final grade is below 10 of 20, a 22% minority class.',
+    method:
+      'Six research questions, one per dashboard card: Pearson correlation and Random Forest importance for key drivers, OLS scatter, K-means personas (k = 3), a 200-tree Random Forest with class weighting against logistic regression and decision-tree baselines, 5-fold cross-validation, subject-stratified models and a gender fairness audit. Recall leads the model card because a missed student is the real cost.',
+    results:
+      'Random Forest recall 82.6% on a 209-student hold-out (38 of 46 at-risk students caught), F1 80.9%, cross-validated recall 79.1% ± 8.1 pp. The final-grade distribution is bimodal: 53 students (5.1%) withdrew. A Social Risk persona carries 42.1% at-risk in Mathematics versus 21.3% in Portuguese. Six linked D3 charts fit one 1440 x 900 screen with no build step.',
+    tech: ['Python', 'scikit-learn', 'pandas', 'D3.js', 'JavaScript', 'Vercel'],
+    role: 'Solo · analysis pipeline and dashboard',
+    links: {
+      github: 'https://github.com/LineLuLan/student-performance-UCI',
+      demo: 'https://student-uci-dashboard.vercel.app',
+    },
+    image: '/projects/student-risk/dashboard-dark.jpg',
+    gallery: [
+      { src: '/projects/student-risk/dashboard-dark.jpg', width: 1600, height: 764, alt: 'Student Risk Early Warning dashboard in dark mode: KPI bar, key drivers lollipop, G1 versus G3 scatter, K-means personas, Random Forest confusion matrix, grade trajectory and grade distribution', caption: 'Dark mode: six linked charts on one screen' },
+      { src: '/projects/student-risk/dashboard-light.jpg', width: 1600, height: 761, alt: 'The same Student Risk Early Warning dashboard in light mode', caption: 'Light mode' },
+    ],
+    dabm: {
+      D: '1,044 students · grades, attendance and lifestyle',
+      A: 'teachers and advisers deciding who needs help before finals',
+      B: 'midterm drops, past failures and absences that precede failing',
+      M: 'class-weighted random forest · K-means personas · fairness audit',
+    },
+    why: 'Shows model choices driven by the use case: recall over accuracy, honest fairness numbers, and a dashboard a teacher can read in one glance.',
+  },
+  {
+    slug: 'ai-legal-council',
+    planet: 'comet',
+    year: '2025',
+    name: 'AI Legal Council',
+    tagline: 'An offline courtroom simulator where an AI judge, opposing counsel and client train Vietnamese law students.',
+    domains: ['LLM', 'EdTech'],
+    state: 'live',
+    featured: true,
+    problem:
+      'Law training in Vietnam is heavy on theory and short on practice. Existing tools either send sensitive case data to the cloud or stop at static multiple-choice questions, so students rarely rehearse the back-and-forth of a real hearing.',
+    dataset:
+      'Vietnamese precedents, decrees and circulars from official sources: about 100,000 legal documents cleaned from Word and PDF into instruction, input and output JSON, with 10,000 samples used for supervised fine-tuning.',
+    method:
+      'A desktop app (Electron) talks to a FastAPI gateway and a local LLM served by Ollama: Qwen2.5 3B Instruct fine-tuned on Vietnamese legal text, with retrieval from a vector database of statutes. An AI council of six agents plays judge, opposing counsel, client and more, while a hard-coded rule engine based on the 2015 Civil Procedure Code keeps them procedurally correct. Strict system prompts force JSON output and make the model ask back instead of inventing facts.',
+    results:
+      '3rd place at the IU AI Competition 2025 with team Newbie-Coding. The fine-tuned model runs fully offline on an ordinary laptop without a dedicated GPU and reached about 75% accuracy in manual testing; the simulated judge pushes back on weak arguments instead of only quoting the law.',
+    tech: ['Python', 'Qwen2.5', 'Ollama', 'FastAPI', 'Electron', 'RAG'],
+    role: 'Team Newbie-Coding · four members',
+    links: {
+      video: 'https://youtu.be/0yGZIgFPGX0',
+    },
+    dabm: {
+      D: '~100,000 Vietnamese legal documents · 10,000 fine-tuning samples',
+      A: 'law students rehearsing hearings without a real courtroom',
+      B: 'arguments the opposing side and the judge would challenge',
+      M: 'fine-tuned local LLM · retrieval · rule engine · multi-agent council',
+    },
+    why: 'Shows a privacy-first LLM system built for low-resource settings, where the guardrails matter as much as the model.',
   },
   {
     slug: 'enstudy-hub',

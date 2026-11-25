@@ -136,7 +136,7 @@ export const chronicles: ChronicleEvent[] = [
     title: 'Data Engineer · Twohearts',
     org: 'Twohearts Technologies',
     link: 'https://twohearts.vn',
-    ongoing: true,
+    endDate: '2026-11-01',
     description: 'Data validation and normalization for AI-powered ordering; LLM eval harness; end-to-end testing with Gherkin and property-based tests.',
   },
   {
@@ -166,6 +166,17 @@ export const chronicles: ChronicleEvent[] = [
     title: 'GoiBERT-M preprint on arXiv',
     link: 'https://arxiv.org/abs/2610.30067',
     description: 'Compact Vietnamese encoders via two-stage distillation.',
+  },
+  {
+    // Line signed a one-year full-time contract starting 2026-11-01 (Line, 2026-11-26).
+    id: 'twohearts-fulltime',
+    date: '2026-11-01',
+    type: 'role',
+    title: 'Full-time contract · Twohearts',
+    org: 'Twohearts Technologies',
+    link: 'https://twohearts.vn',
+    ongoing: true,
+    description: 'Signed a one-year full-time contract as Data Engineer.',
   },
   {
     id: 'iu-grad',

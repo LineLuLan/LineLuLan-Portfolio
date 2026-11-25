@@ -24,6 +24,10 @@ export const experience: ExperienceOrg[] = [
       ],
       skills: ['TypeScript', 'Node.js', 'PostgreSQL', 'Python', 'PyTorch', 'Promptfoo', 'Docker', 'GitHub Actions', 'LLM evaluation'],
       highlights: [{
+        // Line signed a one-year full-time contract starting 2026-11-01 (Line, 2026-11-26).
+        title: 'One-year full-time contract', date: '2026-11',
+        body: 'Signed a one-year full-time contract as Data Engineer, starting November 2026.',
+      }, {
         title: 'GoiBERT · compact Vietnamese encoders', date: '2026-10',
         body: 'Two-stage knowledge distillation into 26.4M- and 49.4M-parameter encoders. GoiBERT-large averages 81.13 across eight Vietnamese benchmarks, above PhoBERT-v2 (80.71) at about half the parameters, and GoiBERT-base keeps 99% of the score at a quarter of the size. Preprint on arXiv, models public on Hugging Face.',
         link: { href: '/projects/goibert-m', label: 'Read the project story' },
